@@ -97,13 +97,14 @@ const quotes = [
     }
 ];
 
-console.log(quotes);
-
 
 /***
  * `getRandomQuote` function
 ***/
-
+const getRandomQuote = () => {
+    const randomNumber = Math.floor(Math.random() * quotes.length);
+    return quotes[randomNumber];
+};
 
 
 /***

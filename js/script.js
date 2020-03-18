@@ -80,7 +80,7 @@ const quotes = [
     {
         quote: 'A bear, however hard he tries, grows tubby without exercise.',
         source: 'A.A. Milne',
-        ciation: 'When We Were Very Young',
+        citation: 'When We Were Very Young',
         year: '1924'
     },
     {
@@ -110,7 +110,24 @@ const getRandomQuote = () => {
 /***
  * `printQuote` function
 ***/
-
+const printQuote = () => {
+    // get random quote object from quote array
+    const randomQuote = getRandomQuote();
+    
+    // build string of HTML and quote object properties
+    let html = `<p class="quote">${randomQuote.quote}</p>
+<p class="source">${randomQuote.source}`;
+    if (randomQuote.citation) {
+        html += `<span class="citation">${randomQuote.citation}</span>`;
+    }
+    if (randomQuote.year) {
+        html += `<span class="year">${randomQuote.year}</span>`;
+    }
+    html += `</p>`;
+    
+    // use html string to display random quote in the browser
+    document.querySelector('#quote-box').innerHTML = html;
+};
 
 
 /***

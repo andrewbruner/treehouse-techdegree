@@ -40,6 +40,60 @@ const quotes = [
         source: 'W.B. Yeats',
         citation: 'He Wishes for the Cloths of Heaven',
         year: '1899'
+    },
+    {
+        quote: 'Whatever our souls are made of, his and mine are the same.',
+        source: 'Emily Bronte',
+        citation: 'Wuthering Heights',
+        year: '1847'
+    },
+    {
+        quote: 'But soft! What light through yonder window breaks? / It is the east, and Juliet is the sun.',
+        source: 'William Shakespeare',
+        citation: 'Romeo and Juliet',
+        year: 'ca. 1591-1595'
+    },
+    {
+        quote: 'Made weak by time and fate, but strong in will / To strive, to seek, to find, and not to yield.',
+        source: 'Alfred, Lord Tennyson',
+        citation: 'Ulysses',
+        year: '1842'
+    },
+    {
+        quote: 'Whenever you feel like criticizing anyone ... just remember that all the people in this world haven’t had the advantages that you’ve had.',
+        source: 'F. Scott Fitzgerald',
+        citation: 'The Great Gatsby',
+        year: '1925'
+    },
+    {
+        quote: 'Real courage is when you know you’re licked before you begin, but you begin anyway and see it through no matter what.',
+        source: 'Harper Lee',
+        citation: 'To Kill a Mockingbird',
+        year: '1960'
+    },
+    {
+        quote: 'We are such stuff as dreams are made on, and our little life is rounded with a sleep.',
+        source: 'William Shakespeare',
+        citation: 'The Tempest',
+        year: 'ca. 1610-1611'
+    },
+    {
+        quote: 'A bear, however hard he tries, grows tubby without exercise.',
+        source: 'A.A. Milne',
+        ciation: 'When We Were Very Young',
+        year: '1924'
+    },
+    {
+        quote: 'Not all those who wander are lost.',
+        source: 'J.R.R. Tolkein',
+        citation: 'The Fellowship of the Ring',
+        year: '1954'
+    },
+    {
+        quote: 'The Answer to the ultimate question of Life, The Universe and Everything is... 42!',
+        source: 'Douglas Adams',
+        citation: 'The Hitchhiker’s Guide to the Galaxy',
+        year: '1979'
     }
 ];
 

@@ -7,9 +7,17 @@ project 1 - A Random Quote Generator
   // Check the "Project Resources" section of the project instructions
   // Reach out in your Slack community - https://treehouse-fsjs-102.slack.com/app_redirect?channel=chit-chat
 
+/***
+ * declare the interval timer to be used later
+***/
+
+let intervalTimer;
+
+
 /*** 
  * `quotes` array 
 ***/
+
 const quotes = [
     {
         quote: 'It is a far, far better thing that I do, than I have ever done; it is a far, far better rest I go to than I have ever known.',
@@ -111,22 +119,28 @@ const quotes = [
     }
 ];
 
+
 /*** 
  * `colors` array 
 ***/
+
 const colors = ['rgb(192, 57, 57)', 'rgb(192, 192, 57)', 'rgb(91, 192, 57)', 'rgb(58, 193, 98)', 'rgb(57, 159, 192)', 'rgb(91, 57, 192)', 'rgb(192, 57, 159)'];
+
 
 /***
  * `getRandomQuote` function
 ***/
+
 const getRandomQuote = () => {
     const randomNumber = Math.floor(Math.random() * quotes.length);
     return quotes[randomNumber];
 };
 
+
 /***
  * `getRandomColor` function
 ***/
+
 const getRandomColor = () => {
     const randomNumber = Math.floor(Math.random() * colors.length);
     return colors[randomNumber];
@@ -136,7 +150,11 @@ const getRandomColor = () => {
 /***
  * `printQuote` function
 ***/
+
 const printQuote = () => {
+    // clear the running interval timer
+    clearInterval(intervalTimer);
+    
     // get random quote object from quotes array
     const randomQuote = getRandomQuote();
     // get random color string from colors array
@@ -161,7 +179,18 @@ const printQuote = () => {
     
     // use randomColor string to display random background color
     document.body.style.backgroundColor = randomColor;
+    
+    // reset interval timer for 20 seconds
+    intervalTimer = window.setInterval(printQuote, 20000);
 };
+
+
+/***
+ * set initial interval timer for 20 seconds
+***/
+
+intervalTimer = window.setInterval(printQuote, 20000);
+
 
 /***
  * click event listener for the print quote button

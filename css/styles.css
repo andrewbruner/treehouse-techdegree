@@ -115,6 +115,15 @@ h1 {
   font-style: normal;
 }
 
+.tag {
+  font-style: italic;
+}
+
+.tag:before {
+  content: " #",
+  font-style: italic;
+}
+
 @media (min-width: 768px) {
   body {
     padding: 25px;

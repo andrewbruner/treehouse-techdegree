@@ -187,6 +187,8 @@ const printQuote = () => {
 
 /***
  * set initial interval timer for 20 seconds
+ * I learned this function from MDN Web Docs
+ * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval
 ***/
 
 intervalTimer = window.setInterval(printQuote, 20000);

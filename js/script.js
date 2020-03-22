@@ -11,41 +11,46 @@ const itemsPerPage = 10;
 
 
 /**
- * function to dynamically add searchbar
+ * function to build, append, and add functionality to searchbar
  */
-const showSearch = () => {
+const appendSearchbox = () => {
+
+    // local variable
     const pageHeaderDiv = document.querySelector('.page-header');
-    const searchDiv = document.createElement('div');
-    searchDiv.className = 'student-search';
-    const searchInput = document.createElement('input');
-    searchInput.placeholder = 'Search for students...';
-    searchInput.style.marginRight = '0.3rem';
-    const searchButton = document.createElement('button');
-    searchButton.textContent = 'Search';
     
-    // function to run search
+    // local function to create an element and modify its properties
+    const createElement = (name, property, value) => {
+        const element = document.createElement(name);
+        element[property] = value;
+        return element;
+    };
+    
+    // local function to run search and display results
     const runSearch = event => {
-        const searchDiv = event.target.parentElement;
-        const searchTerm = searchDiv.querySelector('input').value;
+        const searchTerm = event.target.parentElement.querySelector('input').value;
         const searchList = [];
         
-        for (let i = 0; i < masterList.length; i++) {
-            const item = masterList[i];
+        masterList.forEach(item => {
             const itemTextContent = item.querySelector('h3').textContent;
-
             if (itemTextContent.includes(searchTerm)) {
                 searchList.push(item);
             }
-        }
+        });
         
         showPage(searchList, 1);
         appendPageLinks(searchList);
     };
     
-    // add listeners for click and keyup events
+    // build searchbox
+    const searchDiv = createElement('div', 'className', 'student-search');
+    const searchInput = createElement('input', 'placeholder', 'Search for students...');
+    const searchButton = createElement('button', 'textContent', 'Search');
+        
+    // add listeners for `click` and `keyup` events
     searchButton.addEventListener('click', runSearch);
     searchInput.addEventListener('keyup', runSearch);
     
+    // append searchbox
     searchDiv.appendChild(searchInput);
     searchDiv.appendChild(searchButton);
     pageHeaderDiv.appendChild(searchDiv);
@@ -53,7 +58,7 @@ const showSearch = () => {
 
 
 /**
- * function to show each page, passing in array of items and page number to show
+ * function to show each page, using array of items and page number as parameters
  */
 const showPage = (list, page) => {    
     
@@ -62,16 +67,16 @@ const showPage = (list, page) => {
     const end = (page * itemsPerPage) - 1;
     
     // begin by hiding all masterList items
-    for (let i = 0; i < masterList.length; i++) {
-        masterList[i].style.display = 'none';
-    }
+    masterList.forEach(item => {
+        item.style.display = 'none';
+    });
     
-    // show only the list items in the starting/ending index range
-    for (let i = 0; i < list.length; i++) {
+    // show only list items in the index range
+    list.forEach((item, i) => {
         if (i >= start && i <= end) {
-            list[i].style.display = '';
+            item.style.display = '';
         }
-    }
+    });
 };
 
 
@@ -88,6 +93,25 @@ const appendPageLinks = list => {
     // if pagination links exist, remove them
     if (pageDiv.lastElementChild.className === 'pagination') {
         pageDiv.lastElementChild.remove();
+    }
+
+    // if error message exists, remove it
+    if (pageDiv.children[1].className === 'page-header cf') {
+        pageDiv.children[1].remove();
+    }
+    
+    // build message to display on 0 search results
+    const studentListDiv = document.querySelector('.student-list');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'page-header cf';
+    const errorH2 = document.createElement('h2');
+    errorH2.textContent = 'No results found';
+    errorDiv.appendChild(errorH2);
+    pageDiv.insertBefore(errorDiv, studentListDiv);
+    if (list.length === 0) {
+        errorDiv.style.display = '';
+    } else {
+        errorDiv.style.display = 'none';
     }
     
     // create .pagination <div> and <ul> elements
@@ -138,6 +162,6 @@ const appendPageLinks = list => {
 /**
  * on page load, show searchbar, the first page of items, and append page links
  */
-document.addEventListener('DOMContentLoaded', showSearch());
+document.addEventListener('DOMContentLoaded', appendSearchbox());
 document.addEventListener('DOMContentLoaded', showPage(masterList, 1));
 document.addEventListener('DOMContentLoaded', appendPageLinks(masterList));

@@ -2,98 +2,82 @@
 Treehouse Techdegree:
 FSJS project 2 - List Filter and Pagination
 ******************************************/
-   
-// Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
+
+// global variables
+const masterList = document.querySelectorAll('.student-item');
+const itemsPerPage = 10;
 
 
-/*** 
-   Add your global variables that store the DOM elements you will 
-   need to reference and/or manipulate. 
-   
-   But be mindful of which variables should be global and which 
-   should be locally scoped to one of the two main functions you're 
-   going to create. A good general rule of thumb is if the variable 
-   will only be used inside of a function, then it can be locally 
-   scoped to that function.
-***/
-
-const studentList = document.querySelectorAll('.student-item');
-const numberPerPage = 10;
-
-/*** 
-   Create the `showPage` function to hide all of the items in the 
-   list except for the ten you want to show.
-
-   Pro Tips: 
-     - Keep in mind that with a list of 54 students, the last page 
-       will only display four.
-     - Remember that the first student has an index of 0.
-     - Remember that a function `parameter` goes in the parens when 
-       you initially define the function, and it acts as a variable 
-       or a placeholder to represent the actual function `argument` 
-       that will be passed into the parens later when you call or 
-       "invoke" the function 
-***/
-// function to show each page, passing in array of total students and page number to show
-const showPage = (students, pageNumber) => {
+// function to show each page, passing in array of items and page number to show
+const showPage = (list, page) => {
     
-    // set the starting index for first student on page
-    const startIndex = (pageNumber * numberPerPage) - numberPerPage;
-    // set the ending index for the last student on page
-    const endIndex = (pageNumber * numberPerPage) - 1;
+    // set the starting/ending index for first/last item on page
+    const start = (page * itemsPerPage) - itemsPerPage;
+    const end = (page * itemsPerPage) - 1;
     
-    // for each student in students
-    for (let i = 0; i < students.length; i++) {
-        // if the student's index is between the starting and ending indexes
-        if (i >= startIndex && i <= endIndex) {
-            // show that student
-            students[i].style.display = '';
-        // else if student's index is outside the starting and ending indexes
-        } else if (i < startIndex || i > endIndex) {
-            // hide that student
-            students[i].style.display = 'none';
+    // show only the list items in the starting/ending index range
+    for (let i = 0; i < list.length; i++) {
+        if (i < start || i > end) {
+            list[i].style.display = 'none';
+        } else {
+            list[i].style.display = '';
         }
     }
 };
 
-
-/*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
-***/
-
-const appendPageLinks = students => {
-    const numberOfStudents = students.length;
-    const numberOfPageLinks = Math.ceil(numberOfStudents / numberPerPage);
+// function to build, append and add functionality to page links
+const appendPageLinks = list => {
+    
+    // local variables
+    const numberOfitems = list.length;
+    const numberOfPageLinks = Math.ceil(numberOfitems / itemsPerPage);
     const pageDiv = document.querySelector('.page');
+    
+    // create .pagination <div> and <ul> elements
     const paginationDiv = document.createElement('div');
     paginationDiv.className = 'pagination';
     const paginationUl = document.createElement('ul');
     
-    for (let i = 1; i <= numberOfPageLinks; i++) {
+    // create .pagination <li> and <a> elements
+    for (let i = 0; i < numberOfPageLinks; i++) {
         
         const paginationLi = document.createElement('li');
+        paginationLi.style.cursor = 'pointer';
         
         const paginationA = document.createElement('a');
         paginationA.attributes.href = '#';
-        paginationA.textContent = i;
+        paginationA.textContent = i + 1;
+        if (i === 0) {
+            paginationA.className = 'active';
+        }
+        
+        // add functionality to <a> elements when clicked
         paginationA.addEventListener('click', (event) => {
-            showPage(studentList, event.target.textContent);
-            event.target.className = 'active';
+            const array = document.querySelectorAll('.pagination a');
+            const page = event.target.textContent;
+            
+            for (i = 0; i < numberOfPageLinks; i++) {
+                if (i === page - 1) {
+                    array[i].className = 'active';
+                } else {
+                    array[i].className = '';
+                }
+            }
+            
+            showPage(list, page);
         });
         
+        // finish building .pagination <li> and <a> elements
         paginationLi.appendChild(paginationA);
         paginationUl.appendChild(paginationLi);
     }
     
-    paginationDiv.appendChild(paginationUl);
-    
-    showPage(students, 1);
-    
+    // finish building .pagination <div> and <ul> elements
+    paginationDiv.appendChild(paginationUl);    
     pageDiv.appendChild(paginationDiv);
     
 };
 
-document.addEventListener('DOMContentLoaded', appendPageLinks(studentList));
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
+// on page load, show the first page of items and append page links
+document.addEventListener('DOMContentLoaded', showPage(masterList, 1));
+document.addEventListener('DOMContentLoaded', appendPageLinks(masterList));

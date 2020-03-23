@@ -3,33 +3,41 @@ Treehouse Techdegree:
 FSJS project 2 - List Filter and Pagination
 ******************************************/
 
-/**
- * global variables
- */
+// GLOBAL VARIABLES
 const masterList = document.querySelectorAll('.student-item');
 const itemsPerPage = 10;
+const pageDiv = document.querySelector('.page');
 
+// GLOBAL FUNCTION to create an element and modify its properties
+const createElement = (name, property, value) => {
+    const element = document.createElement(name);
+    element[property] = value;
+    return element;
+};
 
-/**
- * function to build, append, and add functionality to searchbar
- */
+// GLOBAL FUNCTION to remove previous <div>s
+const removeDiv = selector => {
+    const prevDiv = pageDiv.querySelector(selector);
+    if (prevDiv) {
+        prevDiv.remove();
+    }
+};
+
+// GLOBAL FUNCTION to build, append, and add functionality to searchbar
 const appendSearchbox = () => {
 
-    // local variable
+    // local variables
     const pageHeaderDiv = document.querySelector('.page-header');
-    
-    // local function to create an element and modify its properties
-    const createElement = (name, property, value) => {
-        const element = document.createElement(name);
-        element[property] = value;
-        return element;
-    };
+    const studentListDiv = document.querySelector('.student-list');
     
     // local function to run search and display results
     const runSearch = event => {
+        
+        // local variables
         const searchTerm = event.target.parentElement.querySelector('input').value;
         const searchList = [];
         
+        // for each item matching searchTerm, push to searchList array
         masterList.forEach(item => {
             const itemTextContent = item.querySelector('h3').textContent;
             if (itemTextContent.includes(searchTerm)) {
@@ -37,9 +45,27 @@ const appendSearchbox = () => {
             }
         });
         
+        // if searchList array is empty, show error message; if not, hide it
+        if (searchList.length === 0) {
+            errorDiv.style.display = '';
+        } else {
+            errorDiv.style.display = 'none';
+        }
+        
+        // show the search results and append page links
         showPage(searchList, 1);
-        appendPageLinks(searchList);
+        appendPageLinks(searchList); 
     };
+    
+    // if error message exists, remove it
+    removeDiv('.error');
+    
+    // build error message to display on 0 search results
+    const errorDiv = createElement('div', 'className', 'page-header cf error')
+    errorDiv.style.display = 'none'
+    const errorH2 = createElement('h2', 'textContent', 'No results found');
+    errorDiv.appendChild(errorH2);
+    pageDiv.insertBefore(errorDiv, studentListDiv);
     
     // build searchbox
     const searchDiv = createElement('div', 'className', 'student-search');
@@ -57,9 +83,7 @@ const appendSearchbox = () => {
 }
 
 
-/**
- * function to show each page, using array of items and page number as parameters
- */
+// GLOBAL FUNCTION to show each page, using array of items and page number as parameterS
 const showPage = (list, page) => {    
     
     // set the starting/ending index for first/last item on page
@@ -80,43 +104,18 @@ const showPage = (list, page) => {
 };
 
 
-/**
- * function to build, append and add functionality to page links
- */
+// GLOBAL FUNCTION to build, append and add functionality to page links
 const appendPageLinks = list => {
 
     // local variables
     const numberOfitems = list.length;
     const numberOfPageLinks = Math.ceil(numberOfitems / itemsPerPage);
-    const pageDiv = document.querySelector('.page');
     
-    // if pagination links exist, remove them
-    if (pageDiv.lastElementChild.className === 'pagination') {
-        pageDiv.lastElementChild.remove();
-    }
-
-    // if error message exists, remove it
-    if (pageDiv.children[1].className === 'page-header cf') {
-        pageDiv.children[1].remove();
-    }
-    
-    // build message to display on 0 search results
-    const studentListDiv = document.querySelector('.student-list');
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'page-header cf';
-    const errorH2 = document.createElement('h2');
-    errorH2.textContent = 'No results found';
-    errorDiv.appendChild(errorH2);
-    pageDiv.insertBefore(errorDiv, studentListDiv);
-    if (list.length === 0) {
-        errorDiv.style.display = '';
-    } else {
-        errorDiv.style.display = 'none';
-    }
+    // if pagination linksexist, remove them
+    removeDiv('.pagination');    
     
     // create .pagination <div> and <ul> elements
-    const paginationDiv = document.createElement('div');
-    paginationDiv.className = 'pagination';
+    const paginationDiv = createElement('div', 'className', 'pagination');
     const paginationUl = document.createElement('ul');
 
     // create .pagination <li> and <a> elements
@@ -125,7 +124,7 @@ const appendPageLinks = list => {
         const paginationLi = document.createElement('li');
         paginationLi.style.cursor = 'pointer';
 
-        const paginationA = document.createElement('a');
+        const paginationA = createElement('a');
         paginationA.attributes.href = '#';
         paginationA.textContent = i + 1;
         if (i === 0) {
@@ -159,9 +158,7 @@ const appendPageLinks = list => {
 };
 
 
-/**
- * on page load, show searchbar, the first page of items, and append page links
- */
+// GLOBAL EVENT LISTENERS - on page load, show searchbar, the first page of items, and append page links
 document.addEventListener('DOMContentLoaded', appendSearchbox());
 document.addEventListener('DOMContentLoaded', showPage(masterList, 1));
 document.addEventListener('DOMContentLoaded', appendPageLinks(masterList));

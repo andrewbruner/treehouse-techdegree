@@ -34,12 +34,12 @@ const appendSearchbox = () => {
     const runSearch = event => {
         
         // local variables
-        const searchTerm = event.target.parentElement.querySelector('input').value;
+        const searchTerm = event.target.parentElement.querySelector('input').value.toLowerCase();
         const searchList = [];
         
         // for each item matching searchTerm, push to searchList array
         masterList.forEach(item => {
-            const itemTextContent = item.querySelector('h3').textContent;
+            const itemTextContent = item.querySelector('h3').textContent.toLowerCase();
             if (itemTextContent.includes(searchTerm)) {
                 searchList.push(item);
             }

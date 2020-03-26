@@ -124,7 +124,34 @@ const initializeRegistration = () => {
         activitiesFieldset.addEventListener('change', handleActivitiesInputChange);
     };
     
-    const initializePaymentInfo = () => {};
+    const initializePaymentInfo = () => {
+        const paymentSelect = document.querySelector('#payment');
+        const creditCardDiv = document.querySelector('#credit-card');
+        const paypalDiv = document.querySelector('#paypal');
+        const bitcoinDiv = document.querySelector('#bitcoin');
+        
+        paymentSelect.firstElementChild.remove();
+        paypalDiv.style.display = 'none';
+        bitcoinDiv.style.display = 'none';
+        
+        const handlePaymentSelectChange = () => {
+            if (paymentSelect.value === 'credit card') {
+                creditCardDiv.style.display = '';
+                paypalDiv.style.display = 'none';
+                bitcoinDiv.style.display = 'none';
+            } else if (paymentSelect.value === 'paypal') {
+                creditCardDiv.style.display = 'none';
+                paypalDiv.style.display = '';
+                bitcoinDiv.style.display = 'none';
+            } else if (paymentSelect.value === 'bitcoin') {
+                creditCardDiv.style.display = 'none';
+                paypalDiv.style.display = 'none';
+                bitcoinDiv.style.display = '';
+            }
+        }
+        
+        paymentSelect.addEventListener('change', handlePaymentSelectChange);
+    };
     
     const initializeFormValidation = () => {};
     

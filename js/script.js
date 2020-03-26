@@ -6,7 +6,10 @@ const initializeRegistration = () => {
         element.style.display = value;
     };
     
-    // local initialization functions
+    
+    
+    
+    // BASIC INFO SECTION
     const initializeBasicInfo = () => {    
         const initializeFocus = () => {
             const firstTextField = document.querySelector('input[type=text]');
@@ -30,6 +33,9 @@ const initializeRegistration = () => {
         initializeJobRole();
     };
     
+    
+    
+    // TSHIRT INFO SECTION
     const initializeTshirtInfo = () => {
         const designSelect = document.querySelector('#design');
         const colorSelect = document.querySelector('#color');
@@ -65,6 +71,9 @@ const initializeRegistration = () => {
         designSelect.addEventListener('change', handleDesignSelectChange);
     };
     
+    
+    
+    // ACTIVITIES REGISTRATION SECTION
     const initializeActivityRegistration = () => {
         const activitiesFieldset = document.querySelector('.activities');
         const activitiesInputs = document.querySelectorAll('.activities input');
@@ -124,6 +133,9 @@ const initializeRegistration = () => {
         activitiesFieldset.addEventListener('change', handleActivitiesInputChange);
     };
     
+    
+    
+    // PAYMENT INFO SECTION
     const initializePaymentInfo = () => {
         const paymentSelect = document.querySelector('#payment');
         const creditCardDiv = document.querySelector('#credit-card');
@@ -153,14 +165,18 @@ const initializeRegistration = () => {
         paymentSelect.addEventListener('change', handlePaymentSelectChange);
     };
     
+    
+    
+    // VALIDATION SECTION
     const initializeFormValidation = () => {
         const nameInput = document.querySelector('#name');
-        const emailInput = document.querySelector('#mail');
         const nameErrorMessage = document.createElement('p');
         nameErrorMessage.textContent = 'Name field cannot be left blank';
         nameErrorMessage.style.color = 'firebrick';
         nameInput.parentElement.insertBefore(nameErrorMessage, nameInput)
         nameErrorMessage.style.display = 'none';
+        
+        const emailInput = document.querySelector('#mail');
         const emailEmptyErrorMessage = document.createElement('p');  
         emailEmptyErrorMessage.textContent = 'Email field cannot be left blank';
         emailEmptyErrorMessage.style.color = 'firebrick';
@@ -171,6 +187,14 @@ const initializeRegistration = () => {
         emailInvalidErrorMessage.style.color = 'firebrick';
         emailInput.parentElement.insertBefore(emailInvalidErrorMessage, emailInput)
         emailInvalidErrorMessage.style.display = 'none';
+        
+        const activitiesFieldset = document.querySelector('.activities');
+        const activitiesErrorMessage = document.createElement('p');
+        activitiesErrorMessage.textContent = 'You must register for at least one activity';
+        activitiesErrorMessage.style.color = 'firebrick';
+        activitiesErrorMessage.style.margin = '0px 0px 16px 0px';
+        activitiesFieldset.insertBefore(activitiesErrorMessage, activitiesFieldset.children[1])
+        activitiesErrorMessage.style.display = 'none';
         
         let nameError = false;
         let emailError = false;
@@ -223,20 +247,28 @@ const initializeRegistration = () => {
         
          //validateActivities
         const validateActivities = () => {
-            
+            const activitiesInputs = document.querySelectorAll('.activities input');
+            let activitiesRegistered = 0;
+            activitiesInputs.forEach(input => {
+                if (input.checked) {
+                    activitiesRegistered++;
+                }
+            });
+            if (activitiesRegistered === 0) {
+                activitiesError = true;
+                activitiesErrorMessage.style.display = '';
+            } else {
+                activitiesError = false;
+                activitiesErrorMessage.style.display = 'none';
+            }
         };
         
+        //validateCreditCard
+        const validateCreditCard = () => {};
         
-        
+        //handleFormSubmit
         const handleFormSubmit = (event) => {
-            
-            
-            
-            
-           
-            
-            //validateCreditCard
-            
+
             //validateForm
             const validateForm = (event) => {
 
@@ -244,12 +276,19 @@ const initializeRegistration = () => {
                     event.preventDefault();
                     // show generalErrorMessage
                 }
+                validateName();
+                validateEmail(event);
+                validateActivities();
+                validateCreditCard();
             };
+            
             validateForm(event);
         };
     
         document.querySelector('form').addEventListener('submit', handleFormSubmit);
     };
+    
+    
     
     
     // initialization

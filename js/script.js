@@ -196,6 +196,34 @@ const initializeRegistration = () => {
         activitiesFieldset.insertBefore(activitiesErrorMessage, activitiesFieldset.children[1])
         activitiesErrorMessage.style.display = 'none';
         
+        const paymentSelect = document.querySelector('.payment');
+        const cardNumberInput = document.querySelector('#cc-num');
+        const zipCodeInput = document.querySelector('#zip');
+        const cvvInput = document.querySelector('#cvv');
+        const cardNumberErrorMessage = document.createElement('p');
+        cardNumberErrorMessage.textContent = 'Card number must be 13-16 digits only';
+        cardNumberErrorMessage.style.color = 'firebrick';
+        cardNumberInput.parentElement.insertBefore(cardNumberErrorMessage, cardNumberInput)
+        cardNumberErrorMessage.style.display = 'none';
+        const zipCodeErrorMessage = document.createElement('p');
+        zipCodeErrorMessage.textContent = '5 digits only';
+        zipCodeErrorMessage.style.color = 'firebrick';
+        zipCodeInput.parentElement.insertBefore(zipCodeErrorMessage, zipCodeInput)
+        zipCodeErrorMessage.style.display = 'none';
+        const cvvErrorMessage = document.createElement('p');
+        cvvErrorMessage.textContent = '3 digits only';
+        cvvErrorMessage.style.color = 'firebrick';
+        cvvInput.parentElement.insertBefore(cvvErrorMessage, cvvInput)
+        cvvErrorMessage.style.display = 'none';
+        
+        const submitButton = document.querySelector('button');
+        const generalErrorMessage = document.createElement('p');
+        generalErrorMessage.textContent = 'Please fix errors above before submitting form';
+        generalErrorMessage.style.color = 'firebrick';
+        generalErrorMessage.style.margin = '16px 0px 0px 0px';
+        submitButton.parentElement.insertBefore(generalErrorMessage, submitButton)
+        generalErrorMessage.style.display = 'none';
+        
         let nameError = false;
         let emailError = false;
         let activitiesError = false;
@@ -264,7 +292,46 @@ const initializeRegistration = () => {
         };
         
         //validateCreditCard
-        const validateCreditCard = () => {};
+        const validateCreditCard = () => {
+            
+            const paymentSelect = document.querySelector('#payment');
+            
+            const cardNumberRegex = /^\d{13,16}$/;
+            let cardNumberError = false;
+            const zipCodeRegex = /^\d{5}$/;
+            let zipCodeError = false;
+            const cvvRegex = /^\d{3}$/;
+            let cvvError = false;
+            
+            if (paymentSelect.value === 'credit card') {
+                if (!cardNumberRegex.test(cardNumberInput.value)) {
+                    cardNumberError = true;
+                    cardNumberErrorMessage.style.display = '';
+                } else {
+                    cardNumberError = false;
+                    cardNumberErrorMessage.style.display = 'none';
+                }
+                if (!zipCodeRegex.test(zipCodeInput.value)) {
+                    zipCodeError = true;
+                    zipCodeErrorMessage.style.display = '';
+                } else {
+                    zipCodeError = false;
+                    zipCodeErrorMessage.style.display = 'none';
+                }
+                if (!cvvRegex.test(cvvInput.value)) {
+                    cvvError = true;
+                    cvvErrorMessage.style.display = '';
+                } else {
+                    cvvError = false;
+                    cvvErrorMessage.style.display = 'none';
+                }
+                if (cardNumberError || zipCodeError || cvvError) {
+                    creditCardError = true;
+                } else {
+                    creditCardError = false;
+                }
+            }
+        };
         
         //handleFormSubmit
         const handleFormSubmit = (event) => {
@@ -274,7 +341,7 @@ const initializeRegistration = () => {
 
                 if (nameError || emailError || activitiesError || creditCardError) {
                     event.preventDefault();
-                    // show generalErrorMessage
+                    generalErrorMessage.style.display = '';
                 }
                 validateName();
                 validateEmail(event);

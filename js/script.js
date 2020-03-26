@@ -153,7 +153,103 @@ const initializeRegistration = () => {
         paymentSelect.addEventListener('change', handlePaymentSelectChange);
     };
     
-    const initializeFormValidation = () => {};
+    const initializeFormValidation = () => {
+        const nameInput = document.querySelector('#name');
+        const emailInput = document.querySelector('#mail');
+        const nameErrorMessage = document.createElement('p');
+        nameErrorMessage.textContent = 'Name field cannot be left blank';
+        nameErrorMessage.style.color = 'firebrick';
+        nameInput.parentElement.insertBefore(nameErrorMessage, nameInput)
+        nameErrorMessage.style.display = 'none';
+        const emailEmptyErrorMessage = document.createElement('p');  
+        emailEmptyErrorMessage.textContent = 'Email field cannot be left blank';
+        emailEmptyErrorMessage.style.color = 'firebrick';
+        emailInput.parentElement.insertBefore(emailEmptyErrorMessage, emailInput)
+        emailEmptyErrorMessage.style.display = 'none';
+        const emailInvalidErrorMessage = document.createElement('p');  
+        emailInvalidErrorMessage.textContent = 'Email field must contain a valid email address';
+        emailInvalidErrorMessage.style.color = 'firebrick';
+        emailInput.parentElement.insertBefore(emailInvalidErrorMessage, emailInput)
+        emailInvalidErrorMessage.style.display = 'none';
+        
+        let nameError = false;
+        let emailError = false;
+        let activitiesError = false;
+        let creditCardError = false;
+
+        //validateName
+        const validateName = () => {
+            const regex = /^\s+$/;
+            if (nameInput.value === '' || regex.test(nameInput.value)) {
+                nameError = true;
+                nameErrorMessage.style.display = '';
+                nameInput.style.border = '2px solid firebrick';
+            } else {
+                nameError = false;
+                nameErrorMessage.style.display = 'none';
+                nameInput.style.border = '';
+            }
+        };
+        nameInput.addEventListener('keyup', validateName);
+        nameInput.addEventListener('blur', validateName);
+
+        //validateEmail
+        const validateEmail = (event) => {
+            const regex1 = /^\s+$/;
+            const regex2 = /^[^@]+@[a-z0-9\-]+\.[a-z]{2,}$/i;
+            if (event.which !== 9) {
+                if (emailInput.value === '' || regex1.test(emailInput.value)) {
+                    emailError = true;
+                    emailEmptyErrorMessage.style.display = '';
+                    emailInvalidErrorMessage.style.display = 'none';
+                    emailInput.style.border = '2px solid firebrick';
+                } else {
+                    if (!regex2.test(emailInput.value)) {
+                        emailError = true;
+                        emailEmptyErrorMessage.style.display = 'none'
+                        emailInvalidErrorMessage.style.display = '';
+                        emailInput.style.border = '2px solid firebrick';
+                    } else {
+                        emailError = false;
+                        emailEmptyErrorMessage.style.display = 'none'
+                        emailInvalidErrorMessage.style.display = 'none';
+                        emailInput.style.border = ''
+                    }
+                }
+            }
+        };
+        emailInput.addEventListener('keyup', validateEmail);
+        emailInput.addEventListener('blur', validateEmail);
+        
+         //validateActivities
+        const validateActivities = () => {
+            
+        };
+        
+        
+        
+        const handleFormSubmit = (event) => {
+            
+            
+            
+            
+           
+            
+            //validateCreditCard
+            
+            //validateForm
+            const validateForm = (event) => {
+
+                if (nameError || emailError || activitiesError || creditCardError) {
+                    event.preventDefault();
+                    // show generalErrorMessage
+                }
+            };
+            validateForm(event);
+        };
+    
+        document.querySelector('form').addEventListener('submit', handleFormSubmit);
+    };
     
     
     // initialization

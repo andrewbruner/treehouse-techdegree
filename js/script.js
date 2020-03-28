@@ -1,462 +1,448 @@
-// I) Global Function (Helper Functions, Initialize Page Content, Initialize Validation)
+// I) Global Function
 const initializeRegistration = () => {
-    
-    // A) Helper Functions
-    
-    // Function to select element
-    const select = (selector) => {
-        return document.querySelector(selector);
-    };
-    
-    // Function to build and insert an error message
-    const buildErrorMessage = (target, textContent, id) => {
-        const element = document.createElement('p');
-        element.textContent = textContent;
-        element.id = id;
-        element.style.color = 'firebrick';
-        hideElement(element);
-        target.parentElement.insertBefore(element, target);
-        return element;
-    };
-    
-    // Function to hide an element
-    const hideElement = (element) => {
-        element.style.display = 'none';
-    };
-    
-    // Function to show an element
-    const showElement = (element) => {
-        element.style.display = '';
-    };
-    
-    // B) Function to Build Initial Page Content (Basic Info, Tshirt Info, Activity Registration, Payment Info)
-    const initializePageContent = () => {
-    
-        // 1) Basic Info
-        const initializeBasicInfo = () => {
-            
-            // Set Focus to First Text Field on Page
-            const initializeFocus = () => {
-                const firstTextField = select('input[type=text]');
-                firstTextField.focus();
-            };
-            
-            // Build Basic Info Section's Error Messages (Hidden)
-            const buildBasicInfoErrorMessages = () => {
-                const nameInput = select('#name');
-                const emailInput = select('#mail');
-                buildErrorMessage(nameInput, 'Name field cannot be left blank', 'nameError');
-                buildErrorMessage(emailInput, 'Email field cannot be left blank', 'emailEmptyError');
-                buildErrorMessage(emailInput, 'Email field must contain a valid email address', 'emailInvalidError');
-            };
-            
-            // Initialize Job Role Select Element (Show/Hide "Other Title" Input))
-            const initializeTitleSelect = () => {
-                const titleSelect = select('#title');
-                const otherTitleInput = select('#other-title');
-                const handleTitleSelectChange = () => {
-                    if (titleSelect.value === 'other') {
-                        showElement(otherTitleInput);
-                    } else {
-                        hideElement(otherTitleInput);
-                    }
-                };
-                // Hide Input
-                hideElement(otherTitleInput);
-                titleSelect.addEventListener('change', handleTitleSelectChange);
-                
-            };
-            
-            // Call Above Functions
-            initializeFocus();
-            buildBasicInfoErrorMessages();
-            initializeTitleSelect();
-        };
-        
-        // 2) Tshirt Info
-        const initializeTshirtInfo = () => {
-            
-            // Initialize Tshirt Theme/Color Select Elements Functionality
-            const initializeTshirtSelects = () => {
-                const designSelect = select('#design');
-                const colorSelect = select('#color');
-                const colorOptions = colorSelect.children;
-                const punOptions = [colorOptions[0], colorOptions[1], colorOptions[2]];
-                const heartOptions = [colorOptions[3], colorOptions[4], colorOptions[5]];
-                const handleDesignSelectChange = () => {
-                    if (designSelect.value === 'js puns') {
-                        showElement(colorSelect);
-                        punOptions.forEach(option => showElement(option));
-                        heartOptions.forEach(option => hideElement(option));
-                        colorSelect.selectedIndex = 0;
-                    } else if (designSelect.value === 'heart js') {
-                        showElement(colorSelect);
-                        punOptions.forEach(option => hideElement(option));
-                        heartOptions.forEach(option => showElement(option));
-                        colorSelect.selectedIndex = 3;
-                    } else {
-                        hideElement(colorSelect);
-                    }
-                };
-                hideElement(colorSelect);
-                designSelect.addEventListener('change', handleDesignSelectChange);
-            };
-            
-            // Call Above Function
-            initializeTshirtSelects();
-        };
-        
-        // 3) Activity Registration
-        const initializeActivityRegistration = () => {
-            
-            // Build Activity Registration Error Message (Hidden)
-            const buildActivityRegistrationErrorMessage = () => {
-                const messageTarget = select('.activities').querySelector('label');
-                const errorMessage = buildErrorMessage(messageTarget,'You must register for at least one activity', 'activityError');
-                errorMessage.style.margin = '0px 0px 16px';
-            };       
-            
-            // Build Total Cost Message for Registered Activities (Hidden)
-            const buildActivityRegistrationTotalCostMessage = () => {
-                const activitiesFieldset = select('.activities');
-                const totalCostLabel = document.createElement('label');
-                totalCostLabel.id = 'totalCost';
-                totalCostLabel.style.fontWeight = 'bold';
-                totalCostLabel.marginTop = '1.5em';
-                hideElement(totalCostLabel);
-                activitiesFieldset.appendChild(totalCostLabel);
-            };
-            
-            // Initialize Activity Registration Total Cost and Conflicts Functionality
-            const initializeActivityRegistrationCostAndConflict = () => {
-                
-                // Local Variables
-                const activityFieldset = select('.activities');
-                const activityInputs = activityFieldset.querySelectorAll('input');
-                const totalCostLabel = select('#totalCost');
-                let totalCost = 0;
-                
-                // Helper Functions
-                const disableInput = (index) => {
-                    activityInputs[index].disabled = true;
-                    activityInputs[index].parentElement.style.color = 'grey';
-                };
-                const enableInput = (index) => {
-                    activityInputs[index].disabled = false;
-                    activityInputs[index].parentElement.style.color = '';
-                };
-                
-                // Handler Function
-                const handleActivityInputChange = (event) => {
-                    const input = event.target;
-                    if (input.checked) {
-                        // Handle Time Conflicts
-                        if (input.name === 'js-frameworks') {
-                            disableInput(3);
-                        } else if (input.name === 'express') {
-                            disableInput(1);
-                        } else if (input.name === 'js-libs') {
-                            disableInput(4);
-                        } else if (input.name === 'node') {
-                            disableInput(2);
-                        }
-                        // Handle Total Cost Update
-                        totalCost += Number(input.dataset.cost);
-                        showElement(totalCostLabel);
-                        totalCostLabel.textContent = `Total Cost: $${totalCost}`;
-                    } else {
-                        // Handle Time Conflicts
-                        if (input.name === 'js-frameworks') {
-                            enableInput(3);
-                        } else if (input.name === 'express') {
-                            enableInput(1);
-                        } else if (input.name === 'js-libs') {
-                            enableInput(4);
-                        } else if (input.name === 'node') {
-                            enableInput(2);
-                        }
-                        // Handle Total Cost Update
-                        totalCost -= Number(input.dataset.cost);
-                        if (totalCost === 0) {
-                            hideElement(totalCostLabel);
-                        }
-                        totalCostLabel.textContent = `Total Cost: $${totalCost}`;
-                    }
-                };
-                
-                // Event Listener
-                activityFieldset.addEventListener('change', handleActivityInputChange);
-                
-            };
+// A) Helper Functions Object
+const app = {
+// Function to Select Element
+select: selector => document.querySelector(selector),
+// Function to Build and Insert an Error Message
+buildErrorMessage: (target, textContent, id) => {
+const element = document.createElement('p');
+element.textContent = textContent;
+element.id = id;
+element.style.color = 'firebrick';
+app.hideElement(element);
+target.parentElement.insertBefore(element, target);
+return element;
+},
 
-            // Call Above Functions
-            buildActivityRegistrationErrorMessage();
-            buildActivityRegistrationTotalCostMessage();
-            initializeActivityRegistrationCostAndConflict();
-        };
-        
-        // 4) Payment Info
-        const initializePaymentInfo = () => {
-            
-            // Build Credit Card Error Messages
-            const buildCreditCardErrorMessages = () => {
-                
-                // Build Card Number Error Message
-                const buildCardNumberErrorMessage = () => {
-                    const cardNumberInput = select('#cc-num');
-                    buildErrorMessage(cardNumberInput, 'Card number must be 13-16 digits only', 'cardNumberError');
-                };
-                
-                // Build Zip Code Error Message
-                const buildZipCodeErrorMessage = () => {
-                    const zipCodeInput = select('#zip');
-                    buildErrorMessage(zipCodeInput, '5 digits only', 'zipCodeError');
-                };
-                
-                // Build CVV Error Message
-                const buildCvvErrorMessage = () => {
-                    const cvvInput = select('#cvv');
-                    buildErrorMessage(cvvInput, '3 digits only', 'cvvError');
-                };
-                
-                // Call Above Functions
-                buildCardNumberErrorMessage();
-                buildZipCodeErrorMessage();
-                buildCvvErrorMessage();
-            };
-            
-            const initializePaymentSelect = () => {
-                const paymentSelect = select('#payment');
-                const creditCardDiv = select('#credit-card');
-                const paypalDiv = select('#paypal');
-                const bitcoinDiv = select('#bitcoin');
-                // Select Credit Card Option
-                const selectCreditCardOption = () => {
-                    paymentSelect.firstElementChild.remove();
-                };
+// Function to Hide an Element
+hideElement: element => element.style.display = 'none',
 
-                // Hide Paypal Div Element
-                const hidePaypalDiv = () => {
-                    hideElement(paypalDiv);
-                };
-
-                // Hide Bitcoin Div Element
-                const hideBitcoinDiv = () => {
-                    hideElement(bitcoinDiv);
-                };
-                
-                const handlePaymentChange = () => {
-                    if (paymentSelect.value === 'credit card') {
-                        showElement(creditCardDiv);
-                        hideElement(paypalDiv);
-                        hideElement(bitcoinDiv);
-                    } else if (paymentSelect.value === 'paypal') {
-                        hideElement(creditCardDiv);
-                        showElement(paypalDiv);
-                        hideElement(bitcoinDiv);
-                    } else if (paymentSelect.value === 'bitcoin') {
-                        hideElement(creditCardDiv);
-                        hideElement(paypalDiv);
-                        showElement(bitcoinDiv);
-                    }
-                };
-                
-                selectCreditCardOption();
-                hidePaypalDiv();
-                hideBitcoinDiv();
-                paymentSelect.addEventListener('change', handlePaymentChange);
-            };
-            
-            // Call Above Functions
-            buildCreditCardErrorMessages();
-            initializePaymentSelect();
-            
-        };
-        
-        // Call Above Functions
-        initializeBasicInfo();
-        initializeTshirtInfo();
-        initializeActivityRegistration();
-        initializePaymentInfo();
-        const button = select('button');
-        buildErrorMessage(button, 'Please fix errors above before submission', 'generalError');
-
-    };
-    
-    // C) Function to Validate Form in Real Time and on Submission
-    const initializeValidation = () => {
-    
-        // Local Variables
-        const nameInput = select('#name');
-        const emailInput = select('#mail');
-        const activitiesInputs = document.querySelectorAll('.activities input');
-        const creditCardDiv = select('#credit-card');
-        const paymentSelect = select('#payment');
-
-
-        // Local Error Tracker Booleans
-        let nameError = false;
-        let emailError = false;
-        let activityError = false;
-        let paymentError = false;
-        
-        
-        // Validation Functions (Used for Both Real Time and Submission Validation)
-        const validateName = () => {
-            const nameErrorMessage = select('#nameError');
-            const regex = /^\s+$/;
-            // Error if Name Input Is Blank or Only Space Characters
-            if (nameInput.value === '' || regex.test(nameInput.value)) {
-                nameError = true;
-                nameErrorMessage.style.display = '';
-                nameInput.style.border = '2px solid firebrick';
-            } else {
-                nameError = false;
-                nameErrorMessage.style.display = 'none';
-                nameInput.style.border = '';
-            }
-        };
-        const validateEmail = () => {
-            const emailEmptyErrorMessage = select('#emailEmptyError');
-            const emailInvalidErrorMessage = select('#emailInvalidError');
-            const regex1 = /^\s+$/;
-            const regex2 = /^[^@]+@[a-z0-9\-]+\.[a-z]{2,}$/i;
-            // Hold Error if just "Tabbing" from Previous Input Field
-            if (event.which !== 9) {
-                // Error if Email Input Is Blank or Only Space Characters
-                if (emailInput.value === '' || regex1.test(emailInput.value)) {
-                    emailError = true;
-                    emailEmptyErrorMessage.style.display = '';
-                    emailInvalidErrorMessage.style.display = 'none';
-                    emailInput.style.border = '2px solid firebrick';
-                } else {
-                    // Error if Email Format is Invalid
-                    if (!regex2.test(emailInput.value)) {
-                        emailError = true;
-                        emailEmptyErrorMessage.style.display = 'none'
-                        emailInvalidErrorMessage.style.display = '';
-                        emailInput.style.border = '2px solid firebrick';
-                    } else {
-                        emailError = false;
-                        emailEmptyErrorMessage.style.display = 'none'
-                        emailInvalidErrorMessage.style.display = 'none';
-                        emailInput.style.border = ''
-                    }
-                }
-            }
-        };
-        const validateActivities = () => {
-            const activityErrorMessage = select('#activityError');
-            let activitiesRegistered = 0;
-            activitiesInputs.forEach(input => {
-                if (input.checked) {
-                    activitiesRegistered++;
-                }
-            });
-            if (activitiesRegistered === 0) {
-                activityError = true;
-                activityErrorMessage.style.display = '';
-            } else {
-                activityError = false;
-                activityErrorMessage.style.display = 'none';
-            }
-        };
-        const validatePayment = () => {
-            const cardNumberInput = select('#cc-num');
-            const zipCodeInput = select('#zip');
-            const cvvInput= select('#cvv');
-            const cardNumberErrorMessage = select('#cardNumberError');
-            const zipCodeErrorMessage = select('#zipCodeError');
-            const cvvErrorMessage = select('#cvvError');
-            const cardNumberRegex = /^\d{13,16}$/;
-            let cardNumberError = false;
-            const zipCodeRegex = /^\d{5}$/;
-            let zipCodeError = false;
-            const cvvRegex = /^\d{3}$/;
-            let cvvError = false;
-
-            if (paymentSelect.value === 'credit card') {
-                if (!cardNumberRegex.test(cardNumberInput.value)) {
-                    cardNumberError = true;
-                    cardNumberErrorMessage.style.display = '';
-                } else {
-                    cardNumberError = false;
-                    cardNumberErrorMessage.style.display = 'none';
-                }
-                if (!zipCodeRegex.test(zipCodeInput.value)) {
-                    zipCodeError = true;
-                    zipCodeErrorMessage.style.display = '';
-                } else {
-                    zipCodeError = false;
-                    zipCodeErrorMessage.style.display = 'none';
-                }
-                if (!cvvRegex.test(cvvInput.value)) {
-                    cvvError = true;
-                    cvvErrorMessage.style.display = '';
-                } else {
-                    cvvError = false;
-                    cvvErrorMessage.style.display = 'none';
-                }
-                if (cardNumberError || zipCodeError || cvvError) {
-                    paymentError = true;
-                } else {
-                    paymentError = false;
-                }
-            } else {
-                cardNumberError = false;
-                zipCodeError = false;
-                cvvError = false;
-                paymentError = false;
-            }
-        };
-                
-        // 1) Validate in Real Time
-        const validateInRealTime = () => {
-            // Validate Name Input in Real Time
-            nameInput.addEventListener('keyup', validateName);
-            // Validate Email Input
-            emailInput.addEventListener('keyup', validateEmail);
-            // Validate Activities Registration
-            activitiesInputs.forEach(input => input.addEventListener('change', validateActivities));
-            
-        };
-        
-        // 2) Validate on Submission
-        const validateOnSubmit = () => {
-            const form = select('form');
-            const button = select('button');
-            const generalErrorMessage = select('#generalError');
-            // Handle a Form Submission with Error Messages or Page Refresh
-            const handleFormSubmit = (event) => {
-                // Validate Name Input
-                validateName();
-                // Validate Email Input
-                validateEmail();
-                // Validate Activity Registration
-                validateActivities();
-                // validate credit card info
-                validatePayment();
-                // stop form from submitting and display general error if any errors
-                if (nameError || emailError || activityError || paymentError) {
-                    event.preventDefault();
-                    showElement(generalErrorMessage);
-                } else {
-                    event.preventDefault();
-                    location.reload();
-                }
-            };
-            form.addEventListener('submit', handleFormSubmit);
-        };
-        
-        // Call Above Functions
-        validateInRealTime();
-        validateOnSubmit();
-    };
-    
-    // Call Above Functions
-    initializePageContent();
-    initializeValidation();
+// Function to Show an Element
+showElement: element => element.style.display = '',
 };
-    
+
+// B) Page Element Selection
+// Header
+const form = app.select('form');
+// Basic Info Section
+const nameInput = app.select('#name');
+const emailInput = app.select('#mail');
+const titleSelect = app.select('#title');
+const otherTitleInput = app.select('#other-title');
+// Tshirt Info Section
+const designSelect = app.select('#design');
+const colorSelect = app.select('#color');
+// Activity Registration Section
+const activityFieldset = app.select('.activities');
+const activityInputs = activityFieldset.querySelectorAll('input');
+const mainConferenceLabel = app.select('.activities label');
+// Payment Info Section
+const paymentSelect = app.select('#payment');
+const creditCardDiv = app.select('#credit-card');
+const cardNumberInput = app.select('#cc-num');
+const zipCodeInput = app.select('#zip');
+const cvvInput = app.select('#cvv');
+const paypalDiv = app.select('#paypal');
+const bitcoinDiv = app.select('#bitcoin');
+// Footer
+const submitButton = app.select('button');
+
+// C) Initialize Page Content
+const initializePage = () => {
+
+// 1) Initialize Basic Info Section
+const initializeBasicInfo = () => {
+
+// Build Basic Info Section's Error Messages
+const buildBasicInfoErrorMessages = () => {
+app.buildErrorMessage(nameInput, 'Name field cannot be left blank', 'nameError');
+app.buildErrorMessage(emailInput, 'Email field cannot be left blank', 'emailEmptyError');
+app.buildErrorMessage(emailInput, 'Email field must contain a valid email address', 'emailInvalidError');
+};
+
+// Set Focus to #name Input
+const initializeFocus = () => nameInput.focus();
+
+// Initialize #title Select Element Functionality
+const initializeTitleSelect = () => {
+
+const handleTitleSelectChange = () => {
+if (titleSelect.value === 'other') {
+app.showElement(otherTitleInput);
+} else {
+app.hideElement(otherTitleInput);
+}
+};
+
+app.hideElement(otherTitleInput);
+titleSelect.addEventListener('change', handleTitleSelectChange);
+};
+
+// Call Above Functions
+buildBasicInfoErrorMessages();
+initializeFocus();
+initializeTitleSelect();
+};
+
+// 2) Tshirt Info
+const initializeTshirtInfo = () => {
+
+// Initialize Tshirt Theme/Color Select Elements Functionality
+const initializeTshirtSelects = () => {
+
+const handleDesignSelectChange = () => {
+const colorOptions = colorSelect.children;
+const punOptions = [colorOptions[0], colorOptions[1], colorOptions[2]];
+const heartOptions = [colorOptions[3], colorOptions[4], colorOptions[5]];
+if (designSelect.value === 'js puns') {
+app.showElement(colorSelect);
+punOptions.forEach(option => app.showElement(option));
+heartOptions.forEach(option => app.hideElement(option));
+colorSelect.selectedIndex = 0;
+} else if (designSelect.value === 'heart js') {
+app.showElement(colorSelect);
+punOptions.forEach(option => app.hideElement(option));
+heartOptions.forEach(option => app.showElement(option));
+colorSelect.selectedIndex = 3;
+} else {
+app.hideElement(colorSelect);
+}
+};
+
+app.hideElement(colorSelect);
+designSelect.addEventListener('change', handleDesignSelectChange);
+};
+
+// Call Above Function
+initializeTshirtSelects();
+};
+
+// 3) Activity Registration
+const initializeActivityRegistration = () => {
+
+// Build Activity Registration Error Message
+const buildActivityErrorMessage = () => app.buildErrorMessage(mainConferenceLabel,'You must register for at least one activity', 'activityError').style.margin = '0px 0px 16px';
+
+// Build Total Cost Message for Registered Activities
+const buildActivityCostMessage = () => {
+const totalCostLabel = document.createElement('label');
+totalCostLabel.id = 'totalCost';
+totalCostLabel.style.fontWeight = 'bold';
+totalCostLabel.marginTop = '1.5em';
+app.hideElement(totalCostLabel);
+activityFieldset.appendChild(totalCostLabel);
+};
+
+// Initialize Activity Registration Total Cost and Conflicts Functionality
+const initializeActivityCostAndConflict = () => {
+
+// Helper Functions
+const disableInput = index => {
+activityInputs[index].disabled = true;
+activityInputs[index].parentElement.style.color = 'grey';
+};
+const enableInput = (index) => {
+activityInputs[index].disabled = false;
+activityInputs[index].parentElement.style.color = '';
+};
+
+// Local Variables
+const totalCostLabel = app.select('#totalCost');
+let totalCost = 0;
+
+// Handler Function
+const handleActivityInputChange = event => {
+const input = event.target;
+if (input.checked) {
+// Handle Time Conflicts
+if (input.name === 'js-frameworks') {
+disableInput(3);
+} else if (input.name === 'express') {
+disableInput(1);
+} else if (input.name === 'js-libs') {
+disableInput(4);
+} else if (input.name === 'node') {
+disableInput(2);
+}
+// Handle Total Cost Update
+totalCost += Number(input.dataset.cost);
+app.showElement(totalCostLabel);
+totalCostLabel.textContent = `Total Cost: $${totalCost}`;
+} else {
+// Handle Time Conflicts
+if (input.name === 'js-frameworks') {
+enableInput(3);
+} else if (input.name === 'express') {
+enableInput(1);
+} else if (input.name === 'js-libs') {
+enableInput(4);
+} else if (input.name === 'node') {
+enableInput(2);
+}
+// Handle Total Cost Update
+totalCost -= Number(input.dataset.cost);
+if (totalCost === 0) {
+app.hideElement(totalCostLabel);
+}
+totalCostLabel.textContent = `Total Cost: $${totalCost}`;
+}
+};
+
+// Event Listener
+activityFieldset.addEventListener('change', handleActivityInputChange);
+};
+
+// Call Above Functions
+buildActivityErrorMessage();
+buildActivityCostMessage();
+initializeActivityCostAndConflict();
+};
+
+// 4) Payment Info
+const initializePaymentInfo = () => {
+
+// Build Credit Card Error Messages
+const buildCreditCardErrorMessages = () => {
+
+// Build Card Number Error Message
+const buildCardNumberErrorMessage = () => app.buildErrorMessage(cardNumberInput, 'Card number must be 13-16 digits only', 'cardNumberError');
+
+// Build Zip Code Error Message
+const buildZipCodeErrorMessage = () => app.buildErrorMessage(zipCodeInput, '5 digits only', 'zipCodeError');
+
+// Build CVV Error Message
+const buildCvvErrorMessage = () => app.buildErrorMessage(cvvInput, '3 digits only', 'cvvError');
+
+// Call Above Functions
+buildCardNumberErrorMessage();
+buildZipCodeErrorMessage();
+buildCvvErrorMessage();
+};
+
+const initializePaymentSelect = () => {
+
+// Select Credit Card Option
+const removeDefaultOption = () => paymentSelect.firstElementChild.remove();
+
+// Hide Paypal Div Element
+const hidePaypalDiv = () => app.hideElement(paypalDiv);
+
+// Hide Bitcoin Div Element
+const hideBitcoinDiv = () => app.hideElement(bitcoinDiv);
+
+// Handle Payment Select Element Change
+const handlePaymentChange = () => {
+if (paymentSelect.value === 'credit card') {
+app.showElement(creditCardDiv);
+app.hideElement(paypalDiv);
+app.hideElement(bitcoinDiv);
+} else if (paymentSelect.value === 'paypal') {
+app.hideElement(creditCardDiv);
+app.showElement(paypalDiv);
+app.hideElement(bitcoinDiv);
+} else if (paymentSelect.value === 'bitcoin') {
+app.hideElement(creditCardDiv);
+app.hideElement(paypalDiv);
+app.showElement(bitcoinDiv);
+}
+};
+
+removeDefaultOption();
+hidePaypalDiv();
+hideBitcoinDiv();
+paymentSelect.addEventListener('change', handlePaymentChange);
+};
+
+// Call Above Functions
+buildCreditCardErrorMessages();
+initializePaymentSelect();
+};
+
+const initializeSubmissionFooter = () => app.buildErrorMessage(submitButton, 'Please fix errors above before submission', 'generalError');
+
+// Call Above Functions
+initializeBasicInfo();
+initializeTshirtInfo();
+initializeActivityRegistration();
+initializePaymentInfo();
+initializeSubmissionFooter();
+};
+
+const initializeValidation = () => {
+
+// Local Error Message Selection
+const nameErrorMessage = app.select('#nameError');
+const emailEmptyErrorMessage = app.select('#emailEmptyError');
+const emailInvalidErrorMessage = app.select('#emailInvalidError');
+const activityErrorMessage = app.select('#activityError');
+const cardNumberErrorMessage = app.select('#cardNumberError');
+const zipCodeErrorMessage = app.select('#zipCodeError');
+const cvvErrorMessage = app.select('#cvvError');
+const generalErrorMessage = app.select('#generalError');
+
+// Local Error Tracker Booleans
+let nameError = false;
+let emailError = false;
+let activityError = false;
+let paymentError = false;
+let cardNumberError = false;
+let zipCodeError = false;
+let cvvError = false;
+let generalError = false;
+
+// Regex
+const emptyRegex = /^\s+$/;
+const emailRegex = /^[^@]+@[a-z0-9\-]+\.[a-z]{2,}$/i;
+const cardNumberRegex = /^\d{13,16}$/;
+const zipCodeRegex = /^\d{5}$/;
+const cvvRegex = /^\d{3}$/;
+
+const validateName = () => {
+
+// Error if Name Input Is Blank or Only Space Characters
+if (nameInput.value === '' || emptyRegex.test(nameInput.value)) {
+nameError = true;
+app.showElement(nameErrorMessage);
+nameInput.style.border = '2px solid firebrick';
+} else {
+nameError = false;
+app.hideElement(nameErrorMessage);
+nameInput.style.border = '';
+}
+};
+const validateEmail = () => {
+
+// Hold Error if just "Tabbing" from Previous Input Field
+if (event.which !== 9) {
+// Error if Email Input Is Blank or Only Space Characters
+if (emailInput.value === '' || emptyRegex.test(emailInput.value)) {
+emailError = true;
+app.showElement(emailEmptyErrorMessage);
+app.hideElement(emailEmptyErrorMessage);
+emailInput.style.border = '2px solid firebrick';
+} else {
+// Error if Email Format is Invalid
+if (!emailRegex.test(emailInput.value)) {
+emailError = true;
+app.hideElement(emailEmptyErrorMessage);
+app.showElement(emailInvalidErrorMessage);
+emailInput.style.border = '2px solid firebrick';
+} else {
+emailError = false;
+app.hideElement(emailEmptyErrorMessage);
+app.hideElement(emailInvalidErrorMessage);
+emailInput.style.border = ''
+}
+}
+}
+};
+const validateActivity = () => {
+
+let activitiesRegistered = 0;
+activityInputs.forEach(input => {
+if (input.checked) {
+activitiesRegistered++;
+}
+});
+if (activitiesRegistered === 0) {
+activityError = true;
+app.showElement(activityErrorMessage);
+} else {
+activityError = false;
+app.hideElement(activityErrorMessage);
+}
+};
+
+const validatePayment = () => {
+
+if (paymentSelect.value === 'credit card') {
+if (!cardNumberRegex.test(cardNumberInput.value)) {
+cardNumberError = true;
+app.showElement(cardNumberErrorMessage);
+} else {
+cardNumberError = false;
+app.hideElement(cardNumberErrorMessage);
+}
+if (!zipCodeRegex.test(zipCodeInput.value)) {
+zipCodeError = true;
+app.showElement(zipCodeErrorMessage);
+} else {
+zipCodeError = false;
+app.hideElement(zipCodeErrorMessage);
+}
+if (!cvvRegex.test(cvvInput.value)) {
+cvvError = true;
+app.showElement(cvvErrorMessage);
+} else {
+cvvError = false;
+app.hideElement(cvvErrorMessage);
+}
+if (cardNumberError || zipCodeError || cvvError) {
+paymentError = true;
+} else {
+paymentError = false;
+}
+} else {
+cardNumberError = false;
+zipCodeError = false;
+cvvError = false;
+paymentError = false;
+app.hideElement(cardNumberErrorMessage);
+app.hideElement(zipCodeErrorMessage);
+app.hideElement(cvvErrorMessage);
+}
+};
+
+// 1) Validate in Real Time
+const validateInRealTime = () => {
+// Validate Name Input in Real Time
+nameInput.addEventListener('keyup', validateName);
+// Validate Email Input
+emailInput.addEventListener('keyup', validateEmail);
+// Validate Activities Registration
+activityInputs.forEach(input => input.addEventListener('change', validateActivity));
+};
+
+// 2) Validate on Submission
+const validateOnSubmit = () => {
+
+// Handle a Form Submission with Error Messages or Page Refresh
+const handleFormSubmit = (event) => {
+// Validate Name Input
+validateName();
+// Validate Email Input
+validateEmail();
+// Validate Activity Registration
+validateActivity();
+// validate credit card info
+validatePayment();
+
+// stop form from submitting and display general error if any errors
+if (nameError || emailError || activityError || paymentError) {
+event.preventDefault();
+app.showElement(generalErrorMessage);
+// add real time validation for duration of registration post submission-failure
+cardNumberInput.addEventListener('keyup', validatePayment);
+zipCodeInput.addEventListener('keyup', validatePayment);
+cvvInput.addEventListener('keyup', validatePayment);
+} else {
+event.preventDefault();
+location.reload();
+}
+};
+form.addEventListener('submit', handleFormSubmit);
+};
+
+// Call Above Functions
+validateInRealTime();
+validateOnSubmit();
+};
+
+// Call Above Functions
+initializePage();
+initializeValidation();
+};
+
 // II) Global Event Listener
 document.addEventListener('DOMContentLoaded', initializeRegistration);

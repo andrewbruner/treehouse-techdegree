@@ -1,237 +1,311 @@
-// global function
+// I) Global Function (Helper Functions, Initialize Page Content, Initialize Validation)
 const initializeRegistration = () => {
     
-    // local helper functions
-    const setDisplay = (element, value) => {
-        element.style.display = value;
+    // A) Helper Functions
+    
+    // Function to select element
+    const select = (selector) => {
+        return document.querySelector(selector);
     };
     
+    // Function to build and insert an error message
+    const buildErrorMessage = (target, textContent, id) => {
+        const element = document.createElement('p');
+        element.textContent = textContent;
+        element.id = id;
+        element.style.color = 'firebrick';
+        hideElement(element);
+        target.parentElement.insertBefore(element, target);
+        return element;
+    };
     
+    // Function to hide an element
+    const hideElement = (element) => {
+        element.style.display = 'none';
+    };
     
+    // Function to show an element
+    const showElement = (element) => {
+        element.style.display = '';
+    };
     
-    // BASIC INFO SECTION
-    const initializeBasicInfo = () => {    
-        const initializeFocus = () => {
-            const firstTextField = document.querySelector('input[type=text]');
-            firstTextField.focus();
-        };
-        const initializeJobRole = () => {
-            const titleSelect = document.querySelector('#title');
-            const otherTitleInput = document.querySelector('#other-title');  
-            const handleTitleChange = (event) => {
-                if (event.target.value === 'other') {
-                    setDisplay(otherTitleInput, '');
-                } else {
-                    setDisplay(otherTitleInput, 'none');
-                    otherTitleInput.value = '';
-                }
+    // B) Function to Build Initial Page Content (Basic Info, Tshirt Info, Activity Registration, Payment Info)
+    const initializePageContent = () => {
+    
+        // 1) Basic Info
+        const initializeBasicInfo = () => {
+            
+            // Set Focus to First Text Field on Page
+            const initializeFocus = () => {
+                const firstTextField = select('input[type=text]');
+                firstTextField.focus();
             };
-            setDisplay(otherTitleInput,'none');
-            titleSelect.addEventListener('change', handleTitleChange);
+            
+            // Build Basic Info Section's Error Messages (Hidden)
+            const buildBasicInfoErrorMessages = () => {
+                const nameInput = select('#name');
+                const emailInput = select('#mail');
+                buildErrorMessage(nameInput, 'Name field cannot be left blank', 'nameError');
+                buildErrorMessage(emailInput, 'Email field cannot be left blank', 'emailEmptyError');
+                buildErrorMessage(emailInput, 'Email field must contain a valid email address', 'emailInvalidError');
+            };
+            
+            // Initialize Job Role Select Element (Show/Hide "Other Title" Input))
+            const initializeTitleSelect = () => {
+                const titleSelect = select('#title');
+                const otherTitleInput = select('#other-title');
+                const handleTitleSelectChange = () => {
+                    if (titleSelect.value === 'other') {
+                        showElement(otherTitleInput);
+                    } else {
+                        hideElement(otherTitleInput);
+                    }
+                };
+                // Hide Input
+                hideElement(otherTitleInput);
+                titleSelect.addEventListener('change', handleTitleSelectChange);
+                
+            };
+            
+            // Call Above Functions
+            initializeFocus();
+            buildBasicInfoErrorMessages();
+            initializeTitleSelect();
         };
-        initializeFocus();
-        initializeJobRole();
-    };
-    
-    
-    
-    // TSHIRT INFO SECTION
-    const initializeTshirtInfo = () => {
-        const designSelect = document.querySelector('#design');
-        const colorSelect = document.querySelector('#color');
-        const handleDesignSelectChange = () => {
-            const punColorOptions = [colorSelect[0], colorSelect[1], colorSelect[2]];
-            const heartColorOptions = [colorSelect[3], colorSelect[4], colorSelect[5]];
-            // if default design option
-            if (designSelect.value === 'Select Theme') {
-                // hide color selection
-                setDisplay(colorSelect, 'none');
-            // if pun design option
-            } else if (designSelect.value === 'js puns') {
-                // show color selection
-                setDisplay(colorSelect, '');
-                // hide heart color options
-                heartColorOptions.forEach(option => setDisplay(option, 'none'));
-                // show pun color options
-                punColorOptions.forEach(option => setDisplay(option, ''));
-                // select first pun color option
-                colorSelect.selectedIndex = '0';
-            } else if (designSelect.value === 'heart js') {
-                // show color selection
-                setDisplay(colorSelect, '');
-                // hide pun color options
-                punColorOptions.forEach(option => setDisplay(option, 'none'));
-                // show heart color options
-                heartColorOptions.forEach(option => setDisplay(option, ''));
-                // select first pun color option
-                colorSelect.selectedIndex = '3';
-            }
+        
+        // 2) Tshirt Info
+        const initializeTshirtInfo = () => {
+            
+            // Initialize Tshirt Theme/Color Select Elements Functionality
+            const initializeTshirtSelects = () => {
+                const designSelect = select('#design');
+                const colorSelect = select('#color');
+                const colorOptions = colorSelect.children;
+                const punOptions = [colorOptions[0], colorOptions[1], colorOptions[2]];
+                const heartOptions = [colorOptions[3], colorOptions[4], colorOptions[5]];
+                const handleDesignSelectChange = () => {
+                    if (designSelect.value === 'js puns') {
+                        showElement(colorSelect);
+                        punOptions.forEach(option => showElement(option));
+                        heartOptions.forEach(option => hideElement(option));
+                        colorSelect.selectedIndex = 0;
+                    } else if (designSelect.value === 'heart js') {
+                        showElement(colorSelect);
+                        punOptions.forEach(option => hideElement(option));
+                        heartOptions.forEach(option => showElement(option));
+                        colorSelect.selectedIndex = 3;
+                    } else {
+                        hideElement(colorSelect);
+                    }
+                };
+                hideElement(colorSelect);
+                designSelect.addEventListener('change', handleDesignSelectChange);
+            };
+            
+            // Call Above Function
+            initializeTshirtSelects();
         };
-        setDisplay(colorSelect, 'none')
-        designSelect.addEventListener('change', handleDesignSelectChange);
-    };
-    
-    
-    
-    // ACTIVITIES REGISTRATION SECTION
-    const initializeActivityRegistration = () => {
-        const activitiesFieldset = document.querySelector('.activities');
-        const activitiesInputs = document.querySelectorAll('.activities input');
-        let totalCost = 0;
-        const handleActivitiesInputChange = (event) => {
-            const input = event.target;
-            if (input === activitiesInputs[1]) {
-                if (input.checked) {
-                    activitiesInputs[3].disabled = true;
-                    activitiesInputs[3].parentElement.style.color = 'grey';
-                } else {
-                    activitiesInputs[3].disabled = false;
-                    activitiesInputs[3].parentElement.style.color = '';
-                }
-            } else if (input === activitiesInputs[3]) {
-                if (input.checked) {
-                    activitiesInputs[1].disabled = true;
-                    activitiesInputs[1].parentElement.style.color = 'grey';
-                } else {
-                    activitiesInputs[1].disabled = false;
-                    activitiesInputs[1].parentElement.style.color = '';
-                }
-            } else if (input === activitiesInputs[2]) {
-                if (input.checked) {
-                    activitiesInputs[4].disabled = true;
-                    activitiesInputs[4].parentElement.style.color = 'grey';
-                } else {
-                    activitiesInputs[4].disabled = false;
-                    activitiesInputs[4].parentElement.style.color = '';
-                }
-            } else if (input === activitiesInputs[4]) {
-                if (input.checked) {
-                    activitiesInputs[2].disabled = true;
-                    activitiesInputs[2].parentElement.style.color = 'grey';
-                } else {
-                    activitiesInputs[2].disabled = false;
-                    activitiesInputs[2].parentElement.style.color = '';
-                }
-            }
-            if (input.checked) {
-                totalCost += Number(input.dataset.cost);
-            } else {
-                totalCost -= Number(input.dataset.cost);
-            }
-            const totalCostLabel = document.createElement('label');
-            totalCostLabel.id = 'totalCost';
-            totalCostLabel.style.fontWeight = 'bold';
-            totalCostLabel.style.marginTop = '1.5em';
-            totalCostLabel.textContent = `Total Cost: $${totalCost}`;
-            if (activitiesFieldset.lastElementChild.id === 'totalCost') {
-                activitiesFieldset.lastElementChild.remove();
-            }
-            if (totalCost !== 0) {
+        
+        // 3) Activity Registration
+        const initializeActivityRegistration = () => {
+            
+            // Build Activity Registration Error Message (Hidden)
+            const buildActivityRegistrationErrorMessage = () => {
+                const messageTarget = select('.activities').querySelector('label');
+                const errorMessage = buildErrorMessage(messageTarget,'You must register for at least one activity', 'activityError');
+                errorMessage.style.margin = '0px 0px 16px';
+            };       
+            
+            // Build Total Cost Message for Registered Activities (Hidden)
+            const buildActivityRegistrationTotalCostMessage = () => {
+                const activitiesFieldset = select('.activities');
+                const totalCostLabel = document.createElement('label');
+                totalCostLabel.id = 'totalCost';
+                totalCostLabel.style.fontWeight = 'bold';
+                totalCostLabel.marginTop = '1.5em';
+                hideElement(totalCostLabel);
                 activitiesFieldset.appendChild(totalCostLabel);
-            }
+            };
+            
+            // Initialize Activity Registration Total Cost and Conflicts Functionality
+            const initializeActivityRegistrationCostAndConflict = () => {
+                
+                // Local Variables
+                const activityFieldset = select('.activities');
+                const activityInputs = activityFieldset.querySelectorAll('input');
+                const totalCostLabel = select('#totalCost');
+                let totalCost = 0;
+                
+                // Helper Functions
+                const disableInput = (index) => {
+                    activityInputs[index].disabled = true;
+                    activityInputs[index].parentElement.style.color = 'grey';
+                };
+                const enableInput = (index) => {
+                    activityInputs[index].disabled = false;
+                    activityInputs[index].parentElement.style.color = '';
+                };
+                
+                // Handler Function
+                const handleActivityInputChange = (event) => {
+                    const input = event.target;
+                    if (input.checked) {
+                        // Handle Time Conflicts
+                        if (input.name === 'js-frameworks') {
+                            disableInput(3);
+                        } else if (input.name === 'express') {
+                            disableInput(1);
+                        } else if (input.name === 'js-libs') {
+                            disableInput(4);
+                        } else if (input.name === 'node') {
+                            disableInput(2);
+                        }
+                        // Handle Total Cost Update
+                        totalCost += Number(input.dataset.cost);
+                        showElement(totalCostLabel);
+                        totalCostLabel.textContent = `Total Cost: $${totalCost}`;
+                    } else {
+                        // Handle Time Conflicts
+                        if (input.name === 'js-frameworks') {
+                            enableInput(3);
+                        } else if (input.name === 'express') {
+                            enableInput(1);
+                        } else if (input.name === 'js-libs') {
+                            enableInput(4);
+                        } else if (input.name === 'node') {
+                            enableInput(2);
+                        }
+                        // Handle Total Cost Update
+                        totalCost -= Number(input.dataset.cost);
+                        if (totalCost === 0) {
+                            hideElement(totalCostLabel);
+                        }
+                        totalCostLabel.textContent = `Total Cost: $${totalCost}`;
+                    }
+                };
+                
+                // Event Listener
+                activityFieldset.addEventListener('change', handleActivityInputChange);
+                
+            };
+
+            // Call Above Functions
+            buildActivityRegistrationErrorMessage();
+            buildActivityRegistrationTotalCostMessage();
+            initializeActivityRegistrationCostAndConflict();
         };
-        activitiesFieldset.addEventListener('change', handleActivitiesInputChange);
+        
+        // 4) Payment Info
+        const initializePaymentInfo = () => {
+            
+            // Build Credit Card Error Messages
+            const buildCreditCardErrorMessages = () => {
+                
+                // Build Card Number Error Message
+                const buildCardNumberErrorMessage = () => {
+                    const cardNumberInput = select('#cc-num');
+                    buildErrorMessage(cardNumberInput, 'Card number must be 13-16 digits only', 'cardNumberError');
+                };
+                
+                // Build Zip Code Error Message
+                const buildZipCodeErrorMessage = () => {
+                    const zipCodeInput = select('#zip');
+                    buildErrorMessage(zipCodeInput, '5 digits only', 'zipCodeError');
+                };
+                
+                // Build CVV Error Message
+                const buildCvvErrorMessage = () => {
+                    const cvvInput = select('#cvv');
+                    buildErrorMessage(cvvInput, '3 digits only', 'cvvError');
+                };
+                
+                // Call Above Functions
+                buildCardNumberErrorMessage();
+                buildZipCodeErrorMessage();
+                buildCvvErrorMessage();
+            };
+            
+            const initializePaymentSelect = () => {
+                const paymentSelect = select('#payment');
+                const creditCardDiv = select('#credit-card');
+                const paypalDiv = select('#paypal');
+                const bitcoinDiv = select('#bitcoin');
+                // Select Credit Card Option
+                const selectCreditCardOption = () => {
+                    paymentSelect.firstElementChild.remove();
+                };
+
+                // Hide Paypal Div Element
+                const hidePaypalDiv = () => {
+                    hideElement(paypalDiv);
+                };
+
+                // Hide Bitcoin Div Element
+                const hideBitcoinDiv = () => {
+                    hideElement(bitcoinDiv);
+                };
+                
+                const handlePaymentChange = () => {
+                    if (paymentSelect.value === 'credit card') {
+                        showElement(creditCardDiv);
+                        hideElement(paypalDiv);
+                        hideElement(bitcoinDiv);
+                    } else if (paymentSelect.value === 'paypal') {
+                        hideElement(creditCardDiv);
+                        showElement(paypalDiv);
+                        hideElement(bitcoinDiv);
+                    } else if (paymentSelect.value === 'bitcoin') {
+                        hideElement(creditCardDiv);
+                        hideElement(paypalDiv);
+                        showElement(bitcoinDiv);
+                    }
+                };
+                
+                selectCreditCardOption();
+                hidePaypalDiv();
+                hideBitcoinDiv();
+                paymentSelect.addEventListener('change', handlePaymentChange);
+            };
+            
+            // Call Above Functions
+            buildCreditCardErrorMessages();
+            initializePaymentSelect();
+            
+        };
+        
+        // Call Above Functions
+        initializeBasicInfo();
+        initializeTshirtInfo();
+        initializeActivityRegistration();
+        initializePaymentInfo();
+        const button = select('button');
+        buildErrorMessage(button, 'Please fix errors above before submission', 'generalError');
+
     };
     
+    // C) Function to Validate Form in Real Time and on Submission
+    const initializeValidation = () => {
     
-    
-    // PAYMENT INFO SECTION
-    const initializePaymentInfo = () => {
-        const paymentSelect = document.querySelector('#payment');
-        const creditCardDiv = document.querySelector('#credit-card');
-        const paypalDiv = document.querySelector('#paypal');
-        const bitcoinDiv = document.querySelector('#bitcoin');
-        
-        paymentSelect.firstElementChild.remove();
-        paypalDiv.style.display = 'none';
-        bitcoinDiv.style.display = 'none';
-        
-        const handlePaymentSelectChange = () => {
-            if (paymentSelect.value === 'credit card') {
-                creditCardDiv.style.display = '';
-                paypalDiv.style.display = 'none';
-                bitcoinDiv.style.display = 'none';
-            } else if (paymentSelect.value === 'paypal') {
-                creditCardDiv.style.display = 'none';
-                paypalDiv.style.display = '';
-                bitcoinDiv.style.display = 'none';
-            } else if (paymentSelect.value === 'bitcoin') {
-                creditCardDiv.style.display = 'none';
-                paypalDiv.style.display = 'none';
-                bitcoinDiv.style.display = '';
-            }
-        }
-        
-        paymentSelect.addEventListener('change', handlePaymentSelectChange);
-    };
-    
-    
-    
-    // VALIDATION SECTION
-    const initializeFormValidation = () => {
-        const nameInput = document.querySelector('#name');
-        const nameErrorMessage = document.createElement('p');
-        nameErrorMessage.textContent = 'Name field cannot be left blank';
-        nameErrorMessage.style.color = 'firebrick';
-        nameInput.parentElement.insertBefore(nameErrorMessage, nameInput)
-        nameErrorMessage.style.display = 'none';
-        
-        const emailInput = document.querySelector('#mail');
-        const emailEmptyErrorMessage = document.createElement('p');  
-        emailEmptyErrorMessage.textContent = 'Email field cannot be left blank';
-        emailEmptyErrorMessage.style.color = 'firebrick';
-        emailInput.parentElement.insertBefore(emailEmptyErrorMessage, emailInput)
-        emailEmptyErrorMessage.style.display = 'none';
-        const emailInvalidErrorMessage = document.createElement('p');  
-        emailInvalidErrorMessage.textContent = 'Email field must contain a valid email address';
-        emailInvalidErrorMessage.style.color = 'firebrick';
-        emailInput.parentElement.insertBefore(emailInvalidErrorMessage, emailInput)
-        emailInvalidErrorMessage.style.display = 'none';
-        
-        const activitiesFieldset = document.querySelector('.activities');
-        const activitiesErrorMessage = document.createElement('p');
-        activitiesErrorMessage.textContent = 'You must register for at least one activity';
-        activitiesErrorMessage.style.color = 'firebrick';
-        activitiesErrorMessage.style.margin = '0px 0px 16px 0px';
-        activitiesFieldset.insertBefore(activitiesErrorMessage, activitiesFieldset.children[1])
-        activitiesErrorMessage.style.display = 'none';
-        
-        const paymentSelect = document.querySelector('.payment');
-        const cardNumberInput = document.querySelector('#cc-num');
-        const zipCodeInput = document.querySelector('#zip');
-        const cvvInput = document.querySelector('#cvv');
-        const cardNumberErrorMessage = document.createElement('p');
-        cardNumberErrorMessage.textContent = 'Card number must be 13-16 digits only';
-        cardNumberErrorMessage.style.color = 'firebrick';
-        cardNumberInput.parentElement.insertBefore(cardNumberErrorMessage, cardNumberInput)
-        cardNumberErrorMessage.style.display = 'none';
-        const zipCodeErrorMessage = document.createElement('p');
-        zipCodeErrorMessage.textContent = '5 digits only';
-        zipCodeErrorMessage.style.color = 'firebrick';
-        zipCodeInput.parentElement.insertBefore(zipCodeErrorMessage, zipCodeInput)
-        zipCodeErrorMessage.style.display = 'none';
-        const cvvErrorMessage = document.createElement('p');
-        cvvErrorMessage.textContent = '3 digits only';
-        cvvErrorMessage.style.color = 'firebrick';
-        cvvInput.parentElement.insertBefore(cvvErrorMessage, cvvInput)
-        cvvErrorMessage.style.display = 'none';
-        
-        const submitButton = document.querySelector('button');
-        const generalErrorMessage = document.createElement('p');
-        generalErrorMessage.textContent = 'Please fix errors above before submitting form';
-        generalErrorMessage.style.color = 'firebrick';
-        generalErrorMessage.style.margin = '16px 0px 0px 0px';
-        submitButton.parentElement.insertBefore(generalErrorMessage, submitButton)
-        generalErrorMessage.style.display = 'none';
-        
+        // Local Variables
+        const nameInput = select('#name');
+        const emailInput = select('#mail');
+        const activitiesInputs = document.querySelectorAll('.activities input');
+        const creditCardDiv = select('#credit-card');
+        const paymentSelect = select('#payment');
+
+
+        // Local Error Tracker Booleans
         let nameError = false;
         let emailError = false;
-        let activitiesError = false;
-        let creditCardError = false;
-
-        //validateName
+        let activityError = false;
+        let paymentError = false;
+        
+        
+        // Validation Functions (Used for Both Real Time and Submission Validation)
         const validateName = () => {
+            const nameErrorMessage = select('#nameError');
             const regex = /^\s+$/;
+            // Error if Name Input Is Blank or Only Space Characters
             if (nameInput.value === '' || regex.test(nameInput.value)) {
                 nameError = true;
                 nameErrorMessage.style.display = '';
@@ -242,20 +316,21 @@ const initializeRegistration = () => {
                 nameInput.style.border = '';
             }
         };
-        nameInput.addEventListener('keyup', validateName);
-        nameInput.addEventListener('blur', validateName);
-
-        //validateEmail
-        const validateEmail = (event) => {
+        const validateEmail = () => {
+            const emailEmptyErrorMessage = select('#emailEmptyError');
+            const emailInvalidErrorMessage = select('#emailInvalidError');
             const regex1 = /^\s+$/;
             const regex2 = /^[^@]+@[a-z0-9\-]+\.[a-z]{2,}$/i;
+            // Hold Error if just "Tabbing" from Previous Input Field
             if (event.which !== 9) {
+                // Error if Email Input Is Blank or Only Space Characters
                 if (emailInput.value === '' || regex1.test(emailInput.value)) {
                     emailError = true;
                     emailEmptyErrorMessage.style.display = '';
                     emailInvalidErrorMessage.style.display = 'none';
                     emailInput.style.border = '2px solid firebrick';
                 } else {
+                    // Error if Email Format is Invalid
                     if (!regex2.test(emailInput.value)) {
                         emailError = true;
                         emailEmptyErrorMessage.style.display = 'none'
@@ -270,12 +345,8 @@ const initializeRegistration = () => {
                 }
             }
         };
-        emailInput.addEventListener('keyup', validateEmail);
-        emailInput.addEventListener('blur', validateEmail);
-        
-         //validateActivities
         const validateActivities = () => {
-            const activitiesInputs = document.querySelectorAll('.activities input');
+            const activityErrorMessage = select('#activityError');
             let activitiesRegistered = 0;
             activitiesInputs.forEach(input => {
                 if (input.checked) {
@@ -283,26 +354,27 @@ const initializeRegistration = () => {
                 }
             });
             if (activitiesRegistered === 0) {
-                activitiesError = true;
-                activitiesErrorMessage.style.display = '';
+                activityError = true;
+                activityErrorMessage.style.display = '';
             } else {
-                activitiesError = false;
-                activitiesErrorMessage.style.display = 'none';
+                activityError = false;
+                activityErrorMessage.style.display = 'none';
             }
         };
-        
-        //validateCreditCard
-        const validateCreditCard = () => {
-            
-            const paymentSelect = document.querySelector('#payment');
-            
+        const validatePayment = () => {
+            const cardNumberInput = select('#cc-num');
+            const zipCodeInput = select('#zip');
+            const cvvInput= select('#cvv');
+            const cardNumberErrorMessage = select('#cardNumberError');
+            const zipCodeErrorMessage = select('#zipCodeError');
+            const cvvErrorMessage = select('#cvvError');
             const cardNumberRegex = /^\d{13,16}$/;
             let cardNumberError = false;
             const zipCodeRegex = /^\d{5}$/;
             let zipCodeError = false;
             const cvvRegex = /^\d{3}$/;
             let cvvError = false;
-            
+
             if (paymentSelect.value === 'credit card') {
                 if (!cardNumberRegex.test(cardNumberInput.value)) {
                     cardNumberError = true;
@@ -326,45 +398,65 @@ const initializeRegistration = () => {
                     cvvErrorMessage.style.display = 'none';
                 }
                 if (cardNumberError || zipCodeError || cvvError) {
-                    creditCardError = true;
+                    paymentError = true;
                 } else {
-                    creditCardError = false;
+                    paymentError = false;
                 }
+            } else {
+                cardNumberError = false;
+                zipCodeError = false;
+                cvvError = false;
+                paymentError = false;
             }
         };
-        
-        //handleFormSubmit
-        const handleFormSubmit = (event) => {
-
-            //validateForm
-            const validateForm = (event) => {
-
-                if (nameError || emailError || activitiesError || creditCardError) {
-                    event.preventDefault();
-                    generalErrorMessage.style.display = '';
-                }
-                validateName();
-                validateEmail(event);
-                validateActivities();
-                validateCreditCard();
-            };
+                
+        // 1) Validate in Real Time
+        const validateInRealTime = () => {
+            // Validate Name Input in Real Time
+            nameInput.addEventListener('keyup', validateName);
+            // Validate Email Input
+            emailInput.addEventListener('keyup', validateEmail);
+            // Validate Activities Registration
+            activitiesInputs.forEach(input => input.addEventListener('change', validateActivities));
             
-            validateForm(event);
         };
-    
-        document.querySelector('form').addEventListener('submit', handleFormSubmit);
+        
+        // 2) Validate on Submission
+        const validateOnSubmit = () => {
+            const form = select('form');
+            const button = select('button');
+            const generalErrorMessage = select('#generalError');
+            // Handle a Form Submission with Error Messages or Page Refresh
+            const handleFormSubmit = (event) => {
+                // Validate Name Input
+                validateName();
+                // Validate Email Input
+                validateEmail();
+                // Validate Activity Registration
+                validateActivities();
+                // validate credit card info
+                validatePayment();
+                // stop form from submitting and display general error if any errors
+                if (nameError || emailError || activityError || paymentError) {
+                    event.preventDefault();
+                    showElement(generalErrorMessage);
+                } else {
+                    event.preventDefault();
+                    location.reload();
+                }
+            };
+            form.addEventListener('submit', handleFormSubmit);
+        };
+        
+        // Call Above Functions
+        validateInRealTime();
+        validateOnSubmit();
     };
     
-    
-    
-    
-    // initialization
-    initializeBasicInfo();
-    initializeTshirtInfo();
-    initializeActivityRegistration();
-    initializePaymentInfo();
-    initializeFormValidation();
+    // Call Above Functions
+    initializePageContent();
+    initializeValidation();
 };
-
-// global event listener
+    
+// II) Global Event Listener
 document.addEventListener('DOMContentLoaded', initializeRegistration);

@@ -6,17 +6,32 @@ class Game {
 	constructor() {
 		this.missed = 0;
 		this.phrases = [
-			{phrase: 'may the force be with you'},
-			{phrase: 'i have a bad feeling about this'},
-			{phrase: 'a long time ago in a galaxy far far away'},
-			{phrase: 'into the garbage chute flyboy'},
-			{phrase: 'size matters not'}
+			new Phrase('may the force be with you'),
+			new Phrase('i have a bad feeling about this'),
+			new Phrase('a long time ago in a galaxy far far away'),
+			new Phrase('into the garbage chute flyboy'),
+			new Phrase('size matters not')
 		];
 		this.activePhrase = null;
 	}
 	
-	startGame() {}
-	getRandomPhrase() {}
+	startGame() {
+		// hide start screen overlay
+		const overlayDiv = document.querySelector('#overlay');
+		overlayDiv.style.display = 'none';
+		// get random phrase object and assign to game.activePhrase
+		const randomPhrase = this.getRandomPhrase();
+		this.activePhrase = randomPhrase;
+		// add activePhrase object to board display
+		this.activePhrase.addPhraseToDisplay();
+	}
+	
+	getRandomPhrase() {
+		// get random phrase object from game.phrases and return it
+		const phrase = this.phrases[Math.floor(Math.random() * this.phrases.length)];
+		return phrase;
+	}
+	
 	handleInteraction() {}
 	removeLife() {}
 	checkForWin() {}

@@ -394,25 +394,31 @@ const initializeRegistration = () => {
 				if (!cardNumberRegex.test(cardNumberInput.value)) {
 					cardNumberError = true;
 					app.showElement(cardNumberErrorMessage);
+					cardNumberInput.style.border = '2px solid firebrick';
 				} else {
 					cardNumberError = false;
 					app.hideElement(cardNumberErrorMessage);
+					cardNumberInput.style.border = '';
 				}
 				// Error on Invalid Zip Code
 				if (!zipCodeRegex.test(zipCodeInput.value)) {
 					zipCodeError = true;
 					app.showElement(zipCodeErrorMessage);
+					zipCodeInput.style.border = '2px solid firebrick';
 				} else {
 					zipCodeError = false;
 					app.hideElement(zipCodeErrorMessage);
+					zipCodeInput.style.border = '';
 				}
 				// Error on Invalid CVV
 				if (!cvvRegex.test(cvvInput.value)) {
 					cvvError = true;
 					app.showElement(cvvErrorMessage);
+					cvvInput.style.border = '2px solid firebrick';
 				} else {
 					cvvError = false;
 					app.hideElement(cvvErrorMessage);
+					cvvInput.style.border = '';
 				}
 				// General Payment Error on Any Above Sub-Payment Error
 				if (cardNumberError || zipCodeError || cvvError) {

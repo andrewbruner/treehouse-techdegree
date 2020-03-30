@@ -32,8 +32,44 @@ class Game {
 		return phrase;
 	}
 	
-	handleInteraction() {}
-	removeLife() {}
-	checkForWin() {}
-	gameOver() {}
+	handleInteraction(event) {
+		const button = event.target;
+		// only if event.target is a button...
+		if (button.tagName === button) {
+			const array = Array.from(this.activePhrase.phrase);
+			// if button's letter is in the activePhrase...
+			if (array.includes(button.textContent)) {
+				// disable selected letter button
+				button.disabled = true;
+				// add .chosen class to button
+				button.classList.add('chosen');
+				// call showMatchedLetter()
+				this.activePhrase.showMatchedLetter();
+				// call checkForWin()
+				this.checkForWin();
+				// if the game is won
+					// call gameOver()
+			}
+			// if button's letter is NOT in the phrase
+				// add .wrong class to button
+				// call removeLife()
+		}
+		
+	}
+	
+	removeLife() {
+		// replace one liveHeart.png with lostHeart.png
+		// increment this.missed by 1
+		// if missed is at least 5...
+			// call gameOver()
+	}
+	
+	checkForWin() {
+		// check to see if player has revealed all letters in this.activePhrase
+	}
+	
+	gameOver() {
+		// display original start screen overlay
+		// update h1 to win or loss message and .start class to win or lose
+	}
 }

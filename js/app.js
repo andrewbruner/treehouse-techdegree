@@ -50,7 +50,7 @@ const handleStartButtonClick = () => {
 
 // event handler
 const handleQwertyButtonClick = event => {
-	if (event.target.className.includes('key')) {
+	if (event.target.tagName === 'BUTTON') {
 		game.handleInteraction(event.target);
 	}
 };

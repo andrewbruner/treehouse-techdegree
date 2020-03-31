@@ -1,3 +1,5 @@
+Original Template
+-----------------
 <div id="phrase" class="section">
     <ul>
         <li class="hide letter h">h</li>
@@ -11,5 +13,29 @@
         <li class="hide letter y">y</li>
         <li class="hide letter o">o</li>
         <li class="hide letter u">u</li>
+    </ul>
+</div>
+
+Custom Template (to keep each word on single line)
+--------------------------------------------------
+<div id="phrase" class="section">
+	<ul>
+		<ul>
+			<li class="hide letter h">h</li>
+			<li class="hide letter o">o</li>
+			<li class="hide letter w">w</li>
+		</ul>
+		<li class="space"> </li>
+		<ul>
+			<li class="hide letter a">a</li>
+			<li class="hide letter r">r</li>
+			<li class="hide letter e">e</li>
+		</ul>
+		<li class="space"> </li>
+		<ul>
+			<li class="hide letter y">y</li>
+			<li class="hide letter o">o</li>
+			<li class="hide letter u">u</li>
+		</ul>
     </ul>
 </div>

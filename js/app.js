@@ -2,64 +2,100 @@
  * Project 4 - OOP Game App
  * app.js */
 
-const startButton = document.querySelector('#btn__reset');
-const qwertyDiv = document.querySelector('#qwerty');
-let game = '';
+// global game variable
+let game = null;
 
-const startButtonClick = () => {
-	// new game object
-	game = new Game();
+// event handler
+const handleStartButtonClick = () => {
 	
-	// remove all phrase lis
-	const phraseDiv = document.querySelector('#phrase');
-	const ul = phraseDiv.querySelector('ul');
-	const lis = ul.querySelectorAll('li');
-	lis.forEach(li => li.remove());
+	// helper function
+	const startNewGame = () => {
+		game = new Game();
+		game.startGame();
+		console.log(`Through the Force, things you will see... "${game.activePhrase.phrase}"`);
+	};
 	
-	// reset letter buttons
-	const letterButtons = qwertyDiv.querySelectorAll('button');
-	letterButtons.forEach(button => {
-		button.disabled = false;
-		button.classList.remove('chosen', 'wrong');
-		button.classList.add('key');
-	});
-	
-	// reset hearts
-	const scoreboard = document.querySelector('#scoreboard');
-	const hearts = scoreboard.querySelectorAll('img');
-	hearts.forEach(heart => heart.src = 'images/liveHeart.png');
-	
-	// start new game
-	game.startGame();
-	console.log(game.activePhrase);
+	// if first time playing...
+	if (game === null) {
+		
+		// start new game
+		startNewGame();
+		
+	// else if game is restarting...
+	} else if (game !== null) {
+		
+		// remove phrase from screen display
+		document.querySelector('#phrase')
+			.querySelector('ul')
+			.querySelectorAll('li')
+			.forEach(li => li.remove());
+
+		// reset qwerty buttons
+		document.querySelector('#qwerty')
+			.querySelectorAll('button')
+			.forEach(button => {
+				button.disabled = false;
+				button.classList.remove('chosen', 'wrong');
+			});
+
+		// reset scoreboard
+		document.querySelector('#scoreboard')
+			.querySelectorAll('img')
+			.forEach(img => img.src = 'images/liveHeart.png');
+		
+		// start new game
+		startNewGame();
+	}
 };
 
-startButton.addEventListener('click', startButtonClick);
-
-// letter button listeners
-qwertyDiv.addEventListener('click', (event) => {
-	if (event.target.tagName === 'BUTTON') {
+// event handler
+const handleQwertyButtonClick = event => {
+	if (event.target.className.includes('key')) {
 		game.handleInteraction(event.target);
 	}
-});
+};
 
-document.addEventListener('keyup', (event) => {
-	const overlay = document.querySelector('#overlay');
-	const letter = event.key.toLowerCase();
-	const regex = /[a-z]/;
+// event handler
+const handleKeyup = event => {
 	
-	if (overlay.style.display === 'none') {
-		if (regex.test(letter)) {
-			const buttons = document.querySelectorAll('.key');
-			buttons.forEach(button => {
-				if (button.textContent === letter && !button.className.includes('chosen') && !button.className.includes('wrong')) {
-					game.handleInteraction(button);
-				}
-			});
+	// if overlay is displayed...
+	if (document.querySelector('#overlay').style.display !== 'none') {
+		
+		// and if enter key was pressed...
+		if (event.key === 'Enter') {
+			
+			// handle a start button click
+			handleStartButtonClick();
 		}
-	} else {
-		if (letter === 'enter') {
-			startButtonClick();
+		
+	// else if overlay is hidden...
+	} else if (document.querySelector('#overlay').style.display === 'none') {
+		
+		// and if letter key was pressed...
+		if (/[a-z]/i.test(event.key)) {
+			
+			// find the matching valid qwerty key...
+			document.querySelectorAll('.key')
+				.forEach(button => {
+					if (button.textContent === event.key.toLowerCase()
+						&& !button.className.includes('chosen')
+						&& !button.className.includes('wrong')) {
+						
+							// and handle a qwerty button interaction
+							game.handleInteraction(button);
+					}
+				});
 		}
 	}
-});
+};
+
+// event listener for start button click
+document.querySelector('#btn__reset')
+	.addEventListener('click', handleStartButtonClick);
+
+// event listener for qwerty button clicks
+document.querySelector('#qwerty')
+	.addEventListener('click', handleQwertyButtonClick);
+
+// event listener for keyup events
+document.addEventListener('keyup', handleKeyup);

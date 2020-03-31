@@ -10,22 +10,40 @@ class Phrase {
 	addPhraseToDisplay() {
 		const div = document.querySelector('#phrase');
 		const ul = div.querySelector('ul');
+		
 		const array = Array.from(this.phrase);
+		let word = [];
+		
 		array.forEach(character => {
-			if (character === ' ') {
+			if (character !== ' ') {
+				word.push(character);
+			} else if (character === ' ') {
+				const wordUl = document.createElement('ul');
+				word.forEach(letter => {
+					const li = document.createElement('li');
+					li.classList.add('hide', 'letter', letter);
+					li.textContent = letter;
+					wordUl.appendChild(li);
+				});
+				word = [];
+				ul.appendChild(wordUl);
+				
 				const li = document.createElement('li');
 				li.classList.add('space');
 				li.textContent = ' ';
 				ul.appendChild(li);
-			} else {
-				const li = document.createElement('li');
-				li.classList.add('hide', 'letter', character);
-				li.textContent = character;
-				ul.appendChild(li);
 			}
 		});
-		div.appendChild(ul);
 		
+		const wordUl = document.createElement('ul');
+		word.forEach(letter => {
+			const li = document.createElement('li');
+			li.classList.add('hide', 'letter', letter);
+			li.textContent = letter;
+			wordUl.appendChild(li);
+		});
+		word = [];
+		ul.appendChild(wordUl);		
 	}
 	
 	// check if letter is in phrase and return true or false

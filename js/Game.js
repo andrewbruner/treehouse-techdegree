@@ -83,11 +83,11 @@ class Game {
 		// update h1 to win or loss message and .start class to win or lose
 		const gameOverMessage = document.querySelector('#game-over-message');
 		if (outcome === 'win') {
-			gameOverMessage.textContent = 'The Force is strong with you. You win!';
+			gameOverMessage.textContent = 'The Force is strong with you.';
 			overlayDiv.classList.remove('start', 'lose');
 			overlayDiv.classList.add('win');
 		} else if (outcome === 'lose') {
-			gameOverMessage.textContent = 'The Emperor does not share your optimistic appraisal of the situation. Try again?';
+			gameOverMessage.textContent = 'Try not. Do, or do not. There is no try.';
 			overlayDiv.classList.remove('start', 'win');
 			overlayDiv.classList.add('lose');		}
 	}

@@ -20,56 +20,75 @@ class Game {
 		const overlayDiv = document.querySelector('#overlay');
 		overlayDiv.style.display = 'none';
 		// get random phrase object and assign to game.activePhrase
-		const randomPhrase = this.getRandomPhrase();
-		this.activePhrase = randomPhrase;
+		this.activePhrase = this.getRandomPhrase();
 		// add activePhrase object to board display
 		this.activePhrase.addPhraseToDisplay();
 	}
 	
 	getRandomPhrase() {
 		// get random phrase object from game.phrases and return it
-		const phrase = this.phrases[Math.floor(Math.random() * this.phrases.length)];
-		return phrase;
+		return this.phrases[Math.floor(Math.random() * this.phrases.length)];
 	}
 	
-	handleInteraction(event) {
-		const button = event.target;
-		// only if event.target is a button...
-		if (button.tagName === button) {
-			const array = Array.from(this.activePhrase.phrase);
-			// if button's letter is in the activePhrase...
-			if (array.includes(button.textContent)) {
-				// disable selected letter button
-				button.disabled = true;
-				// add .chosen class to button
-				button.classList.add('chosen');
-				// call showMatchedLetter()
-				this.activePhrase.showMatchedLetter();
-				// call checkForWin()
-				this.checkForWin();
-				// if the game is won
-					// call gameOver()
+	handleInteraction(button) {
+		// disable selected letter button
+		button.disabled = true;
+
+		const letter = button.textContent;
+		// if button's letter is in the active phrase...
+		if (this.activePhrase.checkLetter(letter)) {
+			// add .chosen class to button
+			button.classList.add('chosen');
+			// call showMatchedLetter()
+			this.activePhrase.showMatchedLetter(letter);
+			// call checkForWin()
+			// if the game is won
+			if (this.checkForWin()) {
+				// call gameOver()
+				this.gameOver('win');
 			}
 			// if button's letter is NOT in the phrase
-				// add .wrong class to button
-				// call removeLife()
+		} else {
+			// add .wrong class to button
+			button.classList.add('wrong');
+			// call removeLife()
+			this.removeLife();
 		}
-		
 	}
 	
 	removeLife() {
 		// replace one liveHeart.png with lostHeart.png
+		const liveHearts = document.querySelectorAll('[src="images/liveHeart.png"]');
+		liveHearts[liveHearts.length - 1].src = "images/lostHeart.png";
 		// increment this.missed by 1
+		this.missed++;
 		// if missed is at least 5...
+			if (this.missed >= 5) {
 			// call gameOver()
+				this.gameOver('lose');
+			}
 	}
 	
 	checkForWin() {
 		// check to see if player has revealed all letters in this.activePhrase
+		const hiddenLetters = document.querySelectorAll('.hide');
+		return (hiddenLetters.length === 0) ? true : false;
+
 	}
 	
-	gameOver() {
+	gameOver(outcome) {
 		// display original start screen overlay
+		const overlayDiv = document.querySelector('#overlay');
+		overlayDiv.style.display = '';
 		// update h1 to win or loss message and .start class to win or lose
+		const gameOverMessage = document.querySelector('#game-over-message');
+		if (outcome === 'win') {
+			gameOverMessage.textContent = 'The Force is strong with you. You win!';
+			overlayDiv.classList.remove('start', 'lose');
+			overlayDiv.classList.add('win');
+		} else if (outcome === 'lose') {
+			gameOverMessage.textContent = 'The Emperor does not share your optimistic appraisal of the situation. Try again?';
+			overlayDiv.classList.remove('start', 'win');
+			overlayDiv.classList.add('lose');		}
 	}
 }

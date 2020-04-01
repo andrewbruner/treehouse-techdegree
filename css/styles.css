@@ -1,5 +1,5 @@
 /* Main styles */
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&Roboto:300');
+@import url('https://fonts.googleapis.com/css2?family=Poller+One&display=swap');
 
 /* Variables */
 
@@ -20,7 +20,7 @@
 
 * {
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poller One', sans-serif;
 }
 
 body {
@@ -63,6 +63,7 @@ button {
 #btn__reset {
 	width: 200px;
 	margin: 0 auto;
+	box-shadow: 2px 2px 2px black;
 }
 
 .main-container {
@@ -176,10 +177,15 @@ button {
 }
 
 .title {
-  color: #FFF;
+  color: #E5E5E5;
+  text-shadow: 2px 2px 2px black;
 }
 
 .start {
+  background-image: url("../images/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   background-color: #3a3f58;
 }
 
@@ -188,6 +194,10 @@ button {
 }
 
 .win {
+  background-image: url("../images/win.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   background-color: var(--color-win);
 }
 
@@ -196,9 +206,18 @@ button {
 }
 
 .lose {
+  background-image: url("../images/lose.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   background-color: #f5785f;
 }
 
 .lose a {
   color: var(--color-lose);
+}
+
+#game-over-message {
+  color: #E5E5E5;
+  text-shadow: 2px 2px 2px black;
 }

@@ -7,43 +7,32 @@ class Phrase {
 		this.phrase = phrase.toLowerCase();
 	}
 
+	// add phrase to the game display
 	addPhraseToDisplay() {
-		const div = document.querySelector('#phrase');
-		const ul = div.querySelector('ul');
-		
-		const array = Array.from(this.phrase);
-		let word = [];
-		
-		array.forEach(character => {
-			if (character !== ' ') {
-				word.push(character);
-			} else if (character === ' ') {
-				const wordUl = document.createElement('ul');
-				word.forEach(letter => {
-					const li = document.createElement('li');
-					li.classList.add('hide', 'letter', letter);
-					li.textContent = letter;
-					wordUl.appendChild(li);
-				});
-				word = [];
-				ul.appendChild(wordUl);
-				
+		// local variable
+		const phraseUl = document.querySelector('#phrase').querySelector('ul');		
+		// for each word in the phrase... (phrase as array of words)
+		this.phrase.split(' ').forEach((word, i, phrase) => {
+			const ul = document.createElement('ul');
+			// and for each letter in each word... (word as array of letters)
+			[...word].forEach(letter => {
+				// append a letter <li> to word <ul>
+				const li = document.createElement('li');
+				li.classList.add('hide', 'letter', letter);
+				li.textContent = letter;
+				ul.appendChild(li);
+			});
+			// append the word <ul> to phrase <ul>
+			phraseUl.append(ul);
+			// and if word is not last in phrase...
+			if (i < phrase.length - 1) {
+				// append a space <li> to phrase <ul>
 				const li = document.createElement('li');
 				li.classList.add('space');
 				li.textContent = ' ';
 				ul.appendChild(li);
 			}
 		});
-		
-		const wordUl = document.createElement('ul');
-		word.forEach(letter => {
-			const li = document.createElement('li');
-			li.classList.add('hide', 'letter', letter);
-			li.textContent = letter;
-			wordUl.appendChild(li);
-		});
-		word = [];
-		ul.appendChild(wordUl);		
 	}
 	
 	// check if letter is in phrase and return true or false
@@ -52,7 +41,7 @@ class Phrase {
 		return phrase.includes(letter) ? true : false;
 	}
 	
-	// change all li elements' classes whose class matches letter from hide to show
+	// change matched letter <li> element's class from .hide to .show
 	showMatchedLetter(letter) {
 		const lis = document.querySelectorAll(`.${letter}`);
 		lis.forEach(li => {

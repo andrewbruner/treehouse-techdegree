@@ -27,8 +27,8 @@ const handleStartButtonClick = () => {
 		// remove phrase from screen display
 		document.querySelector('#phrase')
 			.querySelector('ul')
-			.querySelectorAll('li')
-			.forEach(li => li.remove());
+			.querySelectorAll('ul')
+			.forEach(ul => ul.remove());
 
 		// reset qwerty buttons
 		document.querySelector('#qwerty')

@@ -41,7 +41,7 @@ class Phrase {
 		return phrase.includes(letter) ? true : false;
 	}
 	
-	// change matched letter <li> element's class from .hide to .show
+	// change matched letter <li> element's class from hide to show
 	showMatchedLetter(letter) {
 		const lis = document.querySelectorAll(`.${letter}`);
 		lis.forEach(li => {

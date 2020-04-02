@@ -55,7 +55,8 @@ class Game {
 	
 	removeLife() {
 		// replace last live heart with lost heart
-		document.querySelectorAll('[src="images/liveHeart.png"]')[liveHearts.length - 1].src = "images/lostHeart.png";
+		const liveHearts = document.querySelectorAll('[src="images/liveHeart.png"]');
+		liveHearts[liveHearts.length - 1].src = "images/lostHeart.png";
 		// increment game's missed attribute by 1
 		this.missed++;
 		// if missed attribute is 5...

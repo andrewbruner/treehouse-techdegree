@@ -1,6 +1,45 @@
+const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('#gallery');
 
+let masterUsers = []
 let users = [];
+let currentUserIndex = null;
+
+const hideElement = element => {element.style.transition = '0s'; element.style.visibility = 'hidden';};
+
+const showElement = element => {element.style.visibility = ''; element.style.transition = '';};
+
+const handleFormSubmit = (event) => {
+	event.preventDefault();
+	const searchterm = event.target.firstElementChild.value.toLowerCase();
+	users = [];
+	masterUsers.forEach(user => {
+		if (user.name.first.toLowerCase().includes(searchterm) || user.name.last.toLowerCase().includes(searchterm)) {
+			users.push(user);
+		}
+	});
+	gallery.querySelectorAll('.card').forEach(card => card.remove());
+	users.forEach((user, index) => appendUser(user, index));
+};
+
+const appendSearchbar = () => {
+	const form = document.createElement('form');
+	form.addEventListener('submit', handleFormSubmit);
+	form.action = '#';
+	form.method = 'get';
+	const search = document.createElement('input');
+	search.type = 'search';
+	search.id = 'search-input';
+	search.classList.add('search-input');
+	search.placeholder = 'Search...';
+	const submit = document.createElement('input');
+	submit.type = 'submit';
+	submit.id = 'search-submit';
+	submit.classList.add('search-submit');
+	form.appendChild(search);
+	form.appendChild(submit);
+	searchContainer.appendChild(form);
+};
 
 const appendUser = (user, index) => {
 	const card = document.createElement('div');
@@ -33,11 +72,75 @@ const appendUser = (user, index) => {
 	gallery.appendChild(card);
 };
 
-const handleModalCloseBtnClick = () => {
-	document.body.lastElementChild.remove();
+const handleModalBtnClick = (event) => {
+	if (event.target.id === 'modal-close-btn' || event.target.textContent === 'X') {
+		document.body.lastElementChild.remove();
+	} else if (event.target.id === 'modal-prev') {
+		currentUserIndex--;
+		if (currentUserIndex === 0) {
+			hideElement(event.target);
+			showElement(event.target.nextElementSibling);
+		} else if (currentUserIndex === users.length - 2) {
+			showElement(event.target.nextElementSibling);
+		}
+
+		const modalInfo = document.querySelector('.modal-info-container');
+		const img = modalInfo.querySelector('img');
+		const name = modalInfo.querySelector('h3');
+		const info = modalInfo.querySelectorAll('p');
+		const email = info[0];
+		const city = info[1];
+		const cell = info[2];
+		const address = info[3];
+		const birthday = info[4];
+
+		img.src = users[currentUserIndex].picture.large;
+		name.id = `${users[currentUserIndex].name.first.toLowerCase()}${users[currentUserIndex].name.last}`;
+		name.textContent = `${users[currentUserIndex].name.first} ${users[currentUserIndex].name.last}`;
+		email.textContent = users[currentUserIndex].email;
+		city.textContent = users[currentUserIndex].location.city;
+		cell.textContent = users[currentUserIndex].cell;
+		address.textContent = `${users[currentUserIndex].location.street.number} ${users[currentUserIndex].location.street.name}, ${users[currentUserIndex].location.city}, ${users[currentUserIndex].location.state} ${users[currentUserIndex].location.postcode}`;
+		const birthdate = new Date(users[currentUserIndex].dob.date);
+		birthday.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
+
+
+	} else if (event.target.id === 'modal-next') {
+		currentUserIndex++;
+		if (currentUserIndex === users.length - 1) {
+			hideElement(event.target);
+			showElement(event.target.previousElementSibling);
+		} else if (currentUserIndex === 1) {
+			showElement(event.target.previousElementSibling);
+		}
+
+		const modalInfo = document.querySelector('.modal-info-container');
+		const img = modalInfo.querySelector('img');
+		const name = modalInfo.querySelector('h3');
+		const info = modalInfo.querySelectorAll('p');
+		const email = info[0];
+		const city = info[1];
+		const cell = info[2];
+		const address = info[3];
+		const birthday = info[4];
+
+		img.src = users[currentUserIndex].picture.large;
+		name.id = `${users[currentUserIndex].name.first.toLowerCase()}${users[currentUserIndex].name.last}`;
+		name.textContent = `${users[currentUserIndex].name.first} ${users[currentUserIndex].name.last}`;
+		email.textContent = users[currentUserIndex].email;
+		city.textContent = users[currentUserIndex].location.city;
+		cell.textContent = users[currentUserIndex].cell;
+		address.textContent = `${users[currentUserIndex].location.street.number} ${users[currentUserIndex].location.street.name}, ${users[currentUserIndex].location.city}, ${users[currentUserIndex].location.state} ${users[currentUserIndex].location.postcode}`;
+		const birthdate = new Date(users[currentUserIndex].dob.date);
+		birthday.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
+
+	}
 };
 
-const appendModal = user => {
+const appendModal = (user, index) => {
+	// update currentUserIndex
+	currentUserIndex = Number(index);
+
 	// modal container
 	const modalContainerDiv = document.createElement('div');
 	modalContainerDiv.classList.add('modal-container');
@@ -49,13 +152,14 @@ const appendModal = user => {
 	modalCloseBtn.type = 'button';
 	modalCloseBtn.id = 'modal-close-btn';
 	modalCloseBtn.classList.add('modal-close-btn');
-	modalCloseBtn.addEventListener('click', handleModalCloseBtnClick);
+	modalCloseBtn.addEventListener('click', handleModalBtnClick);
 	const modalCloseBtnStrong = document.createElement('strong');
 	modalCloseBtnStrong.textContent = 'X';
 	modalCloseBtn.appendChild(modalCloseBtnStrong);
 	modalDiv.appendChild(modalCloseBtn);
 	// modal info container
 	const modalInfoContainerDiv = document.createElement('div');
+	modalInfoContainerDiv.classList.add('modal-info-container');
 	// modal img
 	const modalImg = document.createElement('img');
 	modalImg.classList.add('modal-img');
@@ -104,24 +208,34 @@ const appendModal = user => {
 	// append modal to modal container
 	modalContainerDiv.appendChild(modalDiv);
 
-	// modal btn container
-	const modalBtnContainerDiv = document.createElement('div');
-	modalBtnContainerDiv.classList.add('modal-btn-container');
-	const modalPrevBtn = document.createElement('button');
-	modalPrevBtn.type = 'button';
-	modalPrevBtn.id = 'modal-prev';
-	modalPrevBtn.classList.add('modal-prev', 'btn');
-	modalPrevBtn.textContent = 'Prev';
-	modalBtnContainerDiv.appendChild(modalPrevBtn);
-	const modalNextBtn = document.createElement('button');
-	modalNextBtn.type = 'button';
-	modalNextBtn.id = 'modal-next';
-	modalNextBtn.classList.add('modal-next', 'btn');
-	modalNextBtn.textContent = 'Next';
-	modalBtnContainerDiv.appendChild(modalNextBtn);
-
-	// append modal btn container to modal container
-	modalContainerDiv.appendChild(modalBtnContainerDiv);
+	if (users.length > 1) {
+		// modal btn container
+		const modalBtnContainerDiv = document.createElement('div');
+		modalBtnContainerDiv.classList.add('modal-btn-container');
+		const modalPrevBtn = document.createElement('button');
+		modalPrevBtn.type = 'button';
+		modalPrevBtn.id = 'modal-prev';
+		modalPrevBtn.classList.add('modal-prev', 'btn');
+		modalPrevBtn.textContent = 'Prev';
+		modalPrevBtn.addEventListener('click', handleModalBtnClick);
+		if (currentUserIndex === 0) {
+			hideElement(modalPrevBtn);
+		}
+		modalBtnContainerDiv.appendChild(modalPrevBtn);
+		const modalNextBtn = document.createElement('button');
+		modalNextBtn.type = 'button';
+		modalNextBtn.id = 'modal-next';
+		modalNextBtn.classList.add('modal-next', 'btn');
+		modalNextBtn.textContent = 'Next';
+		modalNextBtn.addEventListener('click', handleModalBtnClick);
+		if (currentUserIndex === users.length - 1) {
+			hideElement(modalNextBtn);
+		}
+		modalBtnContainerDiv.appendChild(modalNextBtn);
+	
+		// append modal btn container to modal container
+		modalContainerDiv.appendChild(modalBtnContainerDiv);
+	}
 
 	// append modal container to body
 	document.body.appendChild(modalContainerDiv);
@@ -130,11 +244,9 @@ const appendModal = user => {
 const handleGalleryClick = event => {
 	// if target is/is in a 'card'...
 	if (event.target.className.includes('card')) {
-		// log the card's h3's id (user's name) and) index number of user card
-		console.log(event.composedPath()[event.composedPath().length - 6].lastElementChild.firstElementChild.id);
-		console.log(event.composedPath()[event.composedPath().length - 6].id);
 		// append their modal to the page
-		appendModal(users[event.composedPath()[event.composedPath().length - 6].id]);
+		appendModal(users[event.composedPath()[event.composedPath().length - 6].id],
+			    event.composedPath()[event.composedPath().length - 6].id);
 	}
 };
 
@@ -142,10 +254,12 @@ const fetchUsers = () => {
 	fetch('https://randomuser.me/api?nat=us&results=12')
 		.then(response => response.json())
 		.then(data => {
-			users = data.results;
+			masterUsers = data.results;
+			masterUsers.forEach(user => users.push(user));
 			users.forEach((user, index) => appendUser(user, index));
 		});
 };
 
+appendSearchbar();
 fetchUsers();
 gallery.addEventListener('click', handleGalleryClick);

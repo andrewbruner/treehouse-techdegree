@@ -38,11 +38,12 @@ const handleModalCloseBtnClick = () => {
 };
 
 const appendModal = user => {
+	// modal container
 	const modalContainerDiv = document.createElement('div');
 	modalContainerDiv.classList.add('modal-container');
+	// modal
 	const modalDiv = document.createElement('div');
 	modalDiv.classList.add('modal');
-
 	// modal close button
 	const modalCloseBtn = document.createElement('button');
 	modalCloseBtn.type = 'button';
@@ -53,47 +54,76 @@ const appendModal = user => {
 	modalCloseBtnStrong.textContent = 'X';
 	modalCloseBtn.appendChild(modalCloseBtnStrong);
 	modalDiv.appendChild(modalCloseBtn);
-
 	// modal info container
 	const modalInfoContainerDiv = document.createElement('div');
+	// modal img
 	const modalImg = document.createElement('img');
 	modalImg.classList.add('modal-img');
 	modalImg.src = user.picture.large;
 	modalImg.alt = 'profile picture';
 	modalInfoContainerDiv.appendChild(modalImg);
+	// modal name
 	const modalNameH3 = document.createElement('h3');
 	modalNameH3.id = `${user.name.first.toLowerCase()}${user.name.last}`;
 	modalNameH3.classList.add('modal-name', 'cap');
 	modalNameH3.textContent = `${user.name.first} ${user.name.last}`;
 	modalInfoContainerDiv.appendChild(modalNameH3);
+	// modal email
 	const emailP = document.createElement('p');
 	emailP.classList.add('modal-text');
 	emailP.textContent = user.email;
 	modalInfoContainerDiv.appendChild(emailP);
+	// modal city
 	const cityP = document.createElement('p');
 	cityP.classList.add('modal-text', 'cap');
 	cityP.textContent = user.location.city;
 	modalInfoContainerDiv.appendChild(cityP);
+	// modal hr
 	const modalHr = document.createElement('hr');
 	modalInfoContainerDiv.appendChild(modalHr);
+	// modal cell
 	const cellP = document.createElement('p');
 	cellP.classList.add('modal-text');
 	cellP.textContent = user.cell;
 	modalInfoContainerDiv.appendChild(cellP);
+	// modal address
 	const addressP = document.createElement('p');
 	addressP.classList.add('modal-text');
 	addressP.textContent = `${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state} ${user.location.postcode}`;
 	modalInfoContainerDiv.appendChild(addressP);
+	// modal birthday
 	const birthdayP = document.createElement('p');
 	birthdayP.classList.add('modal-text');
 	const birthdate = new Date(user.dob.date);
 	birthdayP.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
 	modalInfoContainerDiv.appendChild(birthdayP);
 
+	// append modal info container to modal
 	modalDiv.appendChild(modalInfoContainerDiv);
 
-	// append modal to container to body
+	// append modal to modal container
 	modalContainerDiv.appendChild(modalDiv);
+
+	// modal btn container
+	const modalBtnContainerDiv = document.createElement('div');
+	modalBtnContainerDiv.classList.add('modal-btn-container');
+	const modalPrevBtn = document.createElement('button');
+	modalPrevBtn.type = 'button';
+	modalPrevBtn.id = 'modal-prev';
+	modalPrevBtn.classList.add('modal-prev', 'btn');
+	modalPrevBtn.textContent = 'Prev';
+	modalBtnContainerDiv.appendChild(modalPrevBtn);
+	const modalNextBtn = document.createElement('button');
+	modalNextBtn.type = 'button';
+	modalNextBtn.id = 'modal-next';
+	modalNextBtn.classList.add('modal-next', 'btn');
+	modalNextBtn.textContent = 'Next';
+	modalBtnContainerDiv.appendChild(modalNextBtn);
+
+	// append modal btn container to modal container
+	modalContainerDiv.appendChild(modalBtnContainerDiv);
+
+	// append modal container to body
 	document.body.appendChild(modalContainerDiv);
 };
 

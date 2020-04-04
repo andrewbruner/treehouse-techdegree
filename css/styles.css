@@ -16,7 +16,7 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: rgb(60, 179, 113); /*medium sea green*/ /*rgba(235, 235, 235, 0.9); original background color*/
 }
 
 header {
@@ -30,7 +30,7 @@ header {
 
 header h1 {
     font-size: 1.25em;
-    color: rgba(50, 50, 50, 0.9);
+    color: white; /*rgba(50, 50, 50, 0.9); original color*/
     margin-top: 35px;
 }
 

@@ -33,6 +33,10 @@ const appendUser = (user, index) => {
 	gallery.appendChild(card);
 };
 
+const handleModalCloseBtnClick = () => {
+	document.body.lastElementChild.remove();
+};
+
 const appendModal = user => {
 	const modalContainerDiv = document.createElement('div');
 	modalContainerDiv.classList.add('modal-container');
@@ -44,6 +48,7 @@ const appendModal = user => {
 	modalCloseBtn.type = 'button';
 	modalCloseBtn.id = 'modal-close-btn';
 	modalCloseBtn.classList.add('modal-close-btn');
+	modalCloseBtn.addEventListener('click', handleModalCloseBtnClick);
 	const modalCloseBtnStrong = document.createElement('strong');
 	modalCloseBtnStrong.textContent = 'X';
 	modalCloseBtn.appendChild(modalCloseBtnStrong);

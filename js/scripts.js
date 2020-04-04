@@ -10,8 +10,13 @@ const hideElement = element => {element.style.transition = '0s'; element.style.v
 const showElement = element => {element.style.visibility = ''; element.style.transition = '';};
 
 const handleFormSubmit = (event) => {
-	event.preventDefault();
-	const searchterm = event.target.firstElementChild.value.toLowerCase();
+	let searchterm = '';
+	if (event.type === 'submit') {
+		event.preventDefault();
+		searchterm = event.target.firstElementChild.value.toLowerCase();
+	} else if (event.type === 'keyup') {
+		searchterm = event.target.value.toLowerCase();
+	}
 	users = [];
 	masterUsers.forEach(user => {
 		if (user.name.first.toLowerCase().includes(searchterm) || user.name.last.toLowerCase().includes(searchterm)) {
@@ -32,6 +37,7 @@ const appendSearchbar = () => {
 	search.id = 'search-input';
 	search.classList.add('search-input');
 	search.placeholder = 'Search...';
+	search.addEventListener('keyup', handleFormSubmit);
 	const submit = document.createElement('input');
 	submit.type = 'submit';
 	submit.id = 'search-submit';
@@ -73,15 +79,15 @@ const appendUser = (user, index) => {
 };
 
 const handleModalBtnClick = (event) => {
-	if (event.target.id === 'modal-close-btn' || event.target.textContent === 'X') {
+	if (event.target.id === 'modal-close-btn' || event.target.textContent === 'X' || event.key === 'Esc' || event.key === 'Escape') {
 		document.body.lastElementChild.remove();
-	} else if (event.target.id === 'modal-prev') {
+	} else if (event.target.id === 'modal-prev' || (event.key === 'ArrowLeft' && currentUserIndex !== 0)) {
 		currentUserIndex--;
 		if (currentUserIndex === 0) {
-			hideElement(event.target);
-			showElement(event.target.nextElementSibling);
+			hideElement(document.querySelector('#modal-prev'));
+			showElement(document.querySelector('#modal-next'));
 		} else if (currentUserIndex === users.length - 2) {
-			showElement(event.target.nextElementSibling);
+			showElement(document.querySelector('#modal-next'));
 		}
 
 		const modalInfo = document.querySelector('.modal-info-container');
@@ -105,13 +111,13 @@ const handleModalBtnClick = (event) => {
 		birthday.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
 
 
-	} else if (event.target.id === 'modal-next') {
+	} else if (event.target.id === 'modal-next' || (event.key === 'ArrowRight' && currentUserIndex !== users.length - 1)) {
 		currentUserIndex++;
 		if (currentUserIndex === users.length - 1) {
-			hideElement(event.target);
-			showElement(event.target.previousElementSibling);
+			hideElement(document.querySelector('#modal-next'));
+			showElement(document.querySelector('#modal-prev'));
 		} else if (currentUserIndex === 1) {
-			showElement(event.target.previousElementSibling);
+			showElement(document.querySelector('#modal-prev'));
 		}
 
 		const modalInfo = document.querySelector('.modal-info-container');
@@ -263,3 +269,10 @@ const fetchUsers = () => {
 appendSearchbar();
 fetchUsers();
 gallery.addEventListener('click', handleGalleryClick);
+document.addEventListener('keyup', (event) => {
+	if (document.body.lastElementChild.className === 'modal-container' && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+		handleModalBtnClick(event);
+	} else if (document.body.lastElementChild.className === 'modal-container' && (event.key === 'Esc' || event.key === 'Escape')) {
+		handleModalBtnClick(event);
+	}
+});

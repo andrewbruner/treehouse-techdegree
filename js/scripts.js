@@ -1,278 +1,329 @@
-const searchContainer = document.querySelector('.search-container');
-const gallery = document.querySelector('#gallery');
+// helper functions
+const select = selector => document.querySelector(selector);
 
+const selectAll = selector => document.querySelectorAll(selector);
+
+const create = element => document.createElement(element);
+
+const hideElement = element => {
+	element.style.transition = '0s';
+	element.style.visibility = 'hidden';
+};
+
+const showElement = element => {
+	element.style.visibility = '';
+	element.style.transition = '';
+};
+
+// global variable selection
+const gallery = select('#gallery');
+
+// global array declaration
 let masterUsers = []
 let users = [];
 let currentUserIndex = null;
 
-const hideElement = element => {element.style.transition = '0s'; element.style.visibility = 'hidden';};
-
-const showElement = element => {element.style.visibility = ''; element.style.transition = '';};
-
 const handleFormSubmit = (event) => {
-	let searchterm = '';
+	// prevent form submission
 	if (event.type === 'submit') {
 		event.preventDefault();
-		searchterm = event.target.firstElementChild.value.toLowerCase();
-	} else if (event.type === 'keyup') {
-		searchterm = event.target.value.toLowerCase();
 	}
+	// reset gallery
+	gallery.querySelectorAll('.card').forEach(card => card.remove());
+	// reset users
 	users = [];
+	// set searchterm
+	const searchInput = select('#search-input');
+	const searchterm = searchInput.value.toLowerCase();
+	// collect matching users
 	masterUsers.forEach(user => {
 		if (user.name.first.toLowerCase().includes(searchterm) || user.name.last.toLowerCase().includes(searchterm)) {
 			users.push(user);
 		}
 	});
-	gallery.querySelectorAll('.card').forEach(card => card.remove());
+	// append matching users
 	users.forEach((user, index) => appendUser(user, index));
 };
 
 const appendSearchbar = () => {
-	const form = document.createElement('form');
-	form.addEventListener('submit', handleFormSubmit);
+	// parent element selection
+	const searchContainer = select('.search-container');
+	// create form element
+	const form = create('form');
 	form.action = '#';
 	form.method = 'get';
-	const search = document.createElement('input');
+	form.addEventListener('submit', handleFormSubmit);
+	// create search input
+	const search = create('input');
 	search.type = 'search';
 	search.id = 'search-input';
 	search.classList.add('search-input');
 	search.placeholder = 'Search...';
 	search.addEventListener('keyup', handleFormSubmit);
-	const submit = document.createElement('input');
+	// create submit input
+	const submit = create('input');
 	submit.type = 'submit';
 	submit.id = 'search-submit';
 	submit.classList.add('search-submit');
+	// append all to searchContainer
 	form.appendChild(search);
 	form.appendChild(submit);
 	searchContainer.appendChild(form);
 };
 
-const appendUser = (user, index) => {
-	const card = document.createElement('div');
-	card.id = index;
-	card.classList.add('card');
-	const cardImgContainer = document.createElement('div');
-	cardImgContainer.classList.add('card-img-container');
-	const cardImg = document.createElement('img');
-	cardImg.classList.add('card-img');
-	cardImg.src = user.picture.large;
-	cardImg.alt = 'profile picture';
-	cardImgContainer.appendChild(cardImg);
-	card.appendChild(cardImgContainer);
-	const cardInfoContainer = document.createElement('div');
-	cardInfoContainer.classList.add('card-info-container');
-	const name = document.createElement('h3');
-	name.id = `${user.name.first.toLowerCase()}${user.name.last}`;
-	name.classList.add('card-name', 'cap');
-	name.textContent = `${user.name.first} ${user.name.last}`;
-	cardInfoContainer.appendChild(name);
-	const email = document.createElement('p');
-	email.classList.add('card-text');
-	email.textContent = user.email;
-	cardInfoContainer.appendChild(email);
-	const location = document.createElement('p');
-	location.classList.add('card-text', 'cap');
-	location.textContent = `${user.location.city}, ${user.location.state}`;
-	cardInfoContainer.appendChild(location);
-	card.appendChild(cardInfoContainer);
-	gallery.appendChild(card);
-};
-
 const handleModalBtnClick = (event) => {
+	// element selection
+	const modalInfo = document.querySelector('.modal-info-container');
+	const img = modalInfo.querySelector('img');
+	const name = modalInfo.querySelector('h3');
+	const info = modalInfo.querySelectorAll('p');
+	const email = info[0];
+	const city = info[1];
+	const cell = info[2];
+	const address = info[3];
+	const birthday = info[4];
+	// helper function
+	const updateModalInfo = () => {
+		const currentUser = users[currentUserIndex];
+		img.src = currentUser.picture.large;
+		name.id = `${currentUser.name.first.toLowerCase()}${currentUser.name.last}`;
+		name.textContent = `${currentUser.name.first} ${currentUser.name.last}`;
+		email.textContent = currentUser.email;
+		city.textContent = currentUser.location.city;
+		cell.textContent = currentUser.cell;
+		address.textContent = `${currentUser.location.street.number} ${currentUser.location.street.name}, ${currentUser.location.city}, ${currentUser.location.state} ${currentUser.location.postcode}`;
+		const birthdate = new Date(currentUser.dob.date);
+		birthday.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
+	}
+	// if close button click or escape key press...
 	if (event.target.id === 'modal-close-btn' || event.target.textContent === 'X' || event.key === 'Esc' || event.key === 'Escape') {
+		// remove modal from document
 		document.body.lastElementChild.remove();
+	// else if prev button click or left arrow press (and not showing first user)
 	} else if (event.target.id === 'modal-prev' || (event.key === 'ArrowLeft' && currentUserIndex !== 0)) {
+		// update currentUserIndex
 		currentUserIndex--;
+		// update modal information
+		updateModalInfo();
+		// if current user is first in list...
 		if (currentUserIndex === 0) {
+			// hide the prev button
 			hideElement(document.querySelector('#modal-prev'));
+			// show the next button
 			showElement(document.querySelector('#modal-next'));
-		} else if (currentUserIndex === users.length - 2) {
+		// else make sure next button is shown
+		} else {
 			showElement(document.querySelector('#modal-next'));
 		}
-
-		const modalInfo = document.querySelector('.modal-info-container');
-		const img = modalInfo.querySelector('img');
-		const name = modalInfo.querySelector('h3');
-		const info = modalInfo.querySelectorAll('p');
-		const email = info[0];
-		const city = info[1];
-		const cell = info[2];
-		const address = info[3];
-		const birthday = info[4];
-
-		img.src = users[currentUserIndex].picture.large;
-		name.id = `${users[currentUserIndex].name.first.toLowerCase()}${users[currentUserIndex].name.last}`;
-		name.textContent = `${users[currentUserIndex].name.first} ${users[currentUserIndex].name.last}`;
-		email.textContent = users[currentUserIndex].email;
-		city.textContent = users[currentUserIndex].location.city;
-		cell.textContent = users[currentUserIndex].cell;
-		address.textContent = `${users[currentUserIndex].location.street.number} ${users[currentUserIndex].location.street.name}, ${users[currentUserIndex].location.city}, ${users[currentUserIndex].location.state} ${users[currentUserIndex].location.postcode}`;
-		const birthdate = new Date(users[currentUserIndex].dob.date);
-		birthday.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
-
-
+	// else if next button click or right arrow press (and not showing last user)
 	} else if (event.target.id === 'modal-next' || (event.key === 'ArrowRight' && currentUserIndex !== users.length - 1)) {
+		// update currentUserIndex
 		currentUserIndex++;
+		// update modal information
+		updateModalInfo();
+		// if current user is last in list...
 		if (currentUserIndex === users.length - 1) {
+			// hide the next button
 			hideElement(document.querySelector('#modal-next'));
+			// show the next button
 			showElement(document.querySelector('#modal-prev'));
-		} else if (currentUserIndex === 1) {
+		// else make sure prev button is shown
+		} else {
 			showElement(document.querySelector('#modal-prev'));
 		}
-
-		const modalInfo = document.querySelector('.modal-info-container');
-		const img = modalInfo.querySelector('img');
-		const name = modalInfo.querySelector('h3');
-		const info = modalInfo.querySelectorAll('p');
-		const email = info[0];
-		const city = info[1];
-		const cell = info[2];
-		const address = info[3];
-		const birthday = info[4];
-
-		img.src = users[currentUserIndex].picture.large;
-		name.id = `${users[currentUserIndex].name.first.toLowerCase()}${users[currentUserIndex].name.last}`;
-		name.textContent = `${users[currentUserIndex].name.first} ${users[currentUserIndex].name.last}`;
-		email.textContent = users[currentUserIndex].email;
-		city.textContent = users[currentUserIndex].location.city;
-		cell.textContent = users[currentUserIndex].cell;
-		address.textContent = `${users[currentUserIndex].location.street.number} ${users[currentUserIndex].location.street.name}, ${users[currentUserIndex].location.city}, ${users[currentUserIndex].location.state} ${users[currentUserIndex].location.postcode}`;
-		const birthdate = new Date(users[currentUserIndex].dob.date);
-		birthday.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
-
 	}
 };
 
 const appendModal = (user, index) => {
 	// update currentUserIndex
 	currentUserIndex = Number(index);
-
-	// modal container
-	const modalContainerDiv = document.createElement('div');
-	modalContainerDiv.classList.add('modal-container');
-	// modal
-	const modalDiv = document.createElement('div');
-	modalDiv.classList.add('modal');
-	// modal close button
-	const modalCloseBtn = document.createElement('button');
-	modalCloseBtn.type = 'button';
-	modalCloseBtn.id = 'modal-close-btn';
-	modalCloseBtn.classList.add('modal-close-btn');
-	modalCloseBtn.addEventListener('click', handleModalBtnClick);
-	const modalCloseBtnStrong = document.createElement('strong');
-	modalCloseBtnStrong.textContent = 'X';
-	modalCloseBtn.appendChild(modalCloseBtnStrong);
-	modalDiv.appendChild(modalCloseBtn);
-	// modal info container
-	const modalInfoContainerDiv = document.createElement('div');
-	modalInfoContainerDiv.classList.add('modal-info-container');
-	// modal img
-	const modalImg = document.createElement('img');
-	modalImg.classList.add('modal-img');
-	modalImg.src = user.picture.large;
-	modalImg.alt = 'profile picture';
-	modalInfoContainerDiv.appendChild(modalImg);
-	// modal name
-	const modalNameH3 = document.createElement('h3');
-	modalNameH3.id = `${user.name.first.toLowerCase()}${user.name.last}`;
-	modalNameH3.classList.add('modal-name', 'cap');
-	modalNameH3.textContent = `${user.name.first} ${user.name.last}`;
-	modalInfoContainerDiv.appendChild(modalNameH3);
-	// modal email
-	const emailP = document.createElement('p');
-	emailP.classList.add('modal-text');
-	emailP.textContent = user.email;
-	modalInfoContainerDiv.appendChild(emailP);
-	// modal city
-	const cityP = document.createElement('p');
-	cityP.classList.add('modal-text', 'cap');
-	cityP.textContent = user.location.city;
-	modalInfoContainerDiv.appendChild(cityP);
-	// modal hr
-	const modalHr = document.createElement('hr');
-	modalInfoContainerDiv.appendChild(modalHr);
-	// modal cell
-	const cellP = document.createElement('p');
-	cellP.classList.add('modal-text');
-	cellP.textContent = user.cell;
-	modalInfoContainerDiv.appendChild(cellP);
-	// modal address
-	const addressP = document.createElement('p');
-	addressP.classList.add('modal-text');
-	addressP.textContent = `${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state} ${user.location.postcode}`;
-	modalInfoContainerDiv.appendChild(addressP);
-	// modal birthday
-	const birthdayP = document.createElement('p');
-	birthdayP.classList.add('modal-text');
-	const birthdate = new Date(user.dob.date);
-	birthdayP.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
-	modalInfoContainerDiv.appendChild(birthdayP);
-
-	// append modal info container to modal
-	modalDiv.appendChild(modalInfoContainerDiv);
-
-	// append modal to modal container
-	modalContainerDiv.appendChild(modalDiv);
-
-	if (users.length > 1) {
-		// modal btn container
-		const modalBtnContainerDiv = document.createElement('div');
-		modalBtnContainerDiv.classList.add('modal-btn-container');
-		const modalPrevBtn = document.createElement('button');
-		modalPrevBtn.type = 'button';
-		modalPrevBtn.id = 'modal-prev';
-		modalPrevBtn.classList.add('modal-prev', 'btn');
-		modalPrevBtn.textContent = 'Prev';
-		modalPrevBtn.addEventListener('click', handleModalBtnClick);
-		if (currentUserIndex === 0) {
-			hideElement(modalPrevBtn);
+	// create container
+	const container = document.createElement('div');
+	container.classList.add('modal-container');
+		// create modal
+		const modal = document.createElement('div');
+		modal.classList.add('modal');
+			// create close button
+			const closeBtn = document.createElement('button');
+			closeBtn.type = 'button';
+			closeBtn.id = 'modal-close-btn';
+			closeBtn.classList.add('modal-close-btn');
+			closeBtn.addEventListener('click', handleModalBtnClick);
+				// create/append close button's strong tag
+				const strong = document.createElement('strong');
+				strong.textContent = 'X';
+				closeBtn.appendChild(strong);
+			// append close button
+			modal.appendChild(closeBtn);
+			// create info container
+			const infoContainer = document.createElement('div');
+			infoContainer.classList.add('modal-info-container');
+				// create/apend img
+				const img = document.createElement('img');
+				img.classList.add('modal-img');
+				img.src = user.picture.large;
+				img.alt = 'profile picture';
+				infoContainer.appendChild(img);
+				// create/append name
+				const name = document.createElement('h3');
+				name.id = `${user.name.first.toLowerCase()}${user.name.last}`;
+				name.classList.add('modal-name', 'cap');
+				name.textContent = `${user.name.first} ${user.name.last}`;
+				infoContainer.appendChild(name);
+				// create/append email
+				const email = document.createElement('p');
+				email.classList.add('modal-text');
+				email.textContent = user.email;
+				infoContainer.appendChild(email);
+				// create/append city
+				const city = document.createElement('p');
+				city.classList.add('modal-text', 'cap');
+				city.textContent = user.location.city;
+				infoContainer.appendChild(city);
+				// create/append hr
+				const hr = document.createElement('hr');
+				infoContainer.appendChild(hr);
+				// create/append cell
+				const cell = document.createElement('p');
+				cell.classList.add('modal-text');
+				cell.textContent = user.cell;
+				infoContainer.appendChild(cell);
+				// create/append address
+				const address = document.createElement('p');
+				address.classList.add('modal-text');
+				address.textContent = `${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state} ${user.location.postcode}`;
+				infoContainer.appendChild(address);
+				// create/append birthday
+				const birthday = document.createElement('p');
+				birthday.classList.add('modal-text');
+				const birthdate = new Date(user.dob.date);
+				birthday.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
+				infoContainer.appendChild(birthday);
+			// append modal info container
+			modal.appendChild(infoContainer);
+		// append modal
+		container.appendChild(modal);
+		// only if more than one user...
+		if (users.length > 1) {
+			// create btn container
+			const btnContainer = document.createElement('div');
+			btnContainer.classList.add('modal-btn-container');
+				// create prev button
+				const prevBtn = document.createElement('button');
+				prevBtn.type = 'button';
+				prevBtn.id = 'modal-prev';
+				prevBtn.classList.add('modal-prev', 'btn');
+				prevBtn.textContent = 'Prev';
+				prevBtn.addEventListener('click', handleModalBtnClick);
+				// if current user is first in list...
+				if (currentUserIndex === 0) {
+					// hide prev button
+					hideElement(prevBtn);
+				}
+				// append prev button
+				btnContainer.appendChild(prevBtn);
+				//create next button
+				const nextBtn = document.createElement('button');
+				nextBtn.type = 'button';
+				nextBtn.id = 'modal-next';
+				nextBtn.classList.add('modal-next', 'btn');
+				nextBtn.textContent = 'Next';
+				nextBtn.addEventListener('click', handleModalBtnClick);
+				// if current user is last in list...
+				if (currentUserIndex === users.length - 1) {
+					// hide next button
+					hideElement(nextBtn);
+				}
+				// append next button
+				btnContainer.appendChild(nextBtn);
+			// append btn container
+			container.appendChild(btnContainer);
 		}
-		modalBtnContainerDiv.appendChild(modalPrevBtn);
-		const modalNextBtn = document.createElement('button');
-		modalNextBtn.type = 'button';
-		modalNextBtn.id = 'modal-next';
-		modalNextBtn.classList.add('modal-next', 'btn');
-		modalNextBtn.textContent = 'Next';
-		modalNextBtn.addEventListener('click', handleModalBtnClick);
-		if (currentUserIndex === users.length - 1) {
-			hideElement(modalNextBtn);
-		}
-		modalBtnContainerDiv.appendChild(modalNextBtn);
-	
-		// append modal btn container to modal container
-		modalContainerDiv.appendChild(modalBtnContainerDiv);
-	}
-
-	// append modal container to body
-	document.body.appendChild(modalContainerDiv);
+	// append container
+	document.body.appendChild(container);
 };
 
 const handleGalleryClick = event => {
-	// if target is/is in a 'card'...
+	// if target is or is in a 'card'...
 	if (event.target.className.includes('card')) {
-		// append their modal to the page
-		appendModal(users[event.composedPath()[event.composedPath().length - 6].id],
-			    event.composedPath()[event.composedPath().length - 6].id);
+		// use composedPath() to select the user's card id/index
+		const cardIndex = event.composedPath()[event.composedPath().length - 6].id;
+		// append user's modal to the page
+		appendModal(users[cardIndex], cardIndex);
 	}
+};
+
+const appendUser = (user, index) => {
+	// create card
+	const card = create('div');
+	card.id = index;
+	card.classList.add('card');
+		// create imgContainer
+		const imgContainer = create('div');
+		imgContainer.classList.add('card-img-container');
+			// create/append img
+			const img = create('img');
+			img.classList.add('card-img');
+			img.src = user.picture.large;
+			img.alt = 'profile picture';
+			imgContainer.appendChild(img);
+		// append imgContainer
+		card.appendChild(imgContainer);
+		// create infoContainer
+		const infoContainer = create('div');
+		infoContainer.classList.add('card-info-container');
+			// create/append name
+			const name = create('h3');
+			name.id = `${user.name.first.toLowerCase()}${user.name.last}`;
+			name.classList.add('card-name', 'cap');
+			name.textContent = `${user.name.first} ${user.name.last}`;
+			infoContainer.appendChild(name);
+			// create/append email
+			const email = create('p');
+			email.classList.add('card-text');
+			email.textContent = user.email;
+			infoContainer.appendChild(email);
+			// create/append location
+			const location = create('p');
+			location.classList.add('card-text', 'cap');
+			location.textContent = `${user.location.city}, ${user.location.state}`;
+			infoContainer.appendChild(location);
+		// append infoContainer
+		card.appendChild(infoContainer);
+	// append card
+	gallery.appendChild(card);
+	gallery.addEventListener('click', handleGalleryClick);
 };
 
 const fetchUsers = () => {
 	fetch('https://randomuser.me/api?nat=us&results=12')
 		.then(response => response.json())
 		.then(data => {
+			// append searchbar
+			appendSearchbar();
+			// add listener for keyboard functionality
+			document.addEventListener('keyup', (event) => {
+				// only if modal is displayed...
+				if (document.body.lastElementChild.className === 'modal-container') {
+					// and only if key is arrow left or right, or escape...
+					if (event.key === 'ArrowLeft' ||
+						event.key === 'ArrowRight' ||
+						event.key === 'Esc' ||
+						event.key === 'Escape') {
+							// initiate modal button click event
+							handleModalBtnClick(event);
+					}
+				}
+			});
+			// assign results to masterUsers array
 			masterUsers = data.results;
+			// populate the working user array
 			masterUsers.forEach(user => users.push(user));
+			// append users from working user array
 			users.forEach((user, index) => appendUser(user, index));
 		});
 };
 
-appendSearchbar();
-fetchUsers();
-gallery.addEventListener('click', handleGalleryClick);
-document.addEventListener('keyup', (event) => {
-	if (document.body.lastElementChild.className === 'modal-container' && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
-		handleModalBtnClick(event);
-	} else if (document.body.lastElementChild.className === 'modal-container' && (event.key === 'Esc' || event.key === 'Escape')) {
-		handleModalBtnClick(event);
-	}
-});
+// fetch and append new list of users from API
+document.addEventListener('DOMContentLoaded', fetchUsers);
+

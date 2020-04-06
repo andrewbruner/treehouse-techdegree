@@ -295,9 +295,23 @@ const appendUser = (user, index) => {
 	gallery.addEventListener('click', handleGalleryClick);
 };
 
-const fetchUsers = () => {
-	fetch('https://randomuser.me/api?nat=us&results=12')
-		.then(response => response.json())
+// async function
+const getUsers = async url => {
+	try {
+		const response = await fetch(url);
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		const message = document.createElement('p');
+		message.style.color = 'white';
+		message.textContent = `Sorry, there was an error: ${error.message}`;
+		gallery.appendChild(message);
+		console.error(error);
+	}
+};
+
+const initiateDirectory = () => {
+	getUsers('https://randomtser.me/api?nat=us&results=12')
 		.then(data => {
 			// append searchbar
 			appendSearchbar();
@@ -325,5 +339,5 @@ const fetchUsers = () => {
 };
 
 // fetch and append new list of users from API
-document.addEventListener('DOMContentLoaded', fetchUsers);
+document.addEventListener('DOMContentLoaded', initiateDirectory);
 

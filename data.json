@@ -1,51 +1,51 @@
 {
 	"projects": [
 		{
-			"id": 0,
-			"project_name": "Random Quote Generator",
-			"description": "a generator of random quotes",
+			"id": "0",
+			"project_name": "Random Quotes",
+			"description": "A generator of random quotes",
 			"technologies": ["HTML", "CSS", "JavaScript"],
 			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-01",
 			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-01",
-			"image_urls": ["../images/quotes1_550x550.png", "../images/quotes2_1200x676.png"]
+			"image_urls": ["../images/project1_1.png", "../images/project1_2.png"]
 		},
 		{
-			"id": 1,
-			"project_name": "",
-			"description": "",
-			"technologies": ["", ""],
-			"live_link": "",
-			"github_link": "",
-			"image_urls": ["", ""]
+			"id": "1",
+			"project_name": "Student List",
+			"description": "List pagination and filtering",
+			"technologies": ["HTML", "CSS", "JavaScript"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-02",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-02",
+			"image_urls": ["../images/project2_1.png", "../images/project2_2.png"]
 		},
 		{
-			"id": 2,
-			"project_name": "",
-			"description": "",
-			"technologies": ["", ""],
-			"live_link": "",
-			"github_link": "",
-			"image_urls": ["", ""]
+			"id": "2",
+			"project_name": "Full Stack Conf Registration",
+			"description": "Interactive form",
+			"technologies": ["HTML", "CSS", "JavaScript"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-03",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-03",
+			"image_urls": ["../images/project3_1.png", "../images/project3_2.png", "../images/project3_3.png"]
 		
 		},
 		{
-			"id": 3,
-			"project_name": "",
-			"description": "",
-			"technologies": ["", ""],
-			"live_link": "",
-			"github_link": "",
-			"image_urls": ["", ""]
+			"id": "3",
+			"project_name": "Phrase Hunter",
+			"description": "Object-Oriented Programming Gameshow App",
+			"technologies": ["HTML", "CSS", "JavaScript"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-04",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-04",
+			"image_urls": ["../images/project4_1.png", "../images/project4_2.png", "../images/project4_3.png", "../images/project4_4.png", "../images/project4_5.png"]
 		
 		},
 		{
-			"id": 4,
-			"project_name": "",
-			"description": "",
-			"technologies": ["", ""],
-			"live_link": "",
-			"github_link": "",
-			"image_urls": ["", ""]
+			"id": "4",
+			"project_name": "Awesome Startup Employee Directory",
+			"description": "Public API requests",
+			"technologies": ["HTML", "CSS", "JavaScript"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-05",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-05",
+			"image_urls": ["../images/project5_1.png", "../images/project5_2.png", "../images/project5_3.png"]
 		
 		}
 	]

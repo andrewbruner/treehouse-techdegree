@@ -311,7 +311,7 @@ const getUsers = async url => {
 };
 
 const initiateDirectory = () => {
-	getUsers('https://randomtser.me/api?nat=us&results=12')
+	getUsers('https://randomuser.me/api?nat=us&results=12')
 		.then(data => {
 			// append searchbar
 			appendSearchbar();

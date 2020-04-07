@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/andrewbruner/fsjs-techdegree-unit-06/issues"
   },
-  "homepage": "https://github.com/andrewbruner/fsjs-techdegree-unit-06#readme"
+  "homepage": "https://github.com/andrewbruner/fsjs-techdegree-unit-06#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

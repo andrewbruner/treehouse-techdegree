@@ -1,0 +1,52 @@
+{
+	"projects": [
+		{
+			"id": 0,
+			"project_name": "Random Quote Generator",
+			"description": "a generator of random quotes",
+			"technologies": ["HTML", "CSS", "JavaScript"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-01",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-01",
+			"image_urls": ["../images/quotes1_550x550.png", "../images/quotes2_1200x676.png"]
+		},
+		{
+			"id": 1,
+			"project_name": "",
+			"description": "",
+			"technologies": ["", ""],
+			"live_link": "",
+			"github_link": "",
+			"image_urls": ["", ""]
+		},
+		{
+			"id": 2,
+			"project_name": "",
+			"description": "",
+			"technologies": ["", ""],
+			"live_link": "",
+			"github_link": "",
+			"image_urls": ["", ""]
+		
+		},
+		{
+			"id": 3,
+			"project_name": "",
+			"description": "",
+			"technologies": ["", ""],
+			"live_link": "",
+			"github_link": "",
+			"image_urls": ["", ""]
+		
+		},
+		{
+			"id": 4,
+			"project_name": "",
+			"description": "",
+			"technologies": ["", ""],
+			"live_link": "",
+			"github_link": "",
+			"image_urls": ["", ""]
+		
+		}
+	]
+}

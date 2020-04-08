@@ -28,7 +28,7 @@ app.use('/static', express.static('public'));
 
 // index route
 app.get('/', (req, res) => {
-
+	res.render('views/index', { projects: data.projects });
 });
 
 // about route

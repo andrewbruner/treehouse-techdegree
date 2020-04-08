@@ -43,6 +43,12 @@ app.get('/project/:id', (req, res) => {
 	res.render('project', { id: req.params.id, projects: data.projects });
 });
 
+// nonexistent route (404)
+// note to self: keep at bottom of call stack
+app.use((req, res) => {
+	res.status(404).send('Sorry, the page you\'re looking for doesn\'t exist.');
+});
+
 
 
 

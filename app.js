@@ -37,6 +37,6 @@ app.get('/about', (req, res) => {
 });
 
 // dynamic projects route
-app.get('/projects', (req, res) => {
-
+app.get('/project/:id', (req, res) => {
+	res.render('project', { id: req.params.id, projects: data.projects });
 });

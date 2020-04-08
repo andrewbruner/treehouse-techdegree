@@ -10,3 +10,6 @@ const path = require('path');
 
 // set 'view engine' to 'pug'
 app.set('view engine', 'pug');
+
+// set up static files
+app.use('/static', express.static('public'));

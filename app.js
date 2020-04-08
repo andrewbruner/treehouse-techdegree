@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 
 // about route
 app.get('/about', (req, res) => {
-
+	res.render('views/about');
 });
 
 // dynamic projects route

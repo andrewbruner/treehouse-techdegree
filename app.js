@@ -40,3 +40,13 @@ app.get('/about', (req, res) => {
 app.get('/project/:id', (req, res) => {
 	res.render('project', { id: req.params.id, projects: data.projects });
 });
+
+
+
+
+// LISTENER
+
+// start server on port 3000
+app.listen(3000, () => {
+	console.log('Server is listening on port 3000...');
+});

@@ -13,13 +13,21 @@ const path = require('path');
 
 
 
-// MIDDLEWARE //
+// SETTINGS
 
 // set 'view engine' to 'pug'
 app.set('view engine', 'pug');
 
 // set up static files
+// HOW CAN I USE THE PATH MODULE ABOVE IN THIS METHOD?
 app.use('/static', express.static('public'));
+
+// use this middleware to test for general error handling...
+//app.use((req, res, next) => {
+//	const err = new Error('Something went wrong!');
+//	err.status = 500;
+//	next(err);
+//});
 
 
 
@@ -43,10 +51,24 @@ app.get('/project/:id', (req, res) => {
 	res.render('project', { id: req.params.id, projects: data.projects });
 });
 
+
+
+
+// NOT FOUND AND ERROR HANDLING
+
 // nonexistent route (404)
-// note to self: keep at bottom of call stack
-app.use((req, res) => {
-	res.status(404).send('Sorry, the page you\'re looking for doesn\'t exist.');
+// creates new error with message and status and passes to error handler
+// note to self: keep at bottom of call stack, just before error handler
+app.use((req, res, next) => {
+	//res.status(404).send('<h1>Sorry, the page you\'re looking for doesn\'t exist.</h1>');
+	const err = new Error('Not Found');
+	err.status = 404;
+	next(err);
+});
+
+// error handler
+app.use((err, req, res, next) => {
+	res.send(`<h1>${err.message}</h1><h2>${err.status}</h2><pre>${err.stack}</pre>`);
 });
 
 

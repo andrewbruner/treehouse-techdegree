@@ -25,18 +25,20 @@ app.use('/static', express.static('public'));
 
 
 // ROUTES //
+// note to self: res.render() begins looking in views folder by default
 
 // index route
 app.get('/', (req, res) => {
-	res.render('views/index', { projects: data.projects });
+	res.render('index', { projects: data.projects });
 });
 
 // about route
 app.get('/about', (req, res) => {
-	res.render('views/about');
+	res.render('about');
 });
 
 // dynamic projects route
+// note to self: parameter variables are declared with ':' (:variablename) and accessible through 'req.params.variablename'
 app.get('/project/:id', (req, res) => {
 	res.render('project', { id: req.params.id, projects: data.projects });
 });

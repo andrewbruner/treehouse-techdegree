@@ -47,7 +47,7 @@ app.get('/about', (req, res) => {
 
 // dynamic projects route
 // note to self: parameter variables are declared with ':' (:variablename) and accessible through 'req.params.variablename'
-app.get('/project/:id', (req, res) => {
+app.get('/project:id', (req, res) => {
 	res.render('project', { id: req.params.id, projects: data.projects });
 });
 

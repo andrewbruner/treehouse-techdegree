@@ -68,7 +68,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-	res.send(`<h1>${err.message}</h1><h2>${err.status}</h2><pre>${err.stack}</pre>`);
+	res.render('error', { error: err });
 });
 
 

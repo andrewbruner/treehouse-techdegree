@@ -19,7 +19,7 @@ const showElement = element => {
 const gallery = select('#gallery');
 
 // global array declaration
-let masterUsers = []
+let masterUsers = [];
 let users = [];
 let currentUserIndex = null;
 
@@ -94,7 +94,7 @@ const handleModalBtnClick = (event) => {
 		address.textContent = `${currentUser.location.street.number} ${currentUser.location.street.name}, ${currentUser.location.city}, ${currentUser.location.state} ${currentUser.location.postcode}`;
 		const birthdate = new Date(currentUser.dob.date);
 		birthday.textContent = `${birthdate.getMonth() + 1}/${birthdate.getDate()}/${birthdate.getFullYear()}`;
-	}
+	};
 	// if close button click or escape key press...
 	if (event.target.id === 'modal-close-btn' || event.target.textContent === 'X' || event.key === 'Esc' || event.key === 'Escape') {
 		// remove modal from document
@@ -150,8 +150,7 @@ const appendModal = (user, index) => {
 			closeBtn.classList.add('modal-close-btn');
 			closeBtn.addEventListener('click', handleModalBtnClick);
 				// create/append close button's strong tag
-				const strong = document.createElement('strong');
-				strong.textContent = 'X';
+					strong.textContent = 'X';
 				closeBtn.appendChild(strong);
 			// append close button
 			modal.appendChild(closeBtn);

@@ -150,7 +150,8 @@ const appendModal = (user, index) => {
 			closeBtn.classList.add('modal-close-btn');
 			closeBtn.addEventListener('click', handleModalBtnClick);
 				// create/append close button's strong tag
-					strong.textContent = 'X';
+				const strong = document.createElement('strong')
+				strong.textContent = 'X';
 				closeBtn.appendChild(strong);
 			// append close button
 			modal.appendChild(closeBtn);

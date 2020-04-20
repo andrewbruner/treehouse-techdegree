@@ -148,3 +148,34 @@ a:hover{
 .portfolio-bio{
     line-height: 25px;
 }
+
+/* CUSTOM STYLES */
+
+/* 1) FONT */
+/* Change all fonts to 'monospace' */
+* {
+  font-family: monospace !important;
+}
+
+/* 2) BACKGROUND COLOR */
+/* Change main background to 'gold' */
+body {
+  background-color: gold !important;
+}
+/* Change navigation borders to contrast with background */
+.portfolio-breadcrumb,
+.portfolio-intro p {
+  border-bottom-color: #121213;
+}
+
+/* 3) ANIMATTION */
+/* Declare animation for .off-canvas-content (fade-in) */
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+/* Assing animation to .off-canvas-content */
+.off-canvas-content {
+  animation-name: fade-in;
+  animation-duration: 1s;
+}

@@ -1,4 +1,6 @@
-// DEPENDENCIES
+//////////////////
+// DEPENDENCIES //
+//////////////////
 
 // import express module and set up main app
 const express = require('express');
@@ -11,29 +13,35 @@ const data = require('./data.json');
 const path = require('path');
 
 
-
-
-// SETTINGS
+//////////////
+// SETTINGS //
+//////////////
 
 // set 'view engine' to 'pug'
 app.set('view engine', 'pug');
 
 // set up static files
-// HOW CAN I USE THE PATH MODULE ABOVE IN THIS METHOD?
 app.use('/static', express.static('public'));
 
+
+/////////////
+// TESTING //
+/////////////
+
 // use this middleware to test for general error handling...
-//app.use((req, res, next) => {
-//	const err = new Error('Something went wrong!');
-//	err.status = 500;
-//	next(err);
-//});
+// app.use((req, res, next) => {
+// 	const err = new Error('Something went wrong!');
+// 	err.status = 500;
+// 	next(err);
+// });
 
 
+/////////////
+// ROUTING //
+/////////////
+// note to self: res.render() begins looking in 'views' folder by default
 
-
-// ROUTES //
-// note to self: res.render() begins looking in views folder by default
+// BASIC ROUTES
 
 // index route
 app.get('/', (req, res) => {
@@ -47,34 +55,40 @@ app.get('/about', (req, res) => {
 
 // dynamic projects route
 // note to self: parameter variables are declared with ':' (:variablename) and accessible through 'req.params.variablename'
-app.get('/project:id', (req, res) => {
-	res.render('project', { id: req.params.id, projects: data.projects });
+app.get('/project:id', (req, res, next) => {
+	// if :id does not line up with an existing project index...
+	if (!data.projects[req.params.id]) {
+		// send 404 to error handler
+		const err = new Error('Not Found');
+		err.status = 404;
+		next(err);
+	// else render project template
+	} else {
+		res.render('project', { id: req.params.id, projects: data.projects });
+	}
 });
-
-
-
 
 // NOT FOUND AND ERROR HANDLING
 
 // nonexistent route (404)
-// creates new error with message and status and passes to error handler
 // note to self: keep at bottom of call stack, just before error handler
 app.use((req, res, next) => {
-	//res.status(404).send('<h1>Sorry, the page you\'re looking for doesn\'t exist.</h1>');
 	const err = new Error('Not Found');
 	err.status = 404;
-	next(err);
+	console.error(err);
+	res.render('error', { error: err })
 });
 
 // error handler
 app.use((err, req, res, next) => {
+	console.error(err);
 	res.render('error', { error: err });
 });
 
 
-
-
-// LISTENER
+///////////////
+// LISTENING //
+///////////////
 
 // start server on port 3000
 app.listen(3000, () => {

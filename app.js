@@ -47,8 +47,14 @@ app.get('/about', (req, res) => {
 
 // dynamic projects route
 // note to self: parameter variables are declared with ':' (:variablename) and accessible through 'req.params.variablename'
-app.get('/project:id', (req, res) => {
-	res.render('project', { id: req.params.id, projects: data.projects });
+app.get('/project:id', (req, res, next) => {
+	if (!data.projects[req.params.id]) {
+		const err = new Error('Not Found');
+		err.status = 404;
+		next(err);
+	} else {
+		res.render('project', { id: req.params.id, projects: data.projects });
+	}
 });
 
 
@@ -60,7 +66,6 @@ app.get('/project:id', (req, res) => {
 // creates new error with message and status and passes to error handler
 // note to self: keep at bottom of call stack, just before error handler
 app.use((req, res, next) => {
-	//res.status(404).send('<h1>Sorry, the page you\'re looking for doesn\'t exist.</h1>');
 	const err = new Error('Not Found');
 	err.status = 404;
 	next(err);

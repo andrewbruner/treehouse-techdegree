@@ -8,14 +8,17 @@ import PhotoContainer from './components/PhotoContainer';
 
 class App extends Component {
   state = {
-    photos: []
+    photos: {
+      lions: [],
+      tigers: [],
+      bears: [],
+      search: []
+    }
   }
 
-  searchTerm = 'sunsets'
-
-  componentDidMount() {
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${this.searchTerm}&per_page=24&format=json&nojsoncallback=1`)
-      .then(res => res.json())
+  searchFor = searchTerm => {
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${searchTerm}&per_page=24&format=json&nojsoncallback=1`)
+      .then(response => response.json())
       .then(data => {
         const photos = data.photos.photo;
         const pics = [];
@@ -28,9 +31,17 @@ class App extends Component {
           pics.push(pic);
         });
         this.setState(prevState => {
-          return { photos: pics }
-        })
+            const photos = { ...prevState.photos };
+            photos[searchTerm] = pics;
+          return { photos };
+        });
       });
+  }
+
+  componentDidMount() {
+    this.searchFor('lions');
+    this.searchFor('tigers');
+    this.searchFor('bears');
   }
   
   render() {
@@ -38,7 +49,7 @@ class App extends Component {
       <div className="container">
         <SearchForm />
         <MainNav />
-        <PhotoContainer />
+        {/*<PhotoContainer />*/}
       </div>
     );
   }

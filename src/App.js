@@ -1,6 +1,7 @@
 import React from 'react';
 //import './App.css';
 import './css/index.css'
+import apiKey from './config.js'
 
 import SearchForm from './components/SearchForm';
 import MainNav from './components/MainNav';

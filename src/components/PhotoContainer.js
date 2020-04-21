@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
+import Photo from './Photo';
+
 class PhotoContainer extends Component {
   state = {
-    
+
   }
 
   render() {
@@ -10,7 +12,7 @@ class PhotoContainer extends Component {
       <div className="photo-container">
         <h2>Results</h2>
         <ul>
-
+          <Photo />
         </ul>
       </div>
     );

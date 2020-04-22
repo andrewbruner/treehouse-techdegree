@@ -61,13 +61,13 @@ class App extends Component {
 
           </Route>
           <Route path="/coffee">
-            <PhotoContainer photos={this.state.photos.coffee}/>
+            <PhotoContainer title="Coffee" photos={this.state.photos.coffee}/>
           </Route>
           <Route path="/books">
-            <PhotoContainer photos={this.state.photos.books}/>
+            <PhotoContainer title="Books" photos={this.state.photos.books}/>
           </Route>
           <Route path="/computers">
-            <PhotoContainer photos={this.state.photos.computers}/>
+            <PhotoContainer title="Computers" photos={this.state.photos.computers}/>
           </Route>
         </Switch>
       </BrowserRouter>

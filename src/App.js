@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './css/index.css'
 import apiKey from './config.js'
 
@@ -7,23 +8,27 @@ import MainNav from './components/MainNav';
 import PhotoContainer from './components/PhotoContainer';
 
 class App extends Component {
+
   state = {
     photos: {
-      lions: [],
-      tigers: [],
-      bears: [],
+      coffee: [],
+      books: [],
+      computers: [],
       search: []
     }
   }
 
   searchFor = searchTerm => {
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${searchTerm}&per_page=24&format=json&nojsoncallback=1`)
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${searchTerm}&per_page=24&sort=relevance&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(data => {
         const photos = data.photos.photo;
         const pics = [];
+        let key = 1;
         photos.forEach(photo => {
           const pic = {};
+          pic.key = key;
+          key++;
           pic.farm = photo.farm;
           pic.server = photo.server;
           pic.id = photo.id;
@@ -39,22 +44,35 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.searchFor('lions');
-    this.searchFor('tigers');
-    this.searchFor('bears');
+    this.searchFor('coffee');
+    this.searchFor('books');
+    this.searchFor('computers');
   }
   
   render() {
     return (
-      <div className="container">
-        <SearchForm />
-        <MainNav />
-        {/*<PhotoContainer />*/}
-      </div>
+      <BrowserRouter>
+        <div className="container">
+          <SearchForm />
+          <MainNav />
+        </div>
+        <Switch>
+          <Route exact path="/">
+
+          </Route>
+          <Route path="/coffee">
+            <PhotoContainer photos={this.state.photos.coffee}/>
+          </Route>
+          <Route path="/books">
+            <PhotoContainer photos={this.state.photos.books}/>
+          </Route>
+          <Route path="/computers">
+            <PhotoContainer photos={this.state.photos.computers}/>
+          </Route>
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
 
 export default App;
-
-// https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5fd1f7388e03cce8d1b7d3ffbc6872ec&tags=sunsets&per_page=&format=json&nojsoncallback=1

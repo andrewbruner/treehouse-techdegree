@@ -12,7 +12,11 @@ class PhotoContainer extends Component {
       <div className="photo-container">
         <h2>Results</h2>
         <ul>
-          <Photo />
+          {this.props.photos.map(photo => {
+            return (
+              <Photo key={photo.key} photo={photo} />
+            );
+          })}
         </ul>
       </div>
     );

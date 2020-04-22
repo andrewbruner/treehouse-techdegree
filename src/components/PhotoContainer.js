@@ -20,6 +20,7 @@ class PhotoContainer extends Component {
         </ul>
       </div>
     );
+
   }
 }
 

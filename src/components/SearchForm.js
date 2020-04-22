@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 class SearchForm extends Component {
 
@@ -11,13 +12,16 @@ class SearchForm extends Component {
     this.setState(prevState => ({ value: event.target.value }));
   };
 
-  handleSearch = () => {
-
+  handleSearch = event => {
+    event.preventDefault();
+    this.props.searchFor(this.state.value);
+    this.props.history.push(`/search/${this.state.value}`);
+    this.setState(prevState => ({ value: '' }));
   }
 
   render() {
     return (
-      <form className="search-form">
+      <form className="search-form" onSubmit={this.handleSearch}>
         <input type="search" name="search" placeholder="Search" required value={this.state.value} onChange={this.handleChange} />
         <button type="submit" className="search-button">
           <svg fill="#fff" height="24" viewBox="0 0 23 23" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -30,4 +34,4 @@ class SearchForm extends Component {
   }
 }
 
-export default SearchForm;
+export default withRouter(SearchForm);

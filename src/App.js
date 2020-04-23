@@ -12,65 +12,25 @@ import PhotoContainer from './components/PhotoContainer';
 class App extends Component {
 
   state = {
-    readyToSearch: false,
-    photos: { search: [], searchTerm: '' }
+    initialSearchTerms: ['coffee', 'books', 'computers']
   }
 
   searchFor = searchTerm => {
-    if (!this.state.readyToSearch) {
-      fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${searchTerm}&per_page=24&sort=relevance&format=json&nojsoncallback=1`)
-        .then(response => response.json())
-        .then(data => {
-          const photos = data.photos.photo;
-          const pics = [];
-          let key = 1;
-          photos.forEach(photo => {
-            const pic = {};
-            pic.key = key;
-            key++;
-            pic.farm = photo.farm;
-            pic.server = photo.server;
-            pic.id = photo.id;
-            pic.secret = photo.secret;
-            pics.push(pic);
-          });
-          this.setState(prevState => {
-              const photos = { ...prevState.photos };
-              photos[searchTerm] = pics;
-            return { photos };
-          });
-        });
-        this.setState(prevState => ({ readyToSearch: true}));
-    } else {
-      fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${searchTerm}&per_page=24&sort=relevance&format=json&nojsoncallback=1`)
-        .then(response => response.json())
-        .then(data => {
-          const photos = data.photos.photo;
-          const pics = [];
-          let key = 1;
-          photos.forEach(photo => {
-            const pic = {};
-            pic.key = key;
-            key++;
-            pic.farm = photo.farm;
-            pic.server = photo.server;
-            pic.id = photo.id;
-            pic.secret = photo.secret;
-            pics.push(pic);
-          });
-          this.setState(prevState => {
-              const photos = { ...prevState.photos };
-              photos.search = pics;
-            return { photos, searchTerm };
-          });
-        });
-    }
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${searchTerm}&per_page=24&sort=relevance&format=json&nojsoncallback=1`)
+      .then(response => response.json())
+      .then(data => {
+        if ( searchTerm === this.state.initialSearchTerms[0]
+          || searchTerm === this.state.initialSearchTerms[1]
+          || searchTerm === this.state.initialSearchTerms[2] ) {
+          this.setState(prevState => ({ [searchTerm]: data.photos.photo }) );
+        } else {
+          this.setState(prevState => ({ search: { [searchTerm]: data.photos.photo } }) );
+        }
+      });
   }
 
   componentDidMount() {
-    this.searchFor('coffee');
-    this.searchFor('books');
-    this.searchFor('computers');
+    this.state.initialSearchTerms.forEach( term => this.searchFor(term) );
   }
   
   render() {

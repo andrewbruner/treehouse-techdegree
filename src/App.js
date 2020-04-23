@@ -12,25 +12,25 @@ import PhotoContainer from './components/PhotoContainer';
 class App extends Component {
 
   state = {
-    initialSearchTerms: ['coffee', 'books', 'computers']
+    initialTerms: ['coffee', 'books', 'computers']
   }
 
-  searchFor = searchTerm => {
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${searchTerm}&per_page=24&sort=relevance&format=json&nojsoncallback=1`)
+  searchFor = term => {
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${term}&per_page=24&sort=relevance&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(data => {
-        if ( searchTerm === this.state.initialSearchTerms[0]
-          || searchTerm === this.state.initialSearchTerms[1]
-          || searchTerm === this.state.initialSearchTerms[2] ) {
-          this.setState(prevState => ({ [searchTerm]: data.photos.photo }) );
+        if ( term === this.state.initialTerms[0]
+          || term === this.state.initialTerms[1]
+          || term === this.state.initialTerms[2] ) {
+          this.setState(prevState => ({ [term]: data.photos.photo }) );
         } else {
-          this.setState(prevState => ({ search: { [searchTerm]: data.photos.photo } }) );
+          this.setState(prevState => ({ search: { term, [term]: data.photos.photo } }) );
         }
       });
   }
 
   componentDidMount() {
-    this.state.initialSearchTerms.forEach( term => this.searchFor(term) );
+    this.state.initialTerms.forEach( term => this.searchFor(term) );
   }
   
   render() {
@@ -44,13 +44,13 @@ class App extends Component {
           <Route exact path="/">
 
           </Route>
-          {this.state.initialSearchTerms.map(term => (
+          {this.state.initialTerms.map(term => (
             <Route path={`/${term}`}>
-              <PhotoContainer title={term.charAt(0).toUpperCase() + term.slice(1)} photos={this.state.photos[term]} />
+              <PhotoContainer title={term.toUpperCase()} photos={this.state[term]} />
             </Route>
           ))}
-          <Route path={`/search/${this.state.searchTerm}`}>
-            <PhotoContainer title={this.state.searchTerm} photos={this.state.photos.search} />
+          <Route path={`/search/${this.state.search.term}`}>
+            <PhotoContainer title={this.state.search.term.toUpperCase()} photos={this.state.search[this.state.search.term]} />
           </Route>
         </Switch>
       </BrowserRouter>

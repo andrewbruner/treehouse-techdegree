@@ -44,15 +44,11 @@ class App extends Component {
           <Route exact path="/">
 
           </Route>
-          <Route path="/coffee">
-            <PhotoContainer title="Coffee" photos={this.state.photos.coffee} />
-          </Route>
-          <Route path="/books">
-            <PhotoContainer title="Books" photos={this.state.photos.books} />
-          </Route>
-          <Route path="/computers">
-            <PhotoContainer title="Computers" photos={this.state.photos.computers} />
-          </Route>
+          {this.state.initialSearchTerms.map(term => (
+            <Route path={`/${term}`}>
+              <PhotoContainer title={term.charAt(0).toUpperCase() + term.slice(1)} photos={this.state.photos[term]} />
+            </Route>
+          ))}
           <Route path={`/search/${this.state.searchTerm}`}>
             <PhotoContainer title={this.state.searchTerm} photos={this.state.photos.search} />
           </Route>

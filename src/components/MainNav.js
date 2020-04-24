@@ -1,12 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const MainNav = () => (
+const MainNav = (props) => (
   <nav className="main-nav">
     <ul>
-      <li><NavLink to="/coffee">Coffee</NavLink></li>
-      <li><NavLink to="/books">Books</NavLink></li>
-      <li><NavLink to="/computers">Computers</NavLink></li>
+      {props.terms.map( (term, index) => (
+        <li key={index}>
+          <NavLink to={`/${term}`}>
+            {`${term.charAt(0).toUpperCase()}${term.slice(1)}`}
+          </NavLink>
+        </li>
+      ))}
     </ul>
   </nav>
 );

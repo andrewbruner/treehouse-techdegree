@@ -19,11 +19,6 @@ class SearchForm extends Component {
     this.setState(prevState => ({ searched: true }));
   }
 
-
- 
-
-  checkForSearch = () => this.state.searchSubmitted ? this.setState(prevState => ({ searchSubmitted: false, value: '' })) : null
-
   render = () => {
     return (
       <form className="search-form" onSubmit={this.handleSearch}>

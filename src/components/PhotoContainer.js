@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
+import Loading from './Loading';
 import Photo from './Photo';
 import NotFound from './NotFound';
+import PageNotFound from './PageNotFound';
 
 class PhotoContainer extends Component {
 
@@ -11,22 +13,20 @@ class PhotoContainer extends Component {
         <h2>{this.props.title.toUpperCase()}</h2>
         <ul>
           {
-            // If PhotoContainer has data...
-            this.props.data ? (
-              // And if data.length is greater than 0...
-              this.props.data.length > 0 ? (
-                // Render a Photo for each photo
-                this.props.data.map(photo => (
-                  <Photo key={photo.id} photo={photo} />
-                ))
-              // Else render SEARCH RESULTS not found
-              ) : (
-                <NotFound />
-              )
-            // Else render PAGE not found
-            ) : (
-              <h1>Page Not Found</h1>
-            )
+            // Is there data?
+            this.props.data
+              // Yes: Is state loading?
+              ? this.props.loading
+                // Yes: Render Loading
+                ? <Loading />
+                // No: Is data length greater than 0?
+                : this.props.data.length > 0
+                  // Yes: Render Photo components
+                  ? this.props.data.map(photo => <Photo key={photo.id} photo={photo} />)
+                  // No: Render NotFound
+                  : <NotFound />
+              // No: Render PageNotFound
+              : <PageNotFound />
           }
         </ul>
       </div>

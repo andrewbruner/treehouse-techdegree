@@ -1,3 +1,18 @@
+# React Gallery App
+
+## Peer Review Setup
+
+- Download files or clone repo
+- Create `config.js` file in `src` directory with the following code...
+```javascript
+const apiKey = 'YOUR-FLICKR-API-KEY-HERE'
+export default apiKey;
+```
+- Run `npm install` to download and install all dependencies including React and React Router
+- Run `npm start` to boot up React Gallery App!
+
+# Create React App Documentation
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

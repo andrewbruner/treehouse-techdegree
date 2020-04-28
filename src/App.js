@@ -31,12 +31,11 @@ class App extends Component {
       .then(response => response.json())
       .then(data => {
         if ( term === 'coffee' || term === 'books' || term === 'computers' ) {
-          this.setState({ [term]: data.photos.photo });
+          this.setState({ [term]: data.photos.photo, loading: false});
         } else {
-          this.setState({ searchTerm: term, search: data.photos.photo })
+          this.setState({ searchTerm: term, search: data.photos.photo, loading: false })
         }
-      })
-      .then(this.setState({ loading: false }));
+      });
   }
 
   // Search for Three Initial Terms when Main App Mounts

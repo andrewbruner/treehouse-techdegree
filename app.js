@@ -1,4 +1,4 @@
-const express = requre('express');
+const express = require('express');
 const app = express();
 
 const Sequelize = require('sequelize');
@@ -14,7 +14,7 @@ const sequelize = new Sequelize({
 (async () => {
   // Force sync all models
   await sequelize.sync({ force: true })
-
+  
   try {
 
   } catch (error) {

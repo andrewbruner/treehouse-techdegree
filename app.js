@@ -7,9 +7,9 @@ const express = require('express');
 const app = express();
 
 
-/* ---------- PUG TEMPLATING SETUP ---------- */
-app.set('view enging', 'pug');
-app.use(express.static('public'));
+/* ---------- PUG TEMPLATING / STATIC FILES SETUP ---------- */
+app.set('view engine', 'pug');
+app.use('/static', express.static('public'));
 
 
 /* ---------- SEQUELIZE ---------- */
@@ -32,48 +32,54 @@ app.get('/', async (req, res) => {
 });
 
 // Get All Books
-app.get('/books', async (req, res) => {
-  res.send('GET All Books');
+app.get('/books', (req, res) => {
+  res.render('index', {
+    pageTitle: 'Books',
+    books: [
+      { title: 'East of Eden', author: 'John Steinbeck', genre: 'fiction' },
+      { title: 'Moby-Dick', author: 'Herman Melville', genre: 'fiction', year: 1851 }
+    ]
+  });
   // Show full list of books
 });
 
 // Get New Book
-app.get('/books/new', async (req, res) => {
+app.get('/books/new', (req, res) => {
   res.send('GET New Book');
   // Show 'create new book' form
 });
 
 // Post New Book
-app.post('/books/new', async (req, res) => {
+app.post('/books/new', (req, res) => {
   // Post new book to database
 });
 
 // Get Book Detail
-app.get('/books/:id', async (req, res) => {
+app.get('/books/:id', (req, res) => {
   res.send('GET Book Detail');
   // Show 'book detail' form
 });
 
 // Post Book Detail
-app.post('/books/:id', async (req, res) => {
+app.post('/books/:id', (req, res) => {
   // Update book info in database
 });
 
 // Post Delete Book
-app.post('/books/:id/delete', async (req, res) => {
+app.post('/books/:id/delete', (req, res) => {
   // Delete book (irreversible)
 });
 
 // 404 Not Found
-app.use(async (req, res) => {
+app.use( (req, res) => {
   res.status(404).send('404 Not Found')
   // { Render 404 message }
 });
 
 // Error Handler
-app.use(async (err, req, res, next) => {
+app.use( (err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res/*.status(500)*/.send('Something broke!');
   // { Render error message }
 });
 

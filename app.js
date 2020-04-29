@@ -25,13 +25,41 @@ const sequelize = new Sequelize({
 
 
 /* ---------- ROUTES ---------- */
-app.get('/', async (req, res) => {});
-app.get('/books', async (req, res) => {});
-app.get('/books/new', async (req, res) => {});
-app.post('/books/new', async (req, res) => {});
-app.get('/books/:id', async (req, res) => {});
-app.post('/books/:id', async (req, res) => {});
-app.post('/books/:id/delete', async (req, res) => {});
+
+// Get Homepage (redirect to Get All Books)
+app.get('/', async (req, res) => {
+  res.redirect('/books');
+});
+
+// Get All Books
+app.get('/books', async (req, res) => {
+  // Show full list of books
+});
+
+// Get New Book
+app.get('/books/new', async (req, res) => {
+  // Show 'create new book' form
+});
+
+// Post New Book
+app.post('/books/new', async (req, res) => {
+  // Post new book to database
+});
+
+// Get Book Detail
+app.get('/books/:id', async (req, res) => {
+  // Show 'book detail' form
+});
+
+// Post Book Detail
+app.post('/books/:id', async (req, res) => {
+  // Update book info in database
+});
+
+// Post Delete Book
+app.post('/books/:id/delete', async (req, res) => {
+  // Delete book (irreversible)
+});
 
 
 /* ---------- INITIALIZATION IIFE ---------- */

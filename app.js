@@ -5,6 +5,28 @@ const sequelize = new Sequelize({
   storage: 'library.db'
 });
 
+class Book extends Sequelize.model {}
+Book.init({
+  title: {
+    type: Sequelize.STRING,
+    validate: {
+      notEmpty: {
+        msg: 'Title field is required'
+      }
+    }
+  },
+  author: {
+    type: Sequelize.STRING,
+    validate: {
+      notEmpty: {
+        msg: 'Author field is required'
+      }
+    }
+  },
+  genre: Sequelize.STRING,
+  year: Sequelize.INTEGER
+}, { sequelize });
+
 // async IIFE
 (async () => {
   try {

@@ -61,6 +61,13 @@ app.post('/books/:id/delete', async (req, res) => {
   // Delete book (irreversible)
 });
 
+// Error Handler
+app.use(async (err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+  // { Render error message }
+});
+
 
 /* ---------- INITIALIZATION IIFE ---------- */
 (async () => {

@@ -7,6 +7,11 @@ const express = require('express');
 const app = express();
 
 
+/* ---------- PUG TEMPLATING SETUP ---------- */
+app.set('view enging', 'pug');
+app.use(express.static('public'));
+
+
 /* ---------- SEQUELIZE ---------- */
 
 // Include Sequelize Module
@@ -47,7 +52,7 @@ app.post('/books/:id/delete', async (req, res) => {});
   } catch (error) {
     console.error('Unable to synchronize the database: ', error);
   }
-  
+
   // Initialize Server
   try {
     app.listen(3000, () => console.log('Server listening on port 3000...'));

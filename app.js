@@ -29,9 +29,11 @@ Book.init({
 
 // async IIFE
 (async () => {
+  // Force sync all models
+  await sequelize.sync({ force: true })
+
   try {
-    await sequelize.authenticate();
-    console.log('Connection to the database successful!');
+    
   } catch (error) {
     console.error('Error connecting to the database: ', error);
   }

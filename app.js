@@ -1,17 +1,25 @@
+/* ---------- EXPRESS ---------- */
+
 // Include Express Module
 const express = require('express');
+
 // Create Express Application
 const app = express();
 
+
+/* ---------- SEQUELIZE ---------- */
+
 // Include Sequelize Module
 const Sequelize = require('sequelize');
+
 // Set Up Database Connection
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: 'library.db'
 });
 
-// Routes
+
+/* ---------- ROUTES ---------- */
 app.get('/', async (req, res) => {});
 app.get('/books', async (req, res) => {});
 app.get('/books/new', async (req, res) => {});
@@ -20,8 +28,10 @@ app.get('/books/:id', async (req, res) => {});
 app.post('/books/:id', async (req, res) => {});
 app.post('/books/:id/delete', async (req, res) => {});
 
-// Initialization IIFE
+
+/* ---------- INITIALIZATION IIFE ---------- */
 (async () => {
+
   // Test Database Connection
   try {
     await sequelize.authenticate();
@@ -29,6 +39,7 @@ app.post('/books/:id/delete', async (req, res) => {});
   } catch (error) {
     console.error('Unable to connect to the database: ', error);
   }
+
   // Force-Sync All Database Models
   try {
     await sequelize.sync({ force: true });
@@ -36,6 +47,7 @@ app.post('/books/:id/delete', async (req, res) => {});
   } catch (error) {
     console.error('Unable to synchronize the database: ', error);
   }
+  
   // Initialize Server
   try {
     app.listen(3000, () => console.log('Server listening on port 3000...'));

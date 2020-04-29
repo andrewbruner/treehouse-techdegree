@@ -33,11 +33,13 @@ app.get('/', async (req, res) => {
 
 // Get All Books
 app.get('/books', async (req, res) => {
+  res.send('GET All Books');
   // Show full list of books
 });
 
 // Get New Book
 app.get('/books/new', async (req, res) => {
+  res.send('GET New Book');
   // Show 'create new book' form
 });
 
@@ -48,6 +50,7 @@ app.post('/books/new', async (req, res) => {
 
 // Get Book Detail
 app.get('/books/:id', async (req, res) => {
+  res.send('GET Book Detail');
   // Show 'book detail' form
 });
 
@@ -59,6 +62,12 @@ app.post('/books/:id', async (req, res) => {
 // Post Delete Book
 app.post('/books/:id/delete', async (req, res) => {
   // Delete book (irreversible)
+});
+
+// 404 Not Found
+app.use(async (req, res) => {
+  res.status(404).send('404 Not Found')
+  // { Render 404 message }
 });
 
 // Error Handler

@@ -23,8 +23,20 @@ const sequelize = new Sequelize({
   storage: 'library.db'
 });
 
+const Book = require('./models/book');
 
 /* ---------- ROUTES ---------- */
+
+// Helper Function
+const asyncHandler = cb => (
+  async (req, res, next) => {
+    try {
+      await cb(req, res, next);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  }
+);
 
 // Get Homepage (redirect to Get All Books)
 app.get('/', async (req, res) => {

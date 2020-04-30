@@ -57,13 +57,16 @@ app.get('/books', (req, res) => {
 
 // Get New Book
 app.get('/books/new', (req, res) => {
-  res.send('GET New Book');
-  // Show 'create new book' form
+  // Show 'Create New Book' Form
+  res.render('new-book');
 });
 
 // Post New Book
-app.post('/books/new', (req, res) => {
-  // Post new book to database
+app.post('/books/new', async (req, res) => {
+  // Post New Book to Database
+  const Book = await Book.create(req.body);
+  // Redirect to New Book Detail
+  res.redirect(`/books/${Book.id}`);
 });
 
 // Get Book Detail

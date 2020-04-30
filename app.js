@@ -71,8 +71,8 @@ app.post('/books/new', async (req, res) => {
 
 // Get Book Detail
 app.get('/books/:id', (req, res) => {
-  res.send('GET Book Detail');
-  // Show 'book detail' form
+  // Show 'Book Detail' Form
+  res.render('update-book');
 });
 
 // Post Book Detail

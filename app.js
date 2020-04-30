@@ -87,14 +87,14 @@ app.post('/books/:id/delete', (req, res) => {
 
 // 404 Not Found
 app.use( (req, res) => {
-  res.status(404).send('404 Not Found')
+  res.status(404).render('page-not-found')
   // { Render 404 message }
 });
 
 // Error Handler
 app.use( (err, req, res, next) => {
   console.error(err.stack);
-  res/*.status(500)*/.send('Something broke!');
+  res.status(500).render('error');
   // { Render error message }
 });
 

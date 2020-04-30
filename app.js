@@ -7,23 +7,24 @@ const express = require('express');
 const app = express();
 
 
-/* ---------- PUG TEMPLATING / STATIC FILES SETUP ---------- */
+/* ---------- CONFIGURATION ---------- */
+
+// Template Engine Configuration
 app.set('view engine', 'pug');
+
+// Static Files Hosting Configuration
 app.use('/static', express.static('public'));
 
+// Enable Access to Request Body
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-/* ---------- SEQUELIZE ---------- */
 
-// Include Sequelize Module
-const Sequelize = require('sequelize');
+/* ---------- DATABASE ---------- */
 
-// Set Up Database Connection
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: 'library.db'
-});
+const db = require('./models');
+const { Book } = db.models;
 
-const Book = require('./models/book');
 
 /* ---------- ROUTES ---------- */
 
@@ -32,70 +33,71 @@ const asyncHandler = cb => (
   async (req, res, next) => {
     try {
       await cb(req, res, next);
-    } catch (error) {
-      res.status(500).send(error);
+    } catch (err) {
+      console.error(err);
+      res.status(500).render('error');
     }
   }
 );
 
 // Get Homepage (redirect to Get All Books)
-app.get('/', async (req, res) => {
+app.get('/', asyncHandler(async (req, res) => {
   res.redirect('/books');
-});
+}));
 
 // Get All Books
-app.get('/books', (req, res) => {
-  res.render('index', {
-    pageTitle: 'Books',
-    books: [
-      { title: 'East of Eden', author: 'John Steinbeck', genre: 'fiction' },
-      { title: 'Moby-Dick', author: 'Herman Melville', genre: 'fiction', year: 1851 }
-    ]
-  });
-  // Show full list of books
-});
+app.get('/books', asyncHandler(async (req, res) => {
+  // Find All Books in Database
+  const books = await Book.findAll();
+  // Show Full List of Books
+  res.render('index', { title: 'Books', books: books });
+}));
 
 // Get New Book
-app.get('/books/new', (req, res) => {
+app.get('/books/new', asyncHandler(async (req, res) => {
   // Show 'Create New Book' Form
   res.render('new-book');
-});
+}));
 
 // Post New Book
-app.post('/books/new', async (req, res) => {
+app.post('/books/new', asyncHandler(async (req, res) => {
   // Post New Book to Database
-  const Book = await Book.create(req.body);
-  // Redirect to New Book Detail
-  res.redirect(`/books/${Book.id}`);
-});
+  const book = await Book.create(req.body);
+  // Redirect to Homepage
+  res.redirect('/books');
+}));
 
 // Get Book Detail
-app.get('/books/:id', (req, res) => {
+app.get('/books/:id', asyncHandler(async (req, res) => {
   // Show 'Book Detail' Form
   res.render('update-book');
-});
+}));
 
 // Post Book Detail
-app.post('/books/:id', (req, res) => {
+app.post('/books/:id', asyncHandler(async (req, res) => {
   // Update book info in database
-});
+
+  // Redirect to Homepage
+  res.redirect('/books');
+}));
 
 // Post Delete Book
-app.post('/books/:id/delete', (req, res) => {
-  // Delete book (irreversible)
-});
+app.post('/books/:id/delete', asyncHandler(async (req, res) => {
+  // Delete Book (irreversible)
+
+  // Redirect to Homepage
+  res.redirect('/books');
+}));
 
 // 404 Not Found
-app.use( (req, res) => {
+app.use( asyncHandler(async (req, res) => {
   res.status(404).render('page-not-found')
-  // { Render 404 message }
-});
+}));
 
 // Error Handler
 app.use( (err, req, res, next) => {
   console.error(err.stack);
   res.status(500).render('error');
-  // { Render error message }
 });
 
 
@@ -104,7 +106,7 @@ app.use( (err, req, res, next) => {
 
   // Test Database Connection
   try {
-    await sequelize.authenticate();
+    await db.sequelize.authenticate();
     console.log('Database connection has been established successfully.')
   } catch (error) {
     console.error('Unable to connect to the database: ', error);
@@ -112,7 +114,7 @@ app.use( (err, req, res, next) => {
 
   // Force-Sync All Database Models
   try {
-    await sequelize.sync({ force: true });
+    await db.sequelize.sync({ force: false });
     console.log('Database synchronized successfully.');
   } catch (error) {
     console.error('Unable to synchronize the database: ', error);

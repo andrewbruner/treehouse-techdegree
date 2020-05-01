@@ -100,8 +100,12 @@ app.post('/books/new', asyncHandler(async (req, res) => {
 app.get('/books/:id', asyncHandler(async (req, res) => {
   // Find Book in Database by Primary Key/Route Parameter
   const book = await Book.findByPk(req.params.id);
-  // Show 'Book Detail' Form
-  res.render('update-book', { title: book.title, book });
+  // If the Book ID Exists in Database...
+  book
+    // Show 'Book Detail' Form
+    ? res.render('update-book', { title: book.title, book })
+    // Else Render 404
+    : res.status(404).render('page-not-found')
 }));
 
 // Post Book Detail

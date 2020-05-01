@@ -7,11 +7,11 @@ Library Manager is a dynamic and intuitive application for managing any literary
 1) Download the Library Manager application from the [GitHub repository](https://github.com/andrewbruner/fsjs-techdegree-unit-08/archive/master.zip).
 
 2) In your machine's terminal, run the following command (You must have **Node.js** and **npm** installed):
-    ## `npm install`
+    ### `npm install`
     This will download and install all the project dependencies: Express, Pug, Sequelize and SQLite.
 
 3) Finally, run this last command:
-    ## `npm start`
+    ### `npm start`
     This syncs the `library.db` database and starts a server, listening on `port 3000` of your local environment
 
 ## Features

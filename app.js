@@ -107,7 +107,16 @@ app.get('/books/:id', asyncHandler(async (req, res) => {
 // Post Book Detail
 app.post('/books/:id', asyncHandler(async (req, res) => {
   // Update book info in database
-
+  await Book.update({
+    title: req.body.title,
+    author: req.body.author,
+    genre: req.body.genre,
+    year: req.body.year
+  },{
+    where: {
+      id: req.params.id
+    }
+  });
   // Redirect to Homepage
   res.redirect('/books');
 }));
@@ -115,7 +124,11 @@ app.post('/books/:id', asyncHandler(async (req, res) => {
 // Post Delete Book
 app.post('/books/:id/delete', asyncHandler(async (req, res) => {
   // Delete Book (irreversible)
-
+  Book.destroy({
+    where: {
+      id: req.params.id
+    }
+  });
   // Redirect to Homepage
   res.redirect('/books');
 }));

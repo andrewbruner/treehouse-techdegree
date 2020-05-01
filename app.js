@@ -56,7 +56,7 @@ app.get('/books', asyncHandler(async (req, res) => {
 // Get New Book
 app.get('/books/new', asyncHandler(async (req, res) => {
   // Show 'Create New Book' Form
-  res.render('new-book');
+  res.render('new-book', { title: 'New Book' });
 }));
 
 // Post New Book

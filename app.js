@@ -98,8 +98,10 @@ app.post('/books/new', asyncHandler(async (req, res) => {
 
 // Get Book Detail
 app.get('/books/:id', asyncHandler(async (req, res) => {
+  // Find Book in Database by Primary Key/Route Parameter
+  const book = await Book.findByPk(req.params.id);
   // Show 'Book Detail' Form
-  res.render('update-book');
+  res.render('update-book', { title: book.title, book });
 }));
 
 // Post Book Detail

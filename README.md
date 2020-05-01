@@ -12,7 +12,7 @@ Library Manager is a dynamic and intuitive application for managing any literary
 
 3) Finally, run this last command:
     ### `npm start`
-    This syncs the `library.db` database and starts a server, listening on `port 3000` of your local environment
+    This syncs the **library.db** database and starts a server, listening on **port 3000** of your local environment
 
 ## Features
 
@@ -22,11 +22,11 @@ Library Manager is a dynamic and intuitive application for managing any literary
 
 ### Search Collection
 
-- From the collection list, you may submit a searchterm  matching any part of a book's `title`, `author`, `genre` or `year` fields and see your matches displayed on the page.
+- From the collection list, you may submit a searchterm  matching any part of a book's **title**, **author**, **genre** or **year** fields and see your matches displayed on the page.
 
 ### Add a Book
 
-- Add a book to your collection (must include at least `title` and `author` details)
+- Add a book to your collection (must include at least **title** and **author** details)
 
 ### Modify a Book
 
@@ -34,4 +34,4 @@ Library Manager is a dynamic and intuitive application for managing any literary
 
 ### Delete a Book
 
-- `Warning:` Deleting a book entry is irreversible, but should you need to remove an item from your collection, you may do so from the Update Book form.
+- **Warning:** Deleting a book entry is irreversible, but should you need to remove an item from your collection, you may do so from the Update Book form.

@@ -46,11 +46,17 @@ app.get('/', asyncHandler(async (req, res) => {
 }));
 
 // Get All Books
-app.get('/books', asyncHandler(async (req, res) => {
+app.get('/books(:page)?', asyncHandler(async (req, res, next) => {
+  if (req.params.page && !/\d/.test(req.params.page)) {return next()}
   // Find All Books in Database
   const books = await Book.findAll();
-  // Show Full List of Books
-  res.render('index', { title: 'Books', books: books });
+  // Find Requested Page for Results
+  let page = '1';
+  if (req.params.page) {
+    page = req.params.page;
+  }
+  // Show Requested Page of Full List of Books
+  res.render('index', { title: 'Books', books, page });
 }));
 
 // Post All Books (Search Form)

@@ -53,6 +53,23 @@ app.get('/books', asyncHandler(async (req, res) => {
   res.render('index', { title: 'Books', books: books });
 }));
 
+// Post All Books (Search Form)
+app.post('/books', asyncHandler(async (req, res) => {
+  const searchTerm = req.body.search;
+  const { Op } = db.Sequelize;
+  const books = await Book.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.substring]: searchTerm } },
+        { author: { [Op.substring]: searchTerm } },
+        { genre: { [Op.substring]: searchTerm } },
+        { year: { [Op.substring]: searchTerm } },
+      ]
+    }
+  });
+  res.render('index', { title: 'Search Results', books: books, searchTerm });
+}));
+
 // Get New Book
 app.get('/books/new', asyncHandler(async (req, res) => {
   // Show 'Create New Book' Form

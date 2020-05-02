@@ -67,8 +67,7 @@ app.post('/books', asyncHandler(async (req, res) => {
       ]
     }
   });
-  console.log(books);
-  res.redirect('/books');
+  res.render('index', { title: 'Search Results', books: books, searchTerm });
 }));
 
 // Get New Book

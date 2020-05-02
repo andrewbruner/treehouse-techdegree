@@ -3,9 +3,14 @@ extends layout.pug
 block content
 
   body
-    h1 Books
+    if title === 'Books'
+      h1 Books
+    if title === 'Search Results'
+      h1 Search Results for "#{searchTerm}"
+      p
+        a.button(href='/books') Home
     form(method='post')
-      input#search(name='search' type='text' placeholder='search by title, author, genre or year...')
+      input#search(name='search' type='text' placeholder='search by title, author, genre or year...' style='margin:0')
       input(type='submit' value=`Search` style='margin-left:7px')
     p
       a.button(href='/books/new') Create New Book

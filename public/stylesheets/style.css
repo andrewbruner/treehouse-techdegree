@@ -95,3 +95,20 @@ input[type=text] {
 .error {
   color: rgb(236, 15, 15);
 }
+
+/* Custom Styles */
+
+a.currentPage {
+  margin: 5px;
+  background-color: #019875;
+  cursor: default;
+
+}
+  a.currentPage:hover {
+    background-color: #019875;
+  }
+
+a.otherPage {
+  margin: 5px;
+  background-color: #e7e7e7;
+}

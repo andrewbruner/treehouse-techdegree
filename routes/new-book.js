@@ -33,7 +33,7 @@ module.exports = (app, asyncHandler, Book) => {
           : error = { author: true }
         ),
         // Finally, render the new-book template with error local
-        res.render('new-book', { error })
+        res.render('new-book', { title: 'New Book', error, book: req.body })
       )
       // No: log error and render error template
       : (

@@ -6,30 +6,26 @@ module.exports = sequelize => {
   
   Course.init(
     {
-      userId: {
-        type: Sequelize.INTEGER
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
       },
       title: {
         type: Sequelize.STRING,
-        validate: {
-          notEmpty: {
-            msg: 'Title is required'
-          }
-        }
+        allowNull: false
       },
       description: {
         type: Sequelize.TEXT,
-        validate: {
-          notEmpty: {
-            msg: 'Description is required'
-          }
-        }
+        allowNull: false
       },
       estimatedTime: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true
       },
       materialsNeeded: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true
       }
     },
     {

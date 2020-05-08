@@ -14,18 +14,47 @@ module.exports = (app, asyncHandler, Book) => {
 
   // Post Book Detail
   app.post('/books/:id', asyncHandler(async (req, res) => {
-    // Update book info in database
-    await Book.update({
-      title: req.body.title,
-      author: req.body.author,
-      genre: req.body.genre,
-      year: req.body.year
-    },{
-      where: {
-        id: req.params.id
-      }
-    });
-    // Redirect to Homepage
-    res.redirect('/books');
+    try {
+      // Update book info in database
+      await Book.update({
+        title: req.body.title,
+        author: req.body.author,
+        genre: req.body.genre,
+        year: req.body.year
+      },{
+        where: {
+          id: req.params.id
+        }
+      });
+      // Redirect to Homepage
+      res.redirect('/books');
+    } catch (err) {
+      let error = { };
+      // Is the error a validation error?
+      err.name === 'SequelizeValidationError'
+      // Yes...
+      ? (
+        // Is there more than one error?
+        err.errors.length > 1
+        // Yes: Error locals is both
+        ? error = { title: true, author: true }
+        // No...
+        : (
+          // Is the error a title error?
+          err.errors[0].path === 'title'
+          // Yes: Error locals is title
+          ? error = { title: true }
+          // No: Error locals is author
+          : error = { author: true }
+        ),
+        // Finally, render the update-book template with error local
+        res.render('update-book', { title: req.body.title, error, book: req.body })
+      )
+      // No: log error and render error template
+      : (
+        console.error(err),
+        res.status(500).render('error')
+      );
+    }
   }));
 };

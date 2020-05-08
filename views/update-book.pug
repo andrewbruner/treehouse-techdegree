@@ -5,6 +5,14 @@ block content
   body
     h1 Update Book
     form(method='post')
+      if error
+        h2.error Oooops!
+        ul.error
+          if error.title
+            li Title is required
+          if error.author
+            li Author is required
+        </ul>
       p
         label(for='title') Title
         input#title(name='title' type='text' value=`${book.title}`)

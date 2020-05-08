@@ -14,11 +14,9 @@ const app = express();
 app.use(morgan('dev'));
 
 // setup database connection
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './fsjstd-restapi.db'
-});
+const db = require('./models');
+const { Users } = db.models;
+const { Courses } = db.models;
 
 // TODO setup your api routes here
 
@@ -49,7 +47,7 @@ app.use((err, req, res, next) => {
 });
 
 // test database connection
-sequelize
+db.sequelize
   .authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');

@@ -14,11 +14,12 @@ const authenticateUser = (req, res, next) => {
 
   // Parse the user's credentials from the Authorization header.
   const credentials = auth(req);
+  console.log(credentials);
 
   // If the user's credentials are available...
   if (credentials) {
     // Attempt to retrieve the user from the database by their email address (i.e. the user's "key" from the Authorization header).
-    const user = User.findOne({
+    const user = User.findAll({
         where: {
             emailAddress: credentials.name
         }
@@ -27,7 +28,8 @@ const authenticateUser = (req, res, next) => {
     // If a user was successfully retrieved from the database...
     if (user) {
       // Use the bcryptjs npm package to compare the user's password (from the Authorization header) to the user's password that was retrieved from the database.
-      const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
+      authenticated = user.password === credentails.pass;
+      //const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
 
       // If the passwords match...
       if (authenticated) {

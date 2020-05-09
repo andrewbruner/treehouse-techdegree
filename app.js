@@ -5,6 +5,9 @@ const express = require('express');
 const morgan = require('morgan');
 const routes = require('./routes');
 const db = require('./models');
+const bcryptjs = require('bcryptjs');
+// use code below to hash a new user's password
+// user.password = bcryptjs.hashSync(user.password);
 // const auth = require('basic-auth');
 
 // variable to enable global error logging

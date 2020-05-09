@@ -5,7 +5,7 @@ const readUser = (router, authenticateUser, asyncHandler, User) => {
                 emailAddress: req.currentUser.emailAddress
             }
         });
-        res.json(users);
+        res.status(200).json(users);
     }));
 };
 

@@ -14,7 +14,6 @@ const authenticateUser = async (req, res, next) => {
 
   // Parse the user's credentials from the Authorization header.
   const credentials = auth(req);
-  console.log(credentials);
 
   // If the user's credentials are available...
   if (credentials) {
@@ -24,13 +23,11 @@ const authenticateUser = async (req, res, next) => {
             emailAddress: credentials.name
         }
     });
-    console.log(user);
 
     // If a user was successfully retrieved from the database...
     if (user) {
       // Use the bcryptjs npm package to compare the user's password (from the Authorization header) to the user's password that was retrieved from the database.
-      authenticated = (user.password === credentials.pass);
-      //const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
+      const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
 
       // If the passwords match...
       if (authenticated) {
@@ -61,6 +58,7 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
+// async helper function
 const asyncHandler = cb => (
     async (req, res, next) => {
         try {
@@ -72,7 +70,7 @@ const asyncHandler = cb => (
 );
 
 readUser = require('./user/read-user')(router, authenticateUser, asyncHandler, User);
-createUser = require('./user/create-user');
+createUser = require('./user/create-user')(router, asyncHandler, User);
 readCourses = require('./course/read-courses');
 readCourse = require('./course/read-course');
 createCourse = require('./course/create-course');

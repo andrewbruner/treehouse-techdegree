@@ -9,7 +9,7 @@ const { User } = db.models;
 const { Course } = db.models;
 
 // authentication middleware
-const authenticateUser = (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
    let message = null;
 
   // Parse the user's credentials from the Authorization header.

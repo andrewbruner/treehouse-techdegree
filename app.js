@@ -5,6 +5,7 @@ const express = require('express');
 const morgan = require('morgan');
 const routes = require('./routes');
 const db = require('./models');
+// const auth = require('basic-auth');
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
@@ -19,30 +20,50 @@ app.unsubscribe(express.json());
 app.use(morgan('dev'));
 
 // authentication middleware
-const authenticateUser = (req, res, next) => {
-  // Parse the user's credentials from the Authorization header.
+// const authenticateUser = (req, res, next) => {
+//   let message = null;
 
-  // If the user's credentials are available...
-  // Attempt to retrieve the user from the data store
-  // by their username (i.e. the user's "key"
-  // from the Authorization header).
+//   // Parse the user's credentials from the Authorization header.
+//   const credentials = auth(req);
 
-  // If a user was successfully retrieved from the data store...
-  // Use the bcryptjs npm package to compare the user's password
-  // (from the Authorization header) to the user's password
-  // that was retrieved from the data store.
+//   // If the user's credentials are available...
+//   if (credentials) {
+//     // Attempt to retrieve the user from the data store by their username (i.e. the user's "key" from the Authorization header).
+//     const user = users.find(u => u.username === credentials.name);
 
-  // If the passwords match...
-  // Then store the retrieved user object on the request object
-  // so any middleware functions that follow this middleware function
-  // will have access to the user's information.
+//     // If a user was successfully retrieved from the data store...
+//     if (user) {
+//       // Use the bcryptjs npm package to compare the user's password (from the Authorization header) to the user's password that was retrieved from the data store.
+//       const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
 
-  // If user authentication failed...
-  // Return a response with a 401 Unauthorized HTTP status code.
+//       // If the passwords match...
+//       if (authenticated) {
+//         console.log(`Authentication successful for username: ${user.username}`);
 
-  // Or if user authentication succeeded...
-  // Call the next() method.
-};
+//         // Then store the retrieved user object on the request object so any middleware functions that follow this middleware function will have access to the user's information.
+//         req.currentUser = user;
+//       } else {
+//         message = `Authentication failure for username: ${user.username}`;
+//       }
+//     } else {
+//       message = `User not found for username: ${credentials.name}`;
+//     }
+//   } else {
+//     message = 'Auth header not found';
+//   }
+
+//   // If user authentication failed...
+//   if (message) {
+//     console.warn(message);
+
+//     // Return a response with a 401 Unauthorized HTTP status code.
+//     res.status(401).json({ message: 'Access Denied' });
+//   } else {
+//     // Or if user authentication succeeded...
+//     // Call the next() method.
+//     next();
+//   }
+// };
 
 // setup a friendly greeting for the root route
 app.get('/', (req, res) => {

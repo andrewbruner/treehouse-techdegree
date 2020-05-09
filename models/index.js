@@ -4,6 +4,9 @@ const sequelize = new Sequelize(
   {
     dialect: 'sqlite',
     storage: 'fsjstd-restapi.db',
+    define: {
+      timestamps: false
+    },
     logging: false
   }
 );

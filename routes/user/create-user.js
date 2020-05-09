@@ -4,7 +4,7 @@ const createUser = (router, asyncHandler, User) => {
         try {
             await User.create(req.body);
             console.log('user created!');
-            res.status(201).location('/');
+            res.status(201).location('/').end();
         } catch (err) {
             console.error('Yikes!', err);
             next(err)

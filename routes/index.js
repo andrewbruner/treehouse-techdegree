@@ -20,7 +20,7 @@ const authenticateUser = (req, res, next) => {
     // Attempt to retrieve the user from the database by their email address (i.e. the user's "key" from the Authorization header).
     const user = User.findOne({
         where: {
-            emailAddress: credentials.emailAddress
+            emailAddress: credentials.username
         }
     });
 

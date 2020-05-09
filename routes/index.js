@@ -64,13 +64,13 @@ const asyncHandler = cb => (
     }
 );
 
-readUser = require('./user/read-user')(router, asyncHandler, db, User, bcryptjs);
-createUser = require('./user/create-user')(router, asyncHandler, db, User, bcryptjs);
-readCourses = require('./course/read-courses')(router, asyncHandler, db, Course);
-readCourse = require('./course/read-course')(router, asyncHandler, db, Course);
-createCourse = require('./course/create-course')(router, asyncHandler, db, Course);
-updateCourse = require('./course/update-course')(router, asyncHandler, db, Course);
-deleteCourse = require('./course/delete-course')(router, asyncHandler, db, Course);
+readUser = require('./user/read-user');
+createUser = require('./user/create-user');
+readCourses = require('./course/read-courses');
+readCourse = require('./course/read-course');
+createCourse = require('./course/create-course');
+updateCourse = require('./course/update-course');
+deleteCourse = require('./course/delete-course');
 
 router.get('/users', asyncHandler(async (req, res) => {
     const users = await User.findAll();

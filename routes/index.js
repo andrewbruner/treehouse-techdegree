@@ -64,7 +64,7 @@ const asyncHandler = cb => (
     }
 );
 
-readUser = require('./user/read-user');
+readUser = require('./user/read-user')(router, asyncHandler, User);
 createUser = require('./user/create-user');
 readCourses = require('./course/read-courses');
 readCourse = require('./course/read-course');
@@ -72,10 +72,7 @@ createCourse = require('./course/create-course');
 updateCourse = require('./course/update-course');
 deleteCourse = require('./course/delete-course');
 
-router.get('/users', asyncHandler(async (req, res) => {
-    const users = await User.findAll();
-    res.json(users);
-}));
+
 
 router.get('/courses', asyncHandler(async (req, res) => {
     const courses = await Course.findAll();

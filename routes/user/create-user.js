@@ -4,7 +4,7 @@ app.use(express.json());
 
 const createUser = (router, asyncHandler, User) => {
     router.post('/users', asyncHandler(async (req, res) => {
-        console.log(req.body);
+        console.dir(req.body);
         await User.create(req.body);
         res.status(201).location('/');
     }));

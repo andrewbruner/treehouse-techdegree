@@ -24,6 +24,7 @@ const authenticateUser = (req, res, next) => {
             emailAddress: credentials.name
         }
     });
+    console.log(user);
 
     // If a user was successfully retrieved from the database...
     if (user) {

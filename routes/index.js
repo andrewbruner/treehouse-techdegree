@@ -28,7 +28,7 @@ const authenticateUser = (req, res, next) => {
     // If a user was successfully retrieved from the database...
     if (user) {
       // Use the bcryptjs npm package to compare the user's password (from the Authorization header) to the user's password that was retrieved from the database.
-      authenticated = user.password === credentials.pass;
+      authenticated = (user.password === credentials.pass);
       //const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
 
       // If the passwords match...
@@ -41,7 +41,7 @@ const authenticateUser = (req, res, next) => {
         message = `Authentication failure for email address: ${user.emailAddress}`;
       }
     } else {
-      message = `User not found for email address: ${credentials.emailAddress}`;
+      message = `User not found for email address: ${credentials.name}`;
     }
   } else {
     message = 'Auth header not found';

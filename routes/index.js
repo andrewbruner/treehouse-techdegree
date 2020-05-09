@@ -19,7 +19,7 @@ const authenticateUser = (req, res, next) => {
   // If the user's credentials are available...
   if (credentials) {
     // Attempt to retrieve the user from the database by their email address (i.e. the user's "key" from the Authorization header).
-    const user = User.findOne({
+    const user = await User.findOne({
         where: {
             emailAddress: credentials.name
         }

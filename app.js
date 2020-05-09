@@ -3,6 +3,7 @@
 // load modules
 const express = require('express');
 const morgan = require('morgan');
+const routes = require('./routes');
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
@@ -15,8 +16,10 @@ app.use(morgan('dev'));
 
 // setup database connection
 const db = require('./models');
-const { Users } = db.models;
-const { Courses } = db.models;
+
+// setup json response and /api routes
+app.unsubscribe(express.json());
+app.use('/api', routes);
 
 // TODO setup your api routes here
 

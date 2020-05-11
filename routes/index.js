@@ -71,11 +71,11 @@ const asyncHandler = cb => (
 
 readUser = require('./user/read-user')(router, authenticateUser, asyncHandler, User);
 createUser = require('./user/create-user')(router, asyncHandler, User);
-readCourses = require('./course/read-courses');
-readCourse = require('./course/read-course');
-createCourse = require('./course/create-course');
-updateCourse = require('./course/update-course');
-deleteCourse = require('./course/delete-course');
+readCourses = require('./course/read-courses')(router, asyncHandler, Course);
+readCourse = require('./course/read-course')(router, asyncHandler, Course);
+createCourse = require('./course/create-course')(router, asyncHandler, Course);
+updateCourse = require('./course/update-course')(router, asyncHandler, Course);
+deleteCourse = require('./course/delete-course')(router, asyncHandler, Course);
 
 
 

@@ -12,20 +12,16 @@ module.exports = sequelize => {
         autoIncrement: true
       },
       title: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
       },
       description: {
-        type: Sequelize.TEXT,
-        allowNull: false
+        type: Sequelize.TEXT
       },
       estimatedTime: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.STRING
       },
       materialsNeeded: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.STRING
       }
     },
     {
@@ -34,11 +30,7 @@ module.exports = sequelize => {
   );
 
   Course.associate = models => {
-    Course.belongsTo(models.User, {
-      foreignKey: {
-        allowNull: false
-      }
-    })
+    Course.belongsTo(models.User)
   };
 
   return Course;

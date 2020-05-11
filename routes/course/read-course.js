@@ -1,6 +1,6 @@
 const readCourse = (router, asyncHandler, Course) => {
     router.get('/courses/:id', asyncHandler(async (req, res) => {
-        const course = await Course.findAll({
+        const course = await Course.findOne({
             where: {
                 id: req.params.id
             }

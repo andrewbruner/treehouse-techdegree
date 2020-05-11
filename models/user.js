@@ -11,20 +11,16 @@ module.exports = sequelize => {
       autoIncrement: true
     },
     firstName: {
-      type: Sequelize.STRING,
-      allowNull: false
+      type: Sequelize.STRING
     },
     lastName: {
-      type: Sequelize.STRING,
-      allowNull: false
+      type: Sequelize.STRING
     },
     emailAddress: {
-      type: Sequelize.STRING,
-      allowNull: false
+      type: Sequelize.STRING
     },
     password: {
-      type: Sequelize.STRING,
-      allowNull: false
+      type: Sequelize.STRING
     }
   }, { sequelize });
 

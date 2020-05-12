@@ -74,8 +74,8 @@ createUser = require('./user/create-user')(router, asyncHandler, bcryptjs, User)
 readCourses = require('./course/read-courses')(router, asyncHandler, Course);
 readCourse = require('./course/read-course')(router, asyncHandler, Course);
 createCourse = require('./course/create-course')(router, authenticateUser, asyncHandler, Course);
-updateCourse = require('./course/update-course')(router, asyncHandler, Course);
-deleteCourse = require('./course/delete-course')(router, asyncHandler, Course);
+updateCourse = require('./course/update-course')(router, authenticateUser, asyncHandler, Course);
+deleteCourse = require('./course/delete-course')(router, authenticateUser, asyncHandler, Course);
 
 
 

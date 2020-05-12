@@ -1,5 +1,5 @@
-const deleteCourse = (router, asyncHandler, Course) => {
-    router.delete('/courses/:id', asyncHandler(async (req, res) => {
+const deleteCourse = (router, authenticateUser, asyncHandler, Course) => {
+    router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res) => {
         const course = await Course.destroy({
             where: { 
                 id: req.params.id

@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const bcryptjs = require('bcryptjs');
-// use code below to hash a new user's password
-// user.password = bcryptjs.hashSync(user.password);
 const auth = require('basic-auth');
 const db = require('../models');
 const { User } = db.models;
 const { Course } = db.models;
 
-// authentication middleware
+// Authentication Middleware
 const authenticateUser = async (req, res, next) => {
    let message = null;
 
@@ -17,7 +15,7 @@ const authenticateUser = async (req, res, next) => {
 
   // If the user's credentials are available...
   if (credentials) {
-    // Attempt to retrieve the user from the database by their email address (i.e. the user's "key" from the Authorization header).
+    // Attempt to retrieve the user from the database by their email address
     const user = await User.findOne({
         where: {
             emailAddress: credentials.name
@@ -26,14 +24,14 @@ const authenticateUser = async (req, res, next) => {
 
     // If a user was successfully retrieved from the database...
     if (user) {
-      // Use the bcryptjs npm package to compare the user's password (from the Authorization header) to the user's password that was retrieved from the database.
+      // Compare passwords
       const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
 
       // If the passwords match...
       if (authenticated) {
         console.log(`Authentication successful for email address: ${user.emailAddress}`);
 
-        // Then store the retrieved user object on the request object so any middleware functions that follow this middleware function will have access to the user's information.
+        // Then store the retrieved user object on the request object as currentUser 
         req.currentUser = user;
       } else {
         message = `Authentication failure for email address: ${user.emailAddress}`;
@@ -58,7 +56,7 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
-// async helper function
+// Async Helper Function
 const asyncHandler = cb => (
     async (req, res, next) => {
         try {
@@ -76,12 +74,5 @@ readCourse = require('./course/read-course')(router, asyncHandler, Course);
 createCourse = require('./course/create-course')(router, authenticateUser, asyncHandler, Course);
 updateCourse = require('./course/update-course')(router, authenticateUser, asyncHandler, Course);
 deleteCourse = require('./course/delete-course')(router, authenticateUser, asyncHandler, Course);
-
-
-
-router.get('/courses', asyncHandler(async (req, res) => {
-    const courses = await Course.findAll();
-    res.json(courses);
-}));
 
 module.exports = router;

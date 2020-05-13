@@ -10,6 +10,16 @@ const createUser = (router, asyncHandler, bcryptjs, User) => {
             if (!req.body.emailAddress) {
                 throw new Error('Email address required');
             }
+            // test if email address is of valid format
+            const regEx = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i
+            if (!regEx.test(req.body.emailAddress)) {
+                throw new Error('Email address must be valid');
+            }
+            // test if email address is already in use
+            const matchingEmail = await User.findAll({ where: { emailAddress: req.body.emailAddress } });
+            if (matchingEmail.length > 0) {
+                throw new Error('Email address already in use');
+            }
             if (!req.body.password) {
                 throw new Error('Password required');
             }

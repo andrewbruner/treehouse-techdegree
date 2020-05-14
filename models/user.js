@@ -14,6 +14,9 @@ module.exports = sequelize => {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
+        notNull: {
+	  msg: 'Please enter a valid first name.'
+	},
         notEmpty: {
           msg: 'Please enter a valid first name.'
 	}
@@ -23,6 +26,9 @@ module.exports = sequelize => {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
+        notNull: {
+	  msg: 'Please enter a valid last name.'
+	},
         notEmpty: {
           msg: 'Please enter a valid last name.'
 	}
@@ -31,9 +37,24 @@ module.exports = sequelize => {
     emailAddress: {
       type: Sequelize.STRING,
       allowNull: false,
+      //unique: {
+      //  msg: 'Sorry, email address is already in use.'
+      //},
       validate: {
+        notNull: {
+	  msg: 'Please enter a valid email address.'
+	},
         notEmpty: {
           msg: 'Please enter a valid email address.'
+	},
+	isEmail: {
+	  msg: 'Please enter a valid email address.'
+	},
+	isUnique: async email => {
+	  const matchingUser = await User.findOne({ attributes: ['emailAddress'], where: { emailAddress: email } });
+          if (matchingUser.emailAddress) {
+	    throw new Error(`Sorry, email address ${matchingUser.emailAddress} is already in use.`);
+	  }
 	}
       }
     },
@@ -41,7 +62,10 @@ module.exports = sequelize => {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        notEmpty: {
+        notNull: {
+	  msg: 'Please enter a valid password.'
+	},
+	notEmpty: {
           msg: 'Please enter a valid password.'
 	}
       }

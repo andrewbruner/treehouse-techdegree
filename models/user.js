@@ -37,9 +37,6 @@ module.exports = sequelize => {
     emailAddress: {
       type: Sequelize.STRING,
       allowNull: false,
-      //unique: {
-      //  msg: 'Sorry, email address is already in use.'
-      //},
       validate: {
         notNull: {
 	  msg: 'Please enter a valid email address.'
@@ -52,7 +49,7 @@ module.exports = sequelize => {
 	},
 	isUnique: async email => {
 	  const matchingUser = await User.findOne({ attributes: ['emailAddress'], where: { emailAddress: email } });
-          if (matchingUser.emailAddress) {
+          if (matchingUser) {
 	    throw new Error(`Sorry, email address ${matchingUser.emailAddress} is already in use.`);
 	  }
 	}

@@ -9,19 +9,13 @@ const updateCourse = (router, authenticateUser, asyncHandler, Course) => {
             });
             // test if currentUser owns current course
             if (req.currentUser.id !== course.userId) {
-                const message = 'Access Denied: Only course owner may update course';
-                // if not, log above message
-                console.error(message);
-                return res.status(403).json({ message });
+                // if not, throw error
+                const error = new Error('Access Denied: Only course owner may update course.');
+		error.name = 'AccessError';
+		throw error;
             }
-            // test if title exists
-            if (!req.body.title) {
-                throw new Error('Title required');
-            }
-            // test if description exists
-            if (!req.body.description) {
-                throw new Error('Description required');
-            }
+	    // test if body.title and body.description are present
+		// TODO
             // update current course
             await Course.update(req.body, {
                 where: { 
@@ -30,9 +24,17 @@ const updateCourse = (router, authenticateUser, asyncHandler, Course) => {
             });
             res.status(204).end();
         } catch (err) {
-            // on error, log above messages
-            console.error('Validation Error: ', err.message);
-            res.status(400).json({ message: `Validation Error: ${err.message}` });
+	    const message = [];
+	    // if access error, log specific message
+	    if (err.name === 'AccessError') {
+	      message.push(err.message);
+              console.error('Access Error: ', message);
+	      return res.status(403).json({ message: message });
+	    }
+            // on other error(s), log above message(s)
+            err.errors.forEach(error => message.push(error.message));
+	    console.error('Validation Error: ', message);
+	    res.status(400).json({ message: message });
         }
     }));
 };

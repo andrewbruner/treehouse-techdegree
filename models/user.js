@@ -22,7 +22,7 @@ module.exports = sequelize => {
     password: {
       type: Sequelize.STRING
     }
-  }, { sequelize });
+ }, { sequelize, modelName: 'user' });
 
   User.associate = models => {
     User.hasMany(models.Course, { foreignKey: 'userId' });

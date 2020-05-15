@@ -12,10 +12,28 @@ module.exports = sequelize => {
         autoIncrement: true
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+	validate: {
+	  notNull: {
+	    msg: 'Please enter a valid title.'
+	  },
+	  notEmpty: {
+	    msg: 'Please enter a valid title.'
+	  }
+	}
       },
       description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false,
+	validate: {
+	  notNull: {
+	    msg: 'Please enter a valid description.'
+	  },
+	  notEmpty: {
+	    msg: 'Please enter a valid description.'
+	  }
+	}
       },
       estimatedTime: {
         type: Sequelize.STRING
@@ -30,7 +48,7 @@ module.exports = sequelize => {
   );
 
   Course.associate = models => {
-    Course.belongsTo(models.User, { foreignKey: 'userId'  });
+    Course.belongsTo(models.User, { foreignKey: 'userId' });
   };
 
   return Course;

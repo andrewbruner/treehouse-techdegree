@@ -15,7 +15,17 @@ const updateCourse = (router, authenticateUser, asyncHandler, Course) => {
 		throw error;
             }
 	    // test if body.title and body.description are present
-		// TODO
+	    // (Sequelize validation would allow an empty request body on this PUT route otherwise)
+		if (!req.body.title) {
+		    const error = new Error('Please enter a valid title.');
+		    error.name = 'NullError';
+		    throw error;
+		}
+		if (!req.body.description) {
+		    const error = new Error('Please enter a valid description.');
+		    error.name = 'NullError';
+		    throw error;
+		}
             // update current course
             await Course.update(req.body, {
                 where: { 
@@ -31,7 +41,13 @@ const updateCourse = (router, authenticateUser, asyncHandler, Course) => {
               console.error('Access Error: ', message);
 	      return res.status(403).json({ message: message });
 	    }
-            // on other error(s), log above message(s)
+	    // if null error, log specific message
+	    if (err.name === 'NullError') {
+	      message.push(err.message);
+	      console.error('Validation Error: ', message);
+	      return res.status(400).json({ message: message });
+	    }
+            // on other error(s), log validation message(s)
             err.errors.forEach(error => message.push(error.message));
 	    console.error('Validation Error: ', message);
 	    res.status(400).json({ message: message });

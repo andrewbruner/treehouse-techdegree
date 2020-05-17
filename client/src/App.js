@@ -23,7 +23,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" render={props => <Courses />} />
+          <Route exact path="/" render={props => <Courses host={host} />} />
           <Route path="/courses/create" render={props => <CreateCourse />} />
           <Route path="/courses/:id/update" render={props => <UpdateCourse />} />
           <Route path="/courses/:id" render={props => <CourseDetail />} />

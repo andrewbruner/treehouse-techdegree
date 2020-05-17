@@ -1,0 +1,1 @@
+In `client/src/App.js`, define REST API's host port as `http://localhost:5000` (default) or `http://penguin.linux.test:5000` (ChromeOS), depending on your local machine type, for client application's `fetch()` usage.

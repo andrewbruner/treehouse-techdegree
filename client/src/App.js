@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// Dependencies
+import React, { Component } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// Components
+import Courses from './components/Courses';
+import CourseDetail from './components/CourseDetail';
+import UserSignIn from './components/UserSignIn';
+import UserSignUp from './components/UserSignUp';
+import CreateCourse from './components/CreateCourse';
+import UpdateCourse from './components/UpdateCourse';
+import Header from './components/Header';
+import UserSignOut from './components/UserSignOut';
+
+class App extends Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" render={props => <Courses />} />
+          <Route path="/courses/create" render={props => <CreateCourse />} />
+          <Route path="/courses/:id/update" render={props => <UpdateCourse />} />
+          <Route path="/courses/:id" render={props => <CourseDetail />} />
+          <Route path="/signin" render={props => <UserSignIn />} />
+          <Route path="/signup" render={props => <UserSignUp />} />
+          <Route path="/signout" render={props => <UserSignOut />} />
+        </Switch>
+      </BrowserRouter>
+    )
+  }
 }
 
 export default App;

@@ -2,6 +2,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+// Define REST API's Host Port for fetch()
+  // Use this host for default localhost
+  // const host = 'http://localhost:5000
+  // Use this host for localhost using ChromeOS
+  const host = 'http://penguin.linux.test:5000';
+
 // Components
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';

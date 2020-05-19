@@ -26,7 +26,7 @@ class App extends Component {
           <Route exact path="/" render={props => <Courses host={host} />} />
           <Route path="/courses/create" render={props => <CreateCourse />} />
           <Route path="/courses/:id/update" render={props => <UpdateCourse />} />
-          <Route path="/courses/:id" render={props => <CourseDetail />} />
+          <Route path="/courses/:id" render={props => <CourseDetail host={host} id={this.props.match.params.id} />} />
           <Route path="/signin" render={props => <UserSignIn />} />
           <Route path="/signup" render={props => <UserSignUp />} />
           <Route path="/signout" render={props => <UserSignOut />} />

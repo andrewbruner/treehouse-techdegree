@@ -26,6 +26,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Header />
+        <hr />
         <Switch>
           <Route exact path="/" render={props => <Courses host={host} />} />
           <Route path="/courses/create" render={props => <CreateCourse />} />

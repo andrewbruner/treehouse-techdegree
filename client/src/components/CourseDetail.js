@@ -41,12 +41,12 @@ class CourseDetail extends Component {
               <ul className="course--stats--list">
                 <li className="course--stats--list--item">
                   <h4>Estimated Time</h4>
-                  <h3>{this.state.CourseDetail.estimatedTime}</h3>
+                  <h3>{this.state.courseDetail.estimatedTime}</h3>
                 </li>
                 <li className="course--stats--list--item">
                   <h4>Materials Needed</h4>
                   <ul>
-                    <li>{this.state.CourseDetail.materialsNeeded}</li>
+                    <li>{this.state.courseDetail.materialsNeeded}</li>
                   </ul>
                 </li>
               </ul>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class CourseDetail extends Component {
     state = {
-        courseDetail: []
+        courseDetail: { user: { } }
     }
 
     readCourseDetail = () => {
@@ -30,7 +30,7 @@ class CourseDetail extends Component {
             <div className="course--header">
               <h4 className="course--label">Course</h4>
         <h3 className="course--title">{this.state.courseDetail.title}</h3>
-              <p>{`${this.state.courseDetail.user.firstName} ${this.state.courseDetail.user.lastName}`}</p>
+              <p>{this.state.courseDetail.user.firstName} {this.state.courseDetail.user.lastName}</p>
             </div>
             <div className="course--description">
             <p>{this.state.courseDetail.description}</p>

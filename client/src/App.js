@@ -22,6 +22,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
+        <Header />
         <Switch>
           <Route exact path="/" render={props => <Courses host={host} />} />
           <Route path="/courses/create" render={props => <CreateCourse />} />

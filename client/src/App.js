@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 // Styles
-import '../../styles/global.css';
+import './styles/global.css';
 
 // Components
 import Courses from './components/Courses';

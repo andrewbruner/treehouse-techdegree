@@ -21,8 +21,8 @@ class CourseDetail extends Component {
             <div>
         <div className="actions--bar">
           <div className="bounds">
-            <div className="grid-100"><span><a className="button" href="">Update Course</a><a className="button" href="#">Delete Course</a></span><a
-                className="button button-secondary" href="">Return to List</a></div>
+            <div className="grid-100"><span><a className="button" href={`/courses/${this.state.courseDetail.id}/update`}>Update Course</a><a className="button" href="#">Delete Course</a></span><a
+                className="button button-secondary" href="/">Return to List</a></div>
           </div>
         </div>
         <div className="bounds course--detail">

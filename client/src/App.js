@@ -17,7 +17,7 @@ import UserSignOut from './components/UserSignOut';
 
 // Define REST API's Host Port for fetch()
   // Use this host for default localhost
-  // const host = 'http://localhost:5000
+  // const host = 'http://localhost:5000';
   // Use this host for localhost using ChromeOS
   const host = 'http://penguin.linux.test:5000';
   

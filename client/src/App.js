@@ -25,10 +25,9 @@ import UserSignOut from './components/UserSignOut';
 class App extends Component {
   render() {
     return (
-      <AuthenticationContext.Provider value={false}>
+      <AuthenticationContext.Provider value={true}>
         <BrowserRouter>
           <AuthenticationContext.Consumer>{value => <Header authenticated={value} />}</AuthenticationContext.Consumer>
-          <Header />
           <hr />
           <Switch>
             <Route exact path="/" render={props => <Courses host={host} />} />

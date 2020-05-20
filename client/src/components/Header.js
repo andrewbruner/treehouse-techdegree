@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Header = props => {
-  const authenticationNavigation = '';
+  let authenticationNavigation = '';
   props.authenticated
   ? authenticationNavigation = <nav><span>Welcome Joe Smith!</span><a className="signout" href="/signout">Sign Out</a></nav>
   : authenticationNavigation = <nav><a className="signup" href="/signup">Sign Up</a><a className="signin" href="/signin">Sign In</a></nav>

@@ -6,6 +6,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './styles/global.css';
 
 // Components
+import AuthenticationContext from './components/context/Context';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
 import UserSignIn from './components/UserSignIn';
@@ -24,19 +25,21 @@ import UserSignOut from './components/UserSignOut';
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Header />
-        <hr />
-        <Switch>
-          <Route exact path="/" render={props => <Courses host={host} />} />
-          <Route path="/courses/create" render={props => <CreateCourse />} />
-          <Route path="/courses/:id/update" render={props => <UpdateCourse />} />
-          <Route path="/courses/:id" render={props => <CourseDetail host={host} id={props.match.params.id} />} />
-          <Route path="/signin" render={props => <UserSignIn />} />
-          <Route path="/signup" render={props => <UserSignUp />} />
-          <Route path="/signout" render={props => <UserSignOut />} />
-        </Switch>
-      </BrowserRouter>
+      <AuthenticationContext.Provider value="notSignedIn">
+        <BrowserRouter>
+          <Header />
+          <hr />
+          <Switch>
+            <Route exact path="/" render={props => <Courses host={host} />} />
+            <Route path="/courses/create" render={props => <CreateCourse />} />
+            <Route path="/courses/:id/update" render={props => <UpdateCourse />} />
+            <Route path="/courses/:id" render={props => <CourseDetail host={host} id={props.match.params.id} />} />
+            <Route path="/signin" render={props => <UserSignIn />} />
+            <Route path="/signup" render={props => <UserSignUp />} />
+            <Route path="/signout" render={props => <UserSignOut />} />
+          </Switch>
+        </BrowserRouter>
+      </AuthenticationContext.Provider>
     )
   }
 }

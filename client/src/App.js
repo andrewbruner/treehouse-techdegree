@@ -32,7 +32,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={props => <Courses host={host} />} />
             <Route path="/courses/create" render={props => <CreateCourse />} />
-            <Route path="/courses/:id/update" render={props => <UpdateCourse />} />
+            <Route path="/courses/:id/update" render={props => <UpdateCourse host={host} id={props.match.params.id} />} />
             <Route path="/courses/:id" render={props => <CourseDetail host={host} id={props.match.params.id} />} />
             <Route path="/signin" render={props => <UserSignIn />} />
             <Route path="/signup" render={props => <UserSignUp />} />

@@ -1,6 +1,7 @@
 // Dependencies
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+//import Cookies from 'js-cookie';
 
 // Styles
 import './styles/global.css';
@@ -23,13 +24,31 @@ import UserSignOut from './components/UserSignOut';
   const host = 'http://penguin.linux.test:5000';
   
 class App extends Component {
+
+  state = {
+    authenticatedUser: null,
+    signIn: async (emailAddress, password) => {
+      await fetch(`${host}/users`, {
+        headers: { 'Authorization': 'Basic ' + btoa(`${emailAddress}:${password}`) }
+      })
+        .then(response => {
+          if (response.status === 200) {
+            response.json();
+          } else if (response.status === 401) {
+            throw new Error('Invalid credentials');
+          }
+        })
+        .then(data => this.setState({ authenticatedUser: { emailAddress: data.emailAddress, password: data.password } }));
+    }
+  }
+
   handleDelete = async id => {
     await fetch(
       `${host}/api/courses/${id}`,
       {
         method: 'delete',
         headers: {
-          'Authorization': 'Basic ' + btoa('joe@smith.com:joepassword')
+          'Authorization': 'Basic ' + btoa(`${this.state.authenticatedUser.emailAddress}:${this.state.authenticatedUser.password}`)
         }
       }
     )
@@ -37,7 +56,7 @@ class App extends Component {
 
   render() {
     return (
-      <AuthenticationContext.Provider value={false}>
+      <AuthenticationContext.Provider value={this.state}>
         <BrowserRouter>
           <AuthenticationContext.Consumer>{value => <Header authenticated={value} />}</AuthenticationContext.Consumer>
           <hr />

@@ -24,7 +24,7 @@ import UserSignOut from './components/UserSignOut';
   
 class App extends Component {
   handleDelete = async id => {
-    await fetch(`${host}/api/courses/${id}`, { method: 'delete' })
+    await fetch(`${host}/api/courses/${id}`, { method: 'delete', headers: { 'Authorization': 'Basic ' + btoa('joe@smith.com:joepassword') } })
   }
 
   render() {

@@ -24,7 +24,7 @@ class CourseDetail extends Component {
               <div className="grid-100">
                 <span>
                   <a className="button" href={`/courses/${this.state.courseDetail.id}/update`}>Update Course</a>
-                  <a className="button" href="/" onClick={() => this.props.handleDelete(this.state.courseDetail.id)}>Delete Course</a>
+                  <a className="button" href="#" onClick={() => this.props.handleDelete(this.state.courseDetail.id)}>Delete Course</a>
                 </span>
                 <a className="button button-secondary" href="/">Return to List</a>
               </div>

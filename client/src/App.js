@@ -25,7 +25,7 @@ import UserSignOut from './components/UserSignOut';
 class App extends Component {
   render() {
     return (
-      <AuthenticationContext.Provider value={true}>
+      <AuthenticationContext.Provider value={false}>
         <BrowserRouter>
           <AuthenticationContext.Consumer>{value => <Header authenticated={value} />}</AuthenticationContext.Consumer>
           <hr />

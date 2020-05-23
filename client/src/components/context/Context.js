@@ -1,6 +1,5 @@
 import React from 'react';
 
-const AuthenticationContext = React.createContext('authentication');
-AuthenticationContext.displayName = 'Authentication';
+const Authentication = React.createContext();
 
-export default AuthenticationContext;
+export const Authentication;

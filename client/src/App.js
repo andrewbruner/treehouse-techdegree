@@ -56,9 +56,9 @@ class App extends Component {
 
   render() {
     return (
-      <AuthenticationContext.Provider value={this.state}>
+      <Authentication.Provider value={this.state}>
         <BrowserRouter>
-          <AuthenticationContext.Consumer>{value => <Header authenticated={value.authenticatedUser} />}</AuthenticationContext.Consumer>
+          <Authentication.Consumer>{value => <Header authenticated={value.authenticatedUser} />}</Authentication.Consumer>
           <hr />
           <Switch>
             <Route exact path="/" render={props => <Courses host={host} />} />
@@ -70,7 +70,7 @@ class App extends Component {
             <Route path="/signout" render={props => <UserSignOut />} />
           </Switch>
         </BrowserRouter>
-      </AuthenticationContext.Provider>
+      </Authentication.Provider>
     )
   }
 }

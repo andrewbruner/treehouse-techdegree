@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { Redirect } from 'react-router-dom';
 
 const UserSignOut = props => {
-    Cookies.remove('authenticatedUser');
+    props.signOut();
 
     return (
         <Redirect to ='/' />

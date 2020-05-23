@@ -40,7 +40,7 @@ class App extends Component {
         })
         .then(data => {Cookies.set('authenticatedUser', data); window.location.href='/'});
     },
-    signOut: Cookies.remove('authenticatedUser')
+    signOut: () => Cookies.remove('authenticatedUser')
   }
 
   handleDelete = async id => {
@@ -68,7 +68,7 @@ class App extends Component {
             <Route path="/courses/:id" render={props => <CourseDetail host={host} id={props.match.params.id} handleDelete={this.handleDelete} />} />
             <Route path="/signin" render={props => <UserSignIn signIn={this.state.signIn} />} />
             <Route path="/signup" render={props => <UserSignUp />} />
-            <Route path="/signout" render={props => <UserSignOut />} />
+            <Route path="/signout" render={props => <UserSignOut signout={this.state.signOut} />} />
           </Switch>
         </BrowserRouter>
       </Authentication.Provider>

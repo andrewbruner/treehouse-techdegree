@@ -40,7 +40,7 @@ export class Provider extends Component {
 		};
 
 		return (
-			<Context.Provider value={value]>
+			<Context.Provider value={value}>
 				{this.props.children}
 			</Context.Provider>
 		);
@@ -55,8 +55,8 @@ export const Consumer = Context.Consumer;
  * @returns {function} - A higher-order component.
  */
 
-export const withContext = (Component) => {
-	return const ContextComponent = (props) => {
+export default function withContext(Component) {
+	return function ContextComponent(props) {
 		return (
 			<Context.Consumer>
 				{(context) => <Component {...props} context={context} />}

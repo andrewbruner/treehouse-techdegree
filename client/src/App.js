@@ -20,6 +20,9 @@ import withContext from './Context';
 
 const HeaderWithContext = withContext(Header);
 
+//DELETE THIS LATER
+const host = 'penguin.linux.test:5000';
+
 class App extends Component {
 
 	render() {

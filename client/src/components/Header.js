@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = ({ context }) => {
-  ? authenticationNavigation = <nav><span>Welcome Joe Smith!</span><a className="signout" href="/signout">Sign Out</a></nav>
-  : authenticationNavigation = <nav><a className="signup" href="/signup">Sign Up</a><a className="signin" href="/signin">Sign In</a></nav>
+class Header extends React.PureComponent {
 
+	render() {
+	const context = this.props.context;
 	const authUser = context.authenticatedUser
 	return (
 		<div className="header">
@@ -26,6 +26,7 @@ const Header = ({ context }) => {
 			</div>
 		</div>
 	);
+	}
 }
 
 export default Header;

@@ -3,7 +3,7 @@ import config from './config';
 export default class Data {
 
 	// helper method for making fetch() calls to REST API
-	const api = (path, method = 'get', body = null, requiresAuth = false, credentials = null) => {
+	api = (path, method = 'get', body = null, requiresAuth = false, credentials = null) => {
 	
 		// define url for fetch() call
 		const url = `${config.apiBaseUrl}${path}`;
@@ -36,7 +36,7 @@ export default class Data {
 	};
 
 	// helper method for getting current user
-	const getUser = async (username, password) => {
+	getUser = async (username, password) => {
 		
 		// use api() helper method to return current user
 		const response = await this.api('/users', 'get', null, true, { username, password });
@@ -54,7 +54,7 @@ export default class Data {
 	};
 
 	// helper method for creating new user
-	const createUser = (user) => {
+	createUser = async (user) => {
 		
 		// use api() helper method to create new user
 		const response = await this.api('/users', 'post', user);

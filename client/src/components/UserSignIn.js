@@ -20,7 +20,7 @@ class UserSignIn extends Component {
 								<input id="password" name="password" type="password" className="" placeholder="Password" value={this.state.passwordValue} onChange={(e) => this.setState({ passwordValue: e.target.value })} />
 							</div>
 							<div className="grid-100 pad-bottom">
-								<button className="button" type="submit" onClick={(e) => {e.preventDefault(); this.props.signIn(this.state.emailAddressValue, this.state.passwordValue); window.location.href='/'}}>Sign In</button>
+								<button className="button" type="submit" onClick={(e) => {e.preventDefault(); this.props.signIn(this.state.emailAddressValue, this.state.passwordValue);}}>Sign In</button>
 								<button className="button button-secondary" onClick={(e) => {e.preventDefault(); window.location.href='/'}}>Cancel</button>
 							</div>
 						</form>

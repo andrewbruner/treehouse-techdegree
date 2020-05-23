@@ -38,7 +38,7 @@ class App extends Component {
             throw new Error('Invalid credentials');
           }
         })
-        .then(data => this.setState({ authenticatedUser: 'hi' /*{ emailAddress: data.emailAddress, password: data.password }*/ }));
+        .then(data => this.setState({ authenticatedUser: { emailAddress: data.emailAddress, password: data.password } }));
     }
   }
 
@@ -58,7 +58,7 @@ class App extends Component {
     return (
       <AuthenticationContext.Provider value={this.state}>
         <BrowserRouter>
-          <AuthenticationContext.Consumer>{value => <Header authenticated={value} />}</AuthenticationContext.Consumer>
+          <AuthenticationContext.Consumer>{value => <Header authenticated={value.authenticatedUser} />}</AuthenticationContext.Consumer>
           <hr />
           <Switch>
             <Route exact path="/" render={props => <Courses host={host} />} />

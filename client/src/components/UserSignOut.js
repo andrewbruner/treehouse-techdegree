@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 const UserSignOut = props => {
     return (
-        <Redirect onLoad={(e) => {props.signOut}} to ='/' />
+        <Redirect onLoad={(e) => {props.signOut()}} to='/' />
     );
 }
 

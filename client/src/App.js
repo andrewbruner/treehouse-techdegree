@@ -7,7 +7,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './styles/global.css';
 
 // Components
-import AuthenticationContext from './components/context/Context';
+import Authentication from './components/context/Context';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
 import UserSignIn from './components/UserSignIn';

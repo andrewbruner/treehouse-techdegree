@@ -38,8 +38,9 @@ class App extends Component {
             throw new Error('Invalid credentials');
           }
         })
-        .then(data => Cookies.set('authenticatedUser', data));
-    }
+        .then(data => {Cookies.set('authenticatedUser', data); window.location.href='/'});
+    },
+    signOut: Cookies.remove('authenticatedUser')
   }
 
   handleDelete = async id => {

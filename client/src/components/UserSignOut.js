@@ -1,8 +1,11 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 const UserSignOut = props => {
+    Cookies.remove('authenticatedUser');
+
     return (
-        <h1>This is the UserSignOut</h1>
+        <Redirect to ='/' />
     );
 }
 

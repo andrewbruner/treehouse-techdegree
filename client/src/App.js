@@ -1,79 +1,44 @@
 // Dependencies
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+//import Cookies from 'js-cookie';
 
 // Styles
 import './styles/global.css';
 
 // Components
-import Authentication from './components/context/Context';
+import Header from './components/Header';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
-import Header from './components/Header';
 import UserSignOut from './components/UserSignOut';
 
-// Define REST API's Host Port for fetch()
-  // Use this host for default localhost
-  // const host = 'http://localhost:5000';
-  // Use this host for localhost using ChromeOS
-  const host = 'http://penguin.linux.test:5000';
-  
+import withContext from './Context';
+
+const HeaderWithContext = withContext(Header);
+
 class App extends Component {
 
-  state = {
-    authenticatedUser: Cookies.getJSON('authenticatedUser'),
-    signIn: async (emailAddress, password) => {
-      await fetch(`${host}/api/users`, {
-        headers: { 'Authorization': 'Basic ' + btoa(`${emailAddress}:${password}`) }
-      })
-        .then(response => {
-          if (response.status === 200) {
-            return response.json();
-          } else if (response.status === 401) {
-            throw new Error('Invalid credentials');
-          }
-        })
-        .then(data => {Cookies.set('authenticatedUser', data); window.location.href='/'});
-    },
-    signOut: () => Cookies.remove('authenticatedUser')
-  }
-
-  handleDelete = async id => {
-    await fetch(
-      `${host}/api/courses/${id}`,
-      {
-        method: 'delete',
-        headers: {
-          'Authorization': 'Basic ' + btoa(`${this.state.authenticatedUser.emailAddress}:${this.state.authenticatedUser.password}`)
-        }
-      }
-    )
-  }
-
-  render() {
-    return (
-      <Authentication.Provider value={this.state}>
-        <BrowserRouter>
-          <Authentication.Consumer>{value => <Header authenticated={value.authenticatedUser} />}</Authentication.Consumer>
-          <hr />
-          <Switch>
-            <Route exact path="/" render={props => <Courses host={host} />} />
-            <Route path="/courses/create" render={props => <CreateCourse />} />
-            <Route path="/courses/:id/update" render={props => <UpdateCourse host={host} id={props.match.params.id} />} />
-            <Route path="/courses/:id" render={props => <CourseDetail host={host} id={props.match.params.id} handleDelete={this.handleDelete} />} />
-            <Route path="/signin" render={props => <UserSignIn signIn={this.state.signIn} />} />
-            <Route path="/signup" render={props => <UserSignUp />} />
-            <Route path="/signout" render={props => <UserSignOut signOut={this.state.signOut} />} />
-          </Switch>
-        </BrowserRouter>
-      </Authentication.Provider>
-    )
-  }
+	render() {
+		return (
+			<Router>
+				<HeaderWithContext />
+				<hr />
+				<Switch>
+					<Route exact path="/" render={props => <Courses host={host} />} />
+					<Route path="/courses/create" render={props => <CreateCourse />} />
+					<Route path="/courses/:id/update" render={props => <UpdateCourse host={host} id={props.match.params.id} />} />
+					<Route path="/courses/:id" render={props => <CourseDetail host={host} id={props.match.params.id} handleDelete={this.handleDelete} />} />
+					<Route path="/signin" render={props => <UserSignIn signIn={this.state.signIn} />} />
+					<Route path="/signup" render={props => <UserSignUp />} />
+					<Route path="/signout" render={props => <UserSignOut signOut={this.state.signOut} />} />
+				</Switch>
+			</Router>
+		)
+	}
 }
 
 export default App;

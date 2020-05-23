@@ -26,7 +26,7 @@ import UserSignOut from './components/UserSignOut';
 class App extends Component {
 
   state = {
-    authenticatedUser: Cookies.get('authenticatedUser'),
+    authenticatedUser: Cookies.getJSON('authenticatedUser'),
     signIn: async (emailAddress, password) => {
       await fetch(`${host}/api/users`, {
         headers: { 'Authorization': 'Basic ' + btoa(`${emailAddress}:${password}`) }

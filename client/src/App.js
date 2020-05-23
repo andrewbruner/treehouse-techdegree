@@ -28,17 +28,17 @@ class App extends Component {
   state = {
     authenticatedUser: null,
     signIn: async (emailAddress, password) => {
-      await fetch(`${host}/users`, {
+      await fetch(`${host}/api/users`, {
         headers: { 'Authorization': 'Basic ' + btoa(`${emailAddress}:${password}`) }
       })
         .then(response => {
           if (response.status === 200) {
-            response.json();
+            return response.json();
           } else if (response.status === 401) {
             throw new Error('Invalid credentials');
           }
         })
-        .then(data => this.setState({ authenticatedUser: { emailAddress: data.emailAddress, password: data.password } }));
+        .then(data => this.setState({ authenticatedUser: 'hi' /*{ emailAddress: data.emailAddress, password: data.password }*/ }));
     }
   }
 

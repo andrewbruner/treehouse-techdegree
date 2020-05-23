@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 class UserSignIn extends Component {
 	state = {
-		emailAddressValue = '',
-		passwordValue = ''
+		emailAddressValue: '',
+		passwordValue:  ''
 	}
 
 	render() {

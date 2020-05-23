@@ -1,7 +1,7 @@
 // Dependencies
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-//import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 // Styles
 import './styles/global.css';
@@ -26,7 +26,7 @@ import UserSignOut from './components/UserSignOut';
 class App extends Component {
 
   state = {
-    authenticatedUser: null,
+    authenticatedUser: Cookies.get('authenticatedUser'),
     signIn: async (emailAddress, password) => {
       await fetch(`${host}/api/users`, {
         headers: { 'Authorization': 'Basic ' + btoa(`${emailAddress}:${password}`) }
@@ -38,7 +38,7 @@ class App extends Component {
             throw new Error('Invalid credentials');
           }
         })
-        .then(data => this.setState({ authenticatedUser: { emailAddress: data.emailAddress, password: data.password } }));
+        .then(data => Cookies.set('authenticatedUser', data));
     }
   }
 

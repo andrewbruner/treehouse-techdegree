@@ -40,7 +40,7 @@ class App extends Component {
         })
         .then(data => {Cookies.set('authenticatedUser', data); window.location.href='/'});
     },
-    signOut: () => Cookies.remove('authenticatedUser')
+    signOut: () => {console.log('signing out...'); Cookies.remove('authenticatedUser');}
   }
 
   handleDelete = async id => {

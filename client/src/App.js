@@ -30,9 +30,9 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <HeaderWithContext />
-        <hr />
         <Router>
+          <HeaderWithContext />
+          <hr />
           <Switch>
             {/* <Route exact path="/" component={Courses} /> */}
             {/* <Route path="/courses/create" component={CreateCourse} /> */}

@@ -26,7 +26,7 @@ export default (props) => {
         {elements()}
         <div className="grid-100 pad-bottom">
             <button className="button" type="submit">{submitButtonText}</button>
-            <button className="button button-secondary" onclick={handleCancel}>Cancel</button>
+            <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
         </div>
       </form>
     </div>

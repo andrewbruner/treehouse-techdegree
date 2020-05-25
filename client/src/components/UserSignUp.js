@@ -8,9 +8,56 @@ export default class UserSignUp extends Component {
     lastName: '',
     emailAddress: '',
     password: '',
+    confirmPassword: '',
     errors: [],
   }
 
+  change = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    this.setState(() => {
+      return {
+        [name]: value,
+      };
+    });
+  }
+
+  submit = () => {
+    const { context } = this.props;
+
+    const {
+      firstName,
+      lastName,
+      emailAddress,
+      password,
+      confirmPassword,
+    } = this.state
+
+    const user = {
+      firstName,
+      lastName,
+      emailAddress,
+      password,
+    };
+
+    context.data.createUser(user)
+      .then( errors => {
+        if (errors.length) {
+          this.setState({ errors });
+        } else {
+          console.log(`${emailAddress} is successfully signed up and authenticated!`);
+        }
+      })
+      .catch( err => {
+        console.log(err);
+        this.props.history.push('/error');
+      });
+  }
+
+  cancel = () => {
+    this.props.history.push('/');
+  }
   render() {
     const {
       firstName,
@@ -59,70 +106,20 @@ export default class UserSignUp extends Component {
                   value={password} 
                   onChange={this.change} 
                   placeholder="Password" />
+                <input 
+                  id="confirmPassword" 
+                  name="confirmPassword"
+                  type="confirmPassword"
+                  value={confirmPassword} 
+                  onChange={this.change} 
+                  placeholder="Confirm Password" />
               </React.Fragment>
             )} />
             <p>&nbsp;</p>
-            <p>Already have a user account? <a href="/signin">Click here</a> to sign in!</p>
+            <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
         </div>
       </div>
     );
   }
 
-  change = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    this.setState(() => {
-      return {
-        [name]: value
-      };
-    });
-  }
-
-  submit = () => {
-    // destructure props
-    const { context } = this.props;
-
-    // destructure state
-    const {
-      firstName,
-      lastName,
-      emailAddress,
-      password,
-    } = this.state
-
-    // initialize new user payload
-    const user = {
-      firstName,
-      lastName,
-      emailAddress,
-      password,
-    };
-
-    // create a user
-    context.data.createUser(user)
-      // the API may return errors for some reason
-      .then( errors => {
-        // if the return value (errors) has length...
-        if (errors.length) {
-          // set errors state of UserSignUp class
-          this.setState({ errors });
-        } else {
-          // else log a success message to the console
-          console.log(`${emailAddress} is successfully signed up and authenticated!`);
-        }
-      })
-      // if the Promise is rejected...
-      .catch( err => {
-        // log the error to the console
-        console.log(err);
-        // push to history stack (redirect to /error aka 404:NotFound)
-        this.props.history.push('/error');
-      });
-  }
-
-  cancel = () => {
-    // push to history stack (redirect to home route)
-    this.props.history.push('/');
-  }
 }

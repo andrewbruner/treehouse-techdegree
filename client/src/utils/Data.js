@@ -28,9 +28,9 @@ export default class Data {
   }
 
   // add parameters to use in api call
-  async getUser(username, password) {
+  async getUser(emailAddress, password) {
     // set requiresAuth to true and credentials to object containing username and password
-    const response = await this.api(`/users`, 'GET', null, true, { username, password});
+    const response = await this.api(`/users`, 'GET', null, true, { emailAddress, password});
     if (response.status === 200) {
       return response.json().then(data => data);
     }

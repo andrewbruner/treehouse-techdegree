@@ -46,7 +46,10 @@ export default class UserSignUp extends Component {
         if (errors.length) {
           this.setState({ errors });
         } else {
-          console.log(`${emailAddress} is successfully signed up and authenticated!`);
+          context.actions.signIn(emailAddress, password)
+            .then(() => {
+              this.props.history.push('/authenticated');
+            });
         }
       })
       .catch( err => {
@@ -58,6 +61,7 @@ export default class UserSignUp extends Component {
   cancel = () => {
     this.props.history.push('/');
   }
+  
   render() {
     const {
       firstName,

@@ -29,8 +29,8 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        <Router>
+      <Router>
+        <div>
           <HeaderWithContext />
           <hr />
           <Switch>
@@ -42,8 +42,8 @@ export default class App extends Component {
             {/* <Route path="/signin" component={UserSignInWithContext} /> */}
             {/* <Route path="/signout" component={UserSignOut} /> */}
           </Switch>
-        </Router>
-      </div>
+        </div>
+      </Router>
     )
   }
 };

@@ -16,8 +16,9 @@ import UserSignUp from './components/UserSignUp';
 // import UserSignIn from './components/UserSignIn';
 // import UserSignOut from './components/UserSignOut';
 
-// Context
+// Context/Private Route
 import withContext from './utils/Context';
+// import PrivateRoute from './utils/PrivateRoute';
 
 // Components with Context
 const HeaderWithContext = withContext(Header);

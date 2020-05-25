@@ -9,13 +9,13 @@ export default (props) => {
     elements,
   } = props;
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit(e) {
+    e.preventDefault();
     submit();
   }
 
-  function handleCancel(event) {
-    event.preventDefault();
+  function handleCancel(e) {
+    e.preventDefault();
     cancel();
   }
 

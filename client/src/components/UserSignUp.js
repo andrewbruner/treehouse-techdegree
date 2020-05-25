@@ -109,7 +109,7 @@ export default class UserSignUp extends Component {
           this.setState({ errors });
         } else {
           // else log a success message to the console
-          console.log(`${username} is successfully signed up and authenticated!`);
+          console.log(`${emailAddress} is successfully signed up and authenticated!`);
         }
       })
       // if the Promise is rejected...

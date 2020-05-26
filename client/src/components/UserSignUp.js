@@ -31,7 +31,7 @@ export default class UserSignUp extends Component {
       lastName,
       emailAddress,
       password,
-      confirmPassword,
+      //confirmPassword,
     } = this.state
 
     const user = {

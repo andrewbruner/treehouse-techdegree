@@ -1,14 +1,13 @@
 // Dependencies
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import Cookies from 'js-cookie';
 
 // Styles
 import './styles/global.css';
 
 // Components
 import Header from './components/Header';
-// import Courses from './components/Courses';
+import Courses from './components/Courses';
 // import CreateCourse from './components/CreateCourse';
 // import CourseDetail from './components/CourseDetail';
 // import UpdateCourse from './components/UpdateCourse';
@@ -35,7 +34,7 @@ export default class App extends Component {
           <HeaderWithContext />
           <hr />
           <Switch>
-            {/* <Route exact path="/" component={Courses} /> */}
+            <Route exact path="/" component={Courses} />
             {/* <Route path="/courses/create" component={CreateCourse} /> */}
             {/* <Route path="/courses/:id" component={CourseDetail} /> */}
             {/* <Route path="/courses/:id/update" component={UpdateCourse} /> */}

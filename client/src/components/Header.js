@@ -12,7 +12,7 @@ export default props => {
           {authUser ? (
             <React.Fragment>
               <span>Welcome {authUser.firstName} {authUser.lastName}!</span>
-              <Link className="signout" to="/"></Link>
+              <Link className="signout" to="/">Sign Out</Link>
             </React.Fragment>
           ) : (
           <React.Fragment>

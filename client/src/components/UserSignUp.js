@@ -70,7 +70,7 @@ export default class UserSignUp extends Component {
           this.props.history.push('/error');
         });
     } else {
-      this.setState({ errors: 'Passwords do not match' });
+      this.setState({ errors: ['Passwords do not match'] });
     }
   }
 

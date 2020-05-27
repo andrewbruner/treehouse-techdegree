@@ -36,7 +36,7 @@ export class Provider extends Component {
     };
 
     // sign in user (using email address and password)
-    signIn = async (emailAddress, password) => {
+    const signIn = async (emailAddress, password) => {
       // attempt to retrieve user from database (using data access)
       const user = await this.data.getUser(emailAddress, password);
       // if user exists...
@@ -55,7 +55,7 @@ export class Provider extends Component {
     }
   
     // sign out user
-    signOut = () => {
+    const signOut = () => {
       // set authenticatedUser on Provider's state/value to null
       this.setState({ authenticatedUser: null });
       // and remove authenticatedUser cookie
@@ -63,7 +63,7 @@ export class Provider extends Component {
     }
 
     // create course (using course, email address and password)
-    signIn = async (course, emailAddress, password) => {
+    const createCourse = async (course, emailAddress, password) => {
       // attempt to retrieve user from database (using data access)
       const user = await this.data.getUser(emailAddress, password);
       // if user exists...

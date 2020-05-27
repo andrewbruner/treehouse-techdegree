@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 export default ({ context }) => {
 
   // destructure signout function from context actions
-  const { signout } = context.actions;
+  const { signOut } = context.actions;
 
   // sign out the user
   signOut();

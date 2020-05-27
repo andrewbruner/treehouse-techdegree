@@ -12,8 +12,8 @@ import Courses from './components/Courses';
 // import CourseDetail from './components/CourseDetail';
 // import UpdateCourse from './components/UpdateCourse';
 import UserSignUp from './components/UserSignUp';
-// import UserSignIn from './components/UserSignIn';
-// import UserSignOut from './components/UserSignOut';
+import UserSignIn from './components/UserSignIn';
+import UserSignOut from './components/UserSignOut';
 
 // Context/Private Route
 import withContext from './utils/Context';
@@ -22,7 +22,8 @@ import withContext from './utils/Context';
 // Components with Context
 const HeaderWithContext = withContext(Header);
 const UserSignUpWithContext = withContext(UserSignUp);
-// const UserSignInWithContext = withContext(UserSignIn);
+const UserSignInWithContext = withContext(UserSignIn);
+const UserSignOutWithContext = withContext(UserSignOut);
 
   
 export default class App extends Component {
@@ -39,8 +40,8 @@ export default class App extends Component {
             {/* <Route path="/courses/:id" component={CourseDetail} /> */}
             {/* <Route path="/courses/:id/update" component={UpdateCourse} /> */}
             <Route path="/signup" component={UserSignUpWithContext} />
-            {/* <Route path="/signin" component={UserSignInWithContext} /> */}
-            {/* <Route path="/signout" component={UserSignOut} /> */}
+            <Route path="/signin" component={UserSignInWithContext} />
+            <Route path="/signout" component={UserSignOut} />
           </Switch>
         </div>
       </Router>

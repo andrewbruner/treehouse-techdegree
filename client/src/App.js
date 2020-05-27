@@ -41,7 +41,7 @@ export default class App extends Component {
             {/* <Route path="/courses/:id/update" component={UpdateCourse} /> */}
             <Route path="/signup" component={UserSignUpWithContext} />
             <Route path="/signin" component={UserSignInWithContext} />
-            <Route path="/signout" component={UserSignOut} />
+            <Route path="/signout" component={UserSignOutWithContext} />
           </Switch>
         </div>
       </Router>

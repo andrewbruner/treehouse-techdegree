@@ -21,9 +21,6 @@ class CreateCourse extends Component {
       errors,
     } = this.state
 
-    const user = {
-      
-    };
 
     context.data.createUser(user)
       .then( errors => {

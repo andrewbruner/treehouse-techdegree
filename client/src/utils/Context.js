@@ -20,6 +20,7 @@ export class Provider extends Component {
 
   render() {
     
+    // Value
     const value = {
       authenticatedUser: this.state.authenticatedUser,
       data: this.data,
@@ -27,13 +28,24 @@ export class Provider extends Component {
         signUp: this.signUp,
         signIn: this.signIn,
         signOut: this.signOut,
-        getCourses: this.getCourse,
+        getCourses: this.getCourses,
         createCourse: this.createCourse,
         getCourseDetail: this.getCourseDetail,
         updateCourse: this.updateCourse,
+        deleteCourse: this.deleteCourse,
       },
     };
 
+    // Sign Up / Create User
+    const signUp = async (user, confirmPassword) => {
+      password === confirmPassword ? (
+        new Error('Passwords do not match')
+       ) : (
+        await this.data.createUser(user)
+       );
+    };
+
+    // Sign In
     const signIn = async (emailAddress, password) => {
       // attempt to retrieve user from database (using data access)
       const user = await this.data.getUser(emailAddress, password);

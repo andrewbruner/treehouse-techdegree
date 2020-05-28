@@ -1,12 +1,12 @@
-// dependencies
+// Dependencies
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Form from './Form';
 
-// export UserSignUp class component
+// UserSignUp
 export default class UserSignUp extends Component {
 
-  // initiate local state
+  // Local State
   state = {
     firstName: '',
     lastName: '',
@@ -16,8 +16,8 @@ export default class UserSignUp extends Component {
     errors: [],
   }
 
-  // local state change function
-  change = (e) => {
+  // Change Local State
+  change(e) {
     const name = e.target.name;
     const value = e.target.value;
 
@@ -28,22 +28,22 @@ export default class UserSignUp extends Component {
     });
   }
 
-  // local submit function
-  submit = () => {
+  // Submit
+  submit() {
 
-    // destructure context from props
+    // context
     const { context } = this.props;
 
-    // destructure input field values from local state
+    // input fields
     const {
       firstName,
       lastName,
       emailAddress,
       password,
       confirmPassword,
-    } = this.state
+    } = this.state;
 
-    // define user from input field values
+    // user
     const user = {
       firstName,
       lastName,
@@ -51,37 +51,31 @@ export default class UserSignUp extends Component {
       password,
     };
 
-    // check of passwords match
-    if (password === confirmPassword) {
-      // create user (using data access) then sign in user
-      context.data.createUser(user)
-        .then( errors => {
-          if (errors.length) {
-            this.setState({ errors });
-          } else {
-            context.actions.signIn(emailAddress, password)
-              .then(() => {
-                this.props.history.push('/authenticated');
-              });
-          }
-        })
-        .catch( err => {
-          console.log(err);
-          this.props.history.push('/error');
-        });
-    } else {
-      this.setState({ errors: ['Passwords do not match'] });
-    }
+    // sign up & sign in
+    context.signUp(user, confirmPassword)
+      .then( errors => {
+        errors.length ? (
+          this.setState({ errors })
+          ) : (
+          context.actions.signIn(emailAddress, password)
+            .then(() => {
+              this.props.history.push(this.props.history[this.props.history.length - 2]);
+            })
+          );
+      })
+      .catch( err => {
+        console.log(err);
+        this.props.history.push('/error');
+      });
   }
 
-  // local cancel function
-  cancel = () => {
+  // Cancel
+  cancel() {
     this.props.history.push('/');
   }
   
   render() {
 
-    // destructure input values from local state for Form component
     const {
       firstName,
       lastName,
@@ -138,9 +132,10 @@ export default class UserSignUp extends Component {
                   onChange={this.change} 
                   placeholder="Confirm Password" />
               </React.Fragment>
-            )} />
-            <p>&nbsp;</p>
-            <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
+            )}
+          />
+          <p>&nbsp;</p>
+          <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
         </div>
       </div>
     );

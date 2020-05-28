@@ -1,7 +1,7 @@
-// dependencies
+// Dependencies
 import config from './config';
 
-// export Data class
+// Data
 export default class Data {
 
   /**

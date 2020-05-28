@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-// Styles
-import './styles/global.css';
 
 // Components
 import Header from './components/Header';
@@ -24,6 +22,7 @@ import UnHandledError from './components/UnhandledError';
 import withContext from './utils/Context';
 import CourseDetail from './components/CourseDetail';
 import PrivateRoute from './utils/PrivateRoute';
+import UnhandledError from './components/UnhandledError';
 
 
 // Components with Context
@@ -51,9 +50,12 @@ export default class App extends Component {
             <Route path="/signup" component={UserSignUpWithContext} />
             <Route path="/signin" component={UserSignInWithContext} />
             <Route path="/signout" component={UserSignOutWithContext} />
-            <Route path="/courses/create" component={CreateCourseWithContext} />
+            <PrivateRoute path="/courses/create" component={CreateCourseWithContext} />
             <Route path="/courses/:id" component={CourseDetailWithContext} />
-            <Route path="/courses/:id/update" component={UpdateCourseWithContext} />
+            <PrivateRoute path="/courses/:id/update" component={UpdateCourseWithContext} />
+            <Route path="/notfound" component={NotFound} />
+            <Route path="/forbidden" component={Forbidden} />
+            <Route path="/error" component={UnhandledError} />
             <Route component={NotFound} />
           </Switch>
         </div>

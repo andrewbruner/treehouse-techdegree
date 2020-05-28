@@ -31,11 +31,21 @@ export default class CreateCourse extends Component {
     };
 
     context.data.CreateCourse(course, context.authenticatedUser.emailAddress, context.authenticatedUser.password)
+	  const course = {
+	  	title,
+		description,
+		estimatedTime,
+		materialsNeeded,
+		userId: context.authenticatedUser.id,
+	  };
+
+    context.data.createCourse(course, context.authenticatedUser.emailAddress, context.authenticateUser.password)
       .then( errors => {
         if (errors.length) {
           this.setState({ errors });
         } else {
           this.props.history.push('/');
+              this.props.history.push('/');
         }
       })
       .catch( err => {
@@ -140,3 +150,6 @@ export default class CreateCourse extends Component {
     )
   }
 };
+
+
+export default CreateCourse;

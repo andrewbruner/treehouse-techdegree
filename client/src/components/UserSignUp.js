@@ -17,7 +17,7 @@ export default class UserSignUp extends Component {
   }
 
   // Change Local State
-  change(e) {
+  change = (e) => {
     const name = e.target.name;
     const value = e.target.value;
 
@@ -29,7 +29,7 @@ export default class UserSignUp extends Component {
   }
 
   // Submit
-  submit() {
+  submit= () => {
 
     // context
     const { context } = this.props;
@@ -52,7 +52,7 @@ export default class UserSignUp extends Component {
     };
 
     // sign up & sign in
-    context.signUp(user, confirmPassword)
+    context.actions.signUp(user, confirmPassword)
       .then( errors => {
         errors.length ? (
           this.setState({ errors })
@@ -70,7 +70,7 @@ export default class UserSignUp extends Component {
   }
 
   // Cancel
-  cancel() {
+  cancel = () => {
     this.props.history.push('/');
   }
   

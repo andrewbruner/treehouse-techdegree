@@ -38,7 +38,7 @@ export class Provider extends Component {
 
     // Sign Up / Create User
     const signUp = async (user, confirmPassword) => {
-      password === confirmPassword ? (
+      user.password === confirmPassword ? (
         new Error('Passwords do not match')
        ) : (
         await this.data.createUser(user)

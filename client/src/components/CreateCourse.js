@@ -31,7 +31,7 @@ export default class CreateCourse extends Component {
     };
 
     context.data.CreateCourse(course, context.authenticatedUser.emailAddress, context.authenticatedUser.password)
-	  const course = {
+	  const course1 = {
 	  	title,
 		description,
 		estimatedTime,
@@ -152,4 +152,3 @@ export default class CreateCourse extends Component {
 };
 
 
-export default CreateCourse;

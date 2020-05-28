@@ -7,13 +7,14 @@ import './styles/global.css';
 
 // Components
 import Header from './components/Header';
+import UserSignUp from './components/UserSignUp';
+import UserSignIn from './components/UserSignIn';
+import UserSignOut from './components/UserSignOut';
 import Courses from './components/Courses';
 import CreateCourse from './components/CreateCourse';
 import CourseDetail from './components/CourseDetail';
 import UpdateCourse from './components/UpdateCourse';
-import UserSignUp from './components/UserSignUp';
-import UserSignIn from './components/UserSignIn';
-import UserSignOut from './components/UserSignOut';
+
 
 // Context/Private Route
 import withContext from './utils/Context';
@@ -39,12 +40,12 @@ export default class App extends Component {
           <hr />
           <Switch>
             <Route exact path="/" component={Courses} />
-            <Route path="/courses/create" component={CreateCourseWithContext} />
-            <Route path="/courses/:id" component={CourseDetailWithContext} />
-            <Route path="/courses/:id/update" component={UpdateCourseWithContext} />
             <Route path="/signup" component={UserSignUpWithContext} />
             <Route path="/signin" component={UserSignInWithContext} />
             <Route path="/signout" component={UserSignOutWithContext} />
+            <Route path="/courses/create" component={CreateCourseWithContext} />
+            <Route path="/courses/:id" component={CourseDetailWithContext} />
+            <Route path="/courses/:id/update" component={UpdateCourseWithContext} />
           </Switch>
         </div>
       </Router>

@@ -61,25 +61,6 @@ export class Provider extends Component {
       // and remove authenticatedUser cookie
       Cookies.remove('authenticatedUser');
     }
-
-    // create course (using course, email address and password)
-    const createCourse = async (course, emailAddress, password) => {
-      // attempt to retrieve user from database (using data access)
-      const user = await this.data.getUser(emailAddress, password);
-      // if user exists...
-      if (user !== null) {
-        // set authenticatedUser on Provider's state/value
-        this.setState(() => {
-          return {
-            authenticatedUser: user,
-          }
-        });
-        // and set authenticatedUser cookie
-        Cookies.set('authenticatedUser', JSON.stringify(user));
-      }
-      // return user
-      return user;
-    }
   
     return (
       <Context.Provider value={value}>

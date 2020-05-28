@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Form from './Form';
 
-class CreateCourse extends Component {
+export default class CreateCourse extends Component {
   state = {
     title: '',
     description: '',
@@ -10,7 +10,8 @@ class CreateCourse extends Component {
     errors: [],
   };
 
-  submit = () => {
+  submit() {
+
     const { context } = this.props;
 
     const {
@@ -21,16 +22,20 @@ class CreateCourse extends Component {
       errors,
     } = this.state
 
+    const course = {
+      title,
+      description,
+      estimatedTime,
+      materialsNeeded,
+      userId: context.authenticatedUser.id,
+    };
 
-    context.data.createUser(user)
+    context.data.CreateCourse(course, context.authenticatedUser.emailAddress, context.authenticatedUser.password)
       .then( errors => {
         if (errors.length) {
           this.setState({ errors });
         } else {
-          context.actions.signIn(emailAddress, password)
-            .then(() => {
-              this.props.history.push('/authenticated');
-            });
+          this.props.history.push('/');
         }
       })
       .catch( err => {
@@ -134,6 +139,4 @@ class CreateCourse extends Component {
       </div>
     )
   }
-}
-
-export default CreateCourse;
+};

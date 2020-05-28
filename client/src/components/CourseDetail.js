@@ -1,15 +1,35 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import config from '../utils/config';
 
-class CourseDetail extends Component {
+export default class CourseDetail extends Component {
+
     state = {
-      courseDetail: { user: { } }
+      courseDetail: [],
+      courseUser: [],
+      errors: [],
     }
 
-    readCourseDetail = () => {
-      fetch(`${this.props.host}/api/courses/${this.props.id}`)
+    async readCourseDetail() {
+      await fetch(`${config.apiBaseUrl}/api/courses/${this.state.courseDetail.id}`)
         .then(response => response.json())
-        .then(data => this.setState({ courseDetail: data }))
+        .then(data => this.setState({ courseDetail: data, courseUser: data.user }))
         .catch(err => console.error('Error: ', err))
+    }
+
+    deleteCourse() {
+      this.props.context.data.deleteCourse(`${config.apiBaseUrl}/api/courses/${this.state.courseDetail.id}`, this.props.context.authenticatedUser.emailAddress, this.props.context.authenticatedUser.password)
+      .then( errors => {
+        if (errors.length) {
+          this.setState({ errors });
+        } else {
+          this.props.history.push('/');
+        }
+      })
+      .catch( err => {
+        console.log(err);
+        this.props.history.push('/error');
+      });
     }
 
     componentDidMount() {
@@ -23,10 +43,10 @@ class CourseDetail extends Component {
             <div className="bounds">
               <div className="grid-100">
                 <span>
-                  <a className="button" href={`/courses/${this.state.courseDetail.id}/update`}>Update Course</a>
-                  <a className="button" href="#" onClick={() => this.props.handleDelete(this.state.courseDetail.id)}>Delete Course</a>
+                  <Link className="button" to={`/courses/${this.state.courseDetail.id}/update`}>Update Course</Link>
+                  <Link className="button" to="/" onClick={() => this.deleteCourse()}>Delete Course</Link>
                 </span>
-                <a className="button button-secondary" href="/">Return to List</a>
+                <Link className="button button-secondary" to="/">Return to List</Link>
               </div>
             </div>
           </div>
@@ -35,7 +55,7 @@ class CourseDetail extends Component {
               <div className="course--header">
                 <h4 className="course--label">Course</h4>
                 <h3 className="course--title">{this.state.courseDetail.title}</h3>
-                <p>{this.state.courseDetail.user.firstName} {this.state.courseDetail.user.lastName}</p>
+                <p>{this.state.courseUser.firstName} {this.state.courseUser.lastName}</p>
               </div>
               <div className="course--description">
                 <p>{this.state.courseDetail.description}</p>
@@ -63,4 +83,3 @@ class CourseDetail extends Component {
     }
 }
 
-export default CourseDetail;

@@ -17,12 +17,10 @@ import UpdateCourse from './components/UpdateCourse';
 
 import NotFound from './components/NotFound';
 import Forbidden from './components/Forbidden';
-import UnHandledError from './components/UnhandledError';
+import UnhandledError from './components/UnhandledError';
 
 import withContext from './utils/Context';
-import CourseDetail from './components/CourseDetail';
 import PrivateRoute from './utils/PrivateRoute';
-import UnhandledError from './components/UnhandledError';
 
 
 // Components with Context

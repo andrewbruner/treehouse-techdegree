@@ -1,41 +1,39 @@
-// dependencies
+// Dependencies
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import Data from './Data';
 
-// create context
+// Context
 const Context = React.createContext(); 
 
-// export Provider class component
+// Provider
 export class Provider extends Component {
 
-  // initiate state with either currently logged-in user (retrieved from cookie) or null
-  state = {
-    authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
-  };
-
-  // access Data class
   constructor() {
     super();
     this.data = new Data();
   }
 
-  render() {
+  state = {
+    authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
+  };
 
-    // destructure authenticatedUser from state
-    const { authenticatedUser } = this.state;
+  render() {
     
-    // initiate Provider value with authenticatedUser, data access, and several actions defined below
     const value = {
-      authenticatedUser,
+      authenticatedUser: this.state.authenticatedUser,
       data: this.data,
       actions: {
+        signUp: this.signUp,
         signIn: this.signIn,
         signOut: this.signOut,
+        getCourses: this.getCourse,
+        createCourse: this.createCourse,
+        getCourseDetail: this.getCourseDetail,
+        updateCourse: this.updateCourse,
       },
     };
 
-    // sign in user (using email address and password)
     const signIn = async (emailAddress, password) => {
       // attempt to retrieve user from database (using data access)
       const user = await this.data.getUser(emailAddress, password);

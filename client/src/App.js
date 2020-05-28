@@ -9,8 +9,8 @@ import './styles/global.css';
 import Header from './components/Header';
 import Courses from './components/Courses';
 import CreateCourse from './components/CreateCourse';
-// import CourseDetail from './components/CourseDetail';
-// import UpdateCourse from './components/UpdateCourse';
+import CourseDetail from './components/CourseDetail';
+import UpdateCourse from './components/UpdateCourse';
 import UserSignUp from './components/UserSignUp';
 import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
@@ -18,7 +18,7 @@ import UserSignOut from './components/UserSignOut';
 // Context/Private Route
 import withContext from './utils/Context';
 import CourseDetail from './components/CourseDetail';
-// import PrivateRoute from './utils/PrivateRoute';
+import PrivateRoute from './utils/PrivateRoute';
 
 // Components with Context
 const HeaderWithContext = withContext(Header);
@@ -27,6 +27,7 @@ const UserSignInWithContext = withContext(UserSignIn);
 const UserSignOutWithContext = withContext(UserSignOut);
 const CreateCourseWithContext = withContext(CreateCourse);
 const CourseDetailWithContext = withContext(CourseDetail);
+const UpdateCourseWithContext = withContext(UpdateCourse);
   
 export default class App extends Component {
 
@@ -40,7 +41,7 @@ export default class App extends Component {
             <Route exact path="/" component={Courses} />
             <Route path="/courses/create" component={CreateCourseWithContext} />
             <Route path="/courses/:id" component={CourseDetailWithContext} />
-            {/* <Route path="/courses/:id/update" component={UpdateCourse} /> */}
+            <Route path="/courses/:id/update" component={UpdateCourseWithContext} />
             <Route path="/signup" component={UserSignUpWithContext} />
             <Route path="/signin" component={UserSignInWithContext} />
             <Route path="/signout" component={UserSignOutWithContext} />

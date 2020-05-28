@@ -21,16 +21,20 @@ class CreateCourse extends Component {
       errors,
     } = this.state
 
+	  const course = {
+	  	title,
+		description,
+		estimatedTime,
+		materialsNeeded,
+		userId: context.authenticatedUser.id,
+	  };
 
-    context.data.createUser(user)
+    context.data.createCourse(course, context.authenticatedUser.emailAddress, context.authenticateUser.password)
       .then( errors => {
         if (errors.length) {
           this.setState({ errors });
         } else {
-          context.actions.signIn(emailAddress, password)
-            .then(() => {
-              this.props.history.push('/authenticated');
-            });
+              this.props.history.push('/');
         }
       })
       .catch( err => {

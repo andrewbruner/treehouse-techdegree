@@ -5,19 +5,21 @@ import config from './config';
 export default class Data {
 
   /**
-   * helper method to make fetch API call
-   * @param {string} path - the API endpoint
-   * @param {string} method - the request method (GET, POST, PUT, DELETE) 
-   * @param {object} body - the request body (default of null)
-   * @param {boolean} requiresAuth - determine if route requires authentication
-   * @param {object} credentials - credentials (emailAddress, password) for authentication access
+   * Make fetch API call
+   * @param {String} path - the API endpoint ('/', '/courses', etc)
+   * @param {String} method - the request method ('GET', 'POST', 'PUT', 'DELETE') (default to 'GET')
+   * @param {Object} body - the request body (default to null)
+   * @param {Boolean} requiresAuth - define authentication requirement (true | false) (default to false)
+   * @param {Object} credentials - credentials for authentication ({ emailAddress, password, }) (default to null)
+   * @returns {Function} fetch(url, options)
    */
+
   api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
     
-    // configure fetch call URL
+    // URL
     const url = config.apiBaseUrl + path;
   
-    // configure fetch call options object
+    // Options
     const options = {
       method,
       headers: {
@@ -25,18 +27,15 @@ export default class Data {
       },
     };
 
-    // add request body (if it exists) to options object
     if (body !== null) {
       options.body = JSON.stringify(body);
     }
 
-    // add Basic Auth Header (if neccessary) to options object
     if (requiresAuth) {
       const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
       options.headers['Authorization'] = `Basic ${encodedCredentials}`;
     }
 
-    // return configured fetch API call
     return fetch(url, options);
   }
 

@@ -47,25 +47,33 @@ export class Provider extends Component {
 
     // Sign In
     const signIn = async (emailAddress, password) => {
-      // attempt to retrieve user from database (using data access)
-      const user = await this.data.getUser(emailAddress, password);
-      // if user exists...
-      if (user !== null) {
-        // set authenticatedUser on Provider's state/value
-        this.setState(() => {
-          return {
-            authenticatedUser: user,
+
+      await this.data.api(`/users`, 'GET', null, true, { emailAddress, password })
+
+        .then(response => {
+          if (response.status === 200) {
+            return response.json();
+          } else if (response.status === 401) {
+            return null
+          } else {
+            throw new Error();
           }
+        })
+
+        .then(data => {
+          this.setState(() => {
+            return {
+              authenticatedUser: data,
+            }
+          });
+          Cookies.set('authenticatedUser', JSON.stringify(data));
+          return data;
         });
-        // and set authenticatedUser cookie
-        Cookies.set('authenticatedUser', JSON.stringify(user));
-      }
-      // return user
-      return user;
+
     }
   
     // sign out user
-    const signOut = () => {
+    signOut = () => {
       // set authenticatedUser on Provider's state/value to null
       this.setState({ authenticatedUser: null });
       // and remove authenticatedUser cookie

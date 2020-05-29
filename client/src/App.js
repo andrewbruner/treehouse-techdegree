@@ -35,14 +35,14 @@ const CreateCourseWithContext = withContext(CreateCourse);
 const CourseDetailWithContext = withContext(CourseDetail);
 const UpdateCourseWithContext = withContext(UpdateCourse);
   
+// App
 export default class App extends Component {
 
   render() {
     return (
-      <Router>
-        <div>
+      <div>
+        <Router>
           <HeaderWithContext />
-          <hr />
           <Switch>
             <Route exact path="/" component={CoursesWithContext} />
             <Route path="/signup" component={UserSignUpWithContext} />
@@ -56,8 +56,8 @@ export default class App extends Component {
             <Route path="/error" component={UnhandledError} />
             <Route component={NotFound} />
           </Switch>
-        </div>
-      </Router>
+        </Router>
+      </div>
     )
   }
 };

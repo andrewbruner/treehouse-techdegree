@@ -1,26 +1,33 @@
+// Dependencies
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Form from './Form';
 
-class UserSignIn extends Component {
+// UserSignIn
+export default class UserSignIn extends Component {
+
+  // Local State
 	state = {
 		emailAddress: '',
 		password:  '',
 		errors: [],
 	}
 
+  // Local State Change
 	change = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
-	
+
 		this.setState(() => {
 		  return {
 			  [name]: value,
 		  };
-		});
+    });
   };
   
+  // Submit
   submit = () => {
+
     const { context } = this.props;
 
     const {
@@ -30,7 +37,7 @@ class UserSignIn extends Component {
 
     context.actions.signIn(emailAddress, password)
       .then(() => {
-        this.props.history.push('/authenticated');
+        this.props.history.push('/');
       })
       .catch( err => {
         console.log(err);
@@ -38,10 +45,12 @@ class UserSignIn extends Component {
       });
   };
 
+  // Cancel
   cancel = () => {
     this.props.history.push('/');
   };
 
+  // Render
 	render() {
 
     const {
@@ -87,5 +96,3 @@ class UserSignIn extends Component {
     )
   }
 }
-
-export default UserSignIn;

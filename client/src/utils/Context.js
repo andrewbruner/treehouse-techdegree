@@ -92,7 +92,7 @@ export class Provider extends Component {
                 const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, };
                 this.setState(() => ({ authenticatedUser: user }));
                 Cookies.set('authenticatedUser', user, { expires: 1/48 });
-                return ['Everything is good!'];
+                return [];
               })
           );
 

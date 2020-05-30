@@ -82,7 +82,7 @@ export class Provider extends Component {
     // Response: OK
     if (response.status === 200) {
       const data = await response.json();
-      const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, password: password, };
+      const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, password: password, id: data.id, };
       this.setState(() => ({ authenticatedUser: user }));
       Cookies.set('authenticatedUser', user, { expires: 1 });
       return [];
@@ -127,10 +127,9 @@ export class Provider extends Component {
 
     // Fetch API
     const response = await this.data.api('/courses', 'POST', course, true, { emailAddress, password });
-    console.log('response status from api is: ' + response.status);
+
     // Response: Created
     if (response.status === 201) {
-      console.log(response);
       return response.location;
 
     // Response: Bad Request

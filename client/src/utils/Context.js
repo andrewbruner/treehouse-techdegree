@@ -82,8 +82,8 @@ export class Provider extends Component {
     // Response: OK
     if (response.status === 200) {
       const data = await response.json();
-      console.dir(data);
-      const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, password: password, id: data.userId, };
+      const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, password: password, id: data.id, };
+      console.dir(user);
       this.setState(() => ({ authenticatedUser: user }));
       Cookies.set('authenticatedUser', user, { expires: 1 });
       return [];

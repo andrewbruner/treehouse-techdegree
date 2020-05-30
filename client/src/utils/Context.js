@@ -127,7 +127,7 @@ export class Provider extends Component {
 
     // Fetch API
     const response = await this.data.api('/courses', 'POST', course, true, { emailAddress, password });
-    console.log('response from api is: ' + response);
+    console.log('response status from api is: ' + response.status);
     // Response: Created
     if (response.status === 201) {
       console.log(response);

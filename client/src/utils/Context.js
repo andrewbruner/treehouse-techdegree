@@ -82,9 +82,9 @@ export class Provider extends Component {
     // Response: OK
     if (response.status === 200) {
       const data = await response.json();
-      const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, };
+      const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, password: data.password, };
       this.setState(() => ({ authenticatedUser: user }));
-      Cookies.set('authenticatedUser', user, { expires: 1/48 });
+      Cookies.set('authenticatedUser', user, { expires: 1 });
       return [];
 
     // Response: Unauthorized
@@ -124,7 +124,7 @@ export class Provider extends Component {
 
   // Create Course
   createCourse = async (course, emailAddress, password) => {
-console.log(emailAddress + password);
+
     // Fetch API
     const response = await this.data.api('/courses', 'POST', course, true, { emailAddress, password });
 

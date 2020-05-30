@@ -121,6 +121,32 @@ export class Provider extends Component {
         }
       });
   }
+
+  // Create Course
+  createCourse = async (course) => {
+
+    // Fetch API
+    const response = await this.data.api('/courses', 'POST', course, true, { emailAddress, password });
+
+    // Response: Created
+    if (response.status === 201) {
+      return [];
+
+    // Response: Bad Request
+    } else if (response.status === 400) {
+      const error = await response.json();
+      return [error.message];
+
+    // Response: Unauthorized
+    } else if (response.status === 401) {
+      const error = await response.json();
+      return [error.message];
+
+    // Other Response
+    } else {
+      throw new Error();
+    }
+  }
 }
 
 // export Consumer component

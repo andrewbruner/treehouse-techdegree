@@ -26,7 +26,7 @@ export default class UserSignIn extends Component {
   };
   
   // Submit
-  submit = () => {
+  submit = async () => {
 
     // context
     const { context } = this.props;
@@ -38,7 +38,7 @@ export default class UserSignIn extends Component {
     } = this.state
 
     // sign in
-    context.actions.signIn(emailAddress, password)
+    await context.actions.signIn(emailAddress, password)
 
       .then(errors => {
         console.log('errors: ' + errors);

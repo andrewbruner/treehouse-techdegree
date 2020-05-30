@@ -48,9 +48,8 @@ export default class UserSignIn extends Component {
         
         // redirect
         } else {
-          const prevLocation = this.props.location.state?.from?.pathname;
+          const prevLocation = this.props.location.state?.from.pathname;
           const redirect = prevLocation || '/';
-          console.log('redirect: ' + redirect);
           this.props.history.push(redirect);
         }
       })

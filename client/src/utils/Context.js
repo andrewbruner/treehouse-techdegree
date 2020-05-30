@@ -86,7 +86,7 @@ export class Provider extends Component {
 
         // Response: OK
         if (response.status === 200) {
-          response.json().then(data => {
+          return await response.json().then(data => {
             const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, };
             this.setState(() => ({ authenticatedUser: user }));
             Cookies.set('authenticatedUser', user, { expires: 1/48 });

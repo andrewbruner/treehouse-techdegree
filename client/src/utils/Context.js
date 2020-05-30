@@ -130,10 +130,10 @@ export class Provider extends Component {
 
     // Response: Created
     if (response.status === 201) {
-      let location = response.headers.entries();
-      console.dir(location);
+      let location = '/';
       for (let pair of response.headers.entries()) {
-        if (pair[0] === 'Location') {
+        console.log(pair[0] + ':' + pair[1]);
+        if (pair[0] === 'location') {
           location = pair[1];
         }
       }

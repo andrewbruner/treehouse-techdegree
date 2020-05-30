@@ -30,7 +30,7 @@ const authenticateUser = async (req, res, next) => {
     if (user) {
 
       // User Authentication
-      const authenticated = bcryptsjs.compareSync(credentials.pass, user.password);
+      const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
 
       // Successful User Authentication
       if (authenticated) {

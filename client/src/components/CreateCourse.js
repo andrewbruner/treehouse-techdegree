@@ -54,7 +54,7 @@ export default class CreateCourse extends Component {
     const {
       emailAddress,
       password,
-    } = authenticateUser;
+    } = authenticatedUser;
 
     context.actions.createCourse(course, emailAddress, password)
 

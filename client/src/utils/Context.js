@@ -124,7 +124,7 @@ export class Provider extends Component {
 
   // Create Course
   createCourse = async (course, emailAddress, password) => {
-
+console.log(emailAddress + password);
     // Fetch API
     const response = await this.data.api('/courses', 'POST', course, true, { emailAddress, password });
 

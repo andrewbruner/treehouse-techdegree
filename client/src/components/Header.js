@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 // Header
-export default Header = (props) => {
+export default function Header(props) {
 
   // Context
   const { context } = props;

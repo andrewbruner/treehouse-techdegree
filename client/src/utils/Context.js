@@ -130,8 +130,8 @@ export class Provider extends Component {
 
     // Response: Created
     if (response.status === 201) {
-      console.dir(response);
-      return response.location;
+      console.dir(response.headers);
+      return response;
 
     // Response: Bad Request
     } else if (response.status === 400) {

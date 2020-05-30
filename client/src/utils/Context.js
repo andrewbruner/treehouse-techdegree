@@ -80,30 +80,27 @@ export class Provider extends Component {
   signIn = async (emailAddress, password) => {
 
     // Fetch API
-    await this.data.api(`/users`, 'GET', null, true, { emailAddress, password })
+    const response = await this.data.api(`/users`, 'GET', null, true, { emailAddress, password });
 
-      .then(response => {
+    // Response: OK
+    if (response.status === 200) {
+      const data = await response.json();
+      const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, };
+      this.setState(() => ({ authenticatedUser: user }));
+      Cookies.set('authenticatedUser', user, { expires: 1/48 });
+      return [];
 
-        // Response: OK
-        if (response.status === 200) {
-          return await response.json().then(data => {
-            const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, };
-            this.setState(() => ({ authenticatedUser: user }));
-            Cookies.set('authenticatedUser', user, { expires: 1/48 });
-            return [];
-          });
+    // Response: Unauthorized
+    } else if (response.status === 401) {
+      const error = await response.json();
+      return [error.message];
 
-        // Response: Unauthorized
-        } else if (response.status === 401) {
-          return response.json().then(error => [error.message]);
+    // Other Response
+    } else {
+      throw new Error();
+    }
 
-        // Other Response
-        } else {
-          throw new Error();
-        }
-
-      });
-  }
+  };
 
   // Sign Out
   signOut = () => {

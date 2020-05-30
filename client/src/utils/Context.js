@@ -86,12 +86,14 @@ export class Provider extends Component {
 
         // Response: OK
         if (response.status === 200) {
+          console.dir('response: ' + response);
           return response.json()
             .then(data => {
+              console.dir('data: ' + data);
               const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, };
               this.setState(() => ({ authenticatedUser: user }));
               Cookies.set('authenticatedUser', user, { expires: 1/48 });
-              return ['Everything is fine!'];
+              return [{ message: 'Everything is fine!' }];
             });
 
         // Response: Unauthorized

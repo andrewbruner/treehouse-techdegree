@@ -130,7 +130,8 @@ export class Provider extends Component {
 
     // Response: Created
     if (response.status === 201) {
-      return [];
+      const course = await response.json();
+      return course;
 
     // Response: Bad Request
     } else if (response.status === 400) {

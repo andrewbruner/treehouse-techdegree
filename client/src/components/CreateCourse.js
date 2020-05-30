@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Form from './Form';
 
 export default class CreateCourse extends Component {
+
+  // Local State
   state = {
     title: '',
     description: '',
@@ -10,44 +12,64 @@ export default class CreateCourse extends Component {
     errors: [],
   };
 
+  // Local State Change
+	change = (e) => {
+		const name = e.target.name;
+		const value = e.target.value;
+
+		this.setState(() => {
+		  return {
+			  [name]: value,
+		  };
+    });
+  };
+
+  // Submit
   submit() {
 
+    // context
     const { context } = this.props;
 
+    // authenticated user
+    const { authenticatedUser } = context
+
+    // input fields
     const {
       title,
       description,
       estimatedTime,
       materialsNeeded,
-      errors,
     } = this.state
 
+    // course
     const course = {
       title,
       description,
       estimatedTime,
       materialsNeeded,
-      userId: context.authenticatedUser.id,
+      userId: authenticatedUser.id,
     };
 
-    context.data.CreateCourse(course, context.authenticatedUser.emailAddress, context.authenticatedUser.password)
-	  const course1 = {
-	  	title,
-		description,
-		estimatedTime,
-		materialsNeeded,
-		userId: context.authenticatedUser.id,
-	  };
+    // credentials
+    const {
+      emailAddress,
+      password,
+    } = authenticateUser;
 
-    context.data.createCourse(course, context.authenticatedUser.emailAddress, context.authenticateUser.password)
-      .then( errors => {
-        if (errors.length) {
-          this.setState({ errors });
+    context.actions.createCourse(course, emailAddress, password)
+
+      .then(data => {
+
+        // returned error(s)
+        if (data.length > 0) {
+          this.setState(() => ({ errors: data }));
+        
+        // returned course object
         } else {
-          this.props.history.push('/');
-              this.props.history.push('/');
+          this.props.history.push(`/courses/${data.id}`)
         }
       })
+
       .catch( err => {
         console.log(err);
         this.props.history.push('/error');
@@ -66,6 +88,11 @@ export default class CreateCourse extends Component {
       materialsNeeded,
       errors,
     } = this.state;
+
+    const {
+      firstName,
+      lastName,
+    } = this.props.context.authenticatedUser;
 
     return (
       <div className="bounds course--detail">
@@ -92,7 +119,7 @@ export default class CreateCourse extends Component {
                         onChange={this.change}
                       />
                     </div>
-                    <p>By {this.props.context.authenticatedUser.firstName} {this.props.context.authenticatedUser.lastName}</p>
+                    <p>By {firstName} {lastName}</p>
                   </div>
                   <div className="course--description">
                     <div>

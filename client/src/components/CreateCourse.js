@@ -25,7 +25,7 @@ export default class CreateCourse extends Component {
   };
 
   // Submit
-  submit() {
+  submit = () => {
 
     // context
     const { context } = this.props;

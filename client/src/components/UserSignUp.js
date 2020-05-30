@@ -29,7 +29,7 @@ export default class UserSignUp extends Component {
   }
 
   // Submit
-  submit= () => {
+  submit = () => {
 
     // context
     const { context } = this.props;

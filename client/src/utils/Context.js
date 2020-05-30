@@ -124,14 +124,14 @@ export class Provider extends Component {
 
   // Create Course
   createCourse = async (course, emailAddress, password) => {
-console.log(emailAddress + password);
+
     // Fetch API
     const response = await this.data.api('/courses', 'POST', course, true, { emailAddress, password });
 
     // Response: Created
     if (response.status === 201) {
-      const course = await response.json();
-      return course;
+      console.log(response);
+      return response.location;
 
     // Response: Bad Request
     } else if (response.status === 400) {

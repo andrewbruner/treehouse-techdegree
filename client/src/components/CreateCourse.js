@@ -66,7 +66,8 @@ export default class CreateCourse extends Component {
         
         // returned course object
         } else {
-          this.props.history.push(`/courses/${data.id}`)
+          console.log(data);
+          this.props.history.push(data);
         }
       })
 

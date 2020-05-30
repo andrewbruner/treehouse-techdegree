@@ -16,7 +16,7 @@ export default class UserSignUp extends Component {
     errors: [],
   }
 
-  // Change Local State
+  // Local State Change
   change = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -51,19 +51,25 @@ export default class UserSignUp extends Component {
       password,
     };
 
-    // sign up & sign in
+    // sign up
     context.actions.signUp(user, confirmPassword)
-      .then( errors => {
-        errors.length ? (
-          this.setState({ errors })
-          ) : (
+
+      .then(errors => {
+
+        // returned error(s)
+        if (errors.length > 0) {
+          this.setState(() => ({ errors: errors }));
+
+        // sign in
+        } else {
           context.actions.signIn(emailAddress, password)
             .then(() => {
-              this.props.history.push(this.props.history[this.props.history.length - 2]);
-            })
-          );
+              this.props.history.push('/');
+            });
+        }
       })
-      .catch( err => {
+
+      .catch(err => {
         console.log(err);
         this.props.history.push('/error');
       });

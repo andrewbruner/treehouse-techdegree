@@ -28,18 +28,21 @@ export default class UserSignIn extends Component {
   // Submit
   submit = () => {
 
+    // context
     const { context } = this.props;
 
+    // input fields
     const {
       emailAddress,
       password,
     } = this.state
 
+    // sign in
     context.actions.signIn(emailAddress, password)
       .then(() => {
         this.props.history.push('/');
       })
-      .catch( err => {
+      .catch(err => {
         console.log(err);
         this.props.history.push('/error');
       });

@@ -38,47 +38,90 @@ export class Provider extends Component {
 
     // Sign Up / Create User
     const signUp = async (user, confirmPassword) => {
-      user.password === confirmPassword ? (
-        new Error('Passwords do not match')
-       ) : (
-        await this.data.createUser(user)
-       );
-    };
 
-    // Sign In
+      // Passwords Match
+      if (user.password === confirmPassword) {
+
+        // Fetch API
+        await this.data.api('/users', 'POST', user)
+
+          .then(response => {
+
+            // Response: Created
+            if (response.status === 201) {
+              return [];
+
+            // Response: Bad Request
+            } else if (response.status === 400) {
+              return response.json()
+                .then(data => [data.message]);
+
+            // Other Response
+            } else {
+              throw new Error();
+            }
+          });
+
+      // Passwords Do Not Match
+      } else {
+        const error = { message: 'Passwords do not match' };
+        return error.message;
+      }
+    };    
+
+    // Sign In / Get User
     const signIn = async (emailAddress, password) => {
 
+      // Fetch API
       await this.data.api(`/users`, 'GET', null, true, { emailAddress, password })
 
         .then(response => {
+
+          // Response: OK
           if (response.status === 200) {
-            return response.json();
+            return response.json()
+              .then(data => {
+                const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, };
+                this.setState(() => ({ authenticatedUser: user }));
+                Cookies.set('authenticatedUser', JSON.stringify(user));
+                return user;
+              });
+
+          // Response: Unauthorized
           } else if (response.status === 401) {
-            return null
+            return response.json()
+              .then(error => error.message);
+
+          // Other Response
           } else {
             throw new Error();
           }
-        })
 
-        .then(data => {
-          this.setState(() => {
-            return {
-              authenticatedUser: data,
-            }
-          });
-          Cookies.set('authenticatedUser', JSON.stringify(data));
-          return data;
         });
-
-    }
+    };
   
-    // sign out user
-    signOut = () => {
-      // set authenticatedUser on Provider's state/value to null
-      this.setState({ authenticatedUser: null });
-      // and remove authenticatedUser cookie
+    // Sign Out
+    const signOut = () => {
+      this.setState(() => ({ authenticatedUser: null }));
       Cookies.remove('authenticatedUser');
-    }
+    };
+
+    // Get Courses
+    const getCourses = () => {
+      this.data.api('/courses', 'GET')
+        .then(response => {
+
+          // Response: OK
+          if (response.status === 200) {
+            return response.json()
+              .then(courses => courses);
+
+          // Other Response
+          } else {
+            throw new Error();
+          }
+        });
+    };
   
     return (
       <Context.Provider value={value}>

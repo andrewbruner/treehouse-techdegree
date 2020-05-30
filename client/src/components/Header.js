@@ -11,7 +11,6 @@ export default Header = (props) => {
   // Authenticated User
   const { authenticatedUser } = context;
 
-  // return 1 of 2 navigation headers, depending on if user is logged in
   return (
     <Fragment>
       <div className="header">

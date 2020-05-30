@@ -1,17 +1,17 @@
-// dependencies
+// Dependencies
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-// functional UserSignOut component with context destructured from props
-export default ({ context }) => {
+// UserSignOut
+export default (props) => {
 
-  // destructure signout function from context actions
-  const { signOut } = context.actions;
+  // context
+  const { context } = props;
 
-  // sign out the user
-  signOut();
+  // signout
+  context.actions.signOut();
 
-  // redirect to home page
+  // redirect
   return (
       <Redirect to='/' />
   );

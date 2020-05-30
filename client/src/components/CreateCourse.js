@@ -66,8 +66,7 @@ export default class CreateCourse extends Component {
         
         // returned course object
         } else {
-          console.log(data);
-          this.props.history.push(data);
+          this.props.history.push('/');
         }
       })
 

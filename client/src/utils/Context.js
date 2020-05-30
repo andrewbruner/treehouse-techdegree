@@ -83,7 +83,6 @@ export class Provider extends Component {
     if (response.status === 200) {
       const data = await response.json();
       const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, password: password, id: data.id, };
-      console.dir(user);
       this.setState(() => ({ authenticatedUser: user }));
       Cookies.set('authenticatedUser', user, { expires: 1 });
       return [];
@@ -131,6 +130,7 @@ export class Provider extends Component {
 
     // Response: Created
     if (response.status === 201) {
+      console.dir(response);
       return response.location;
 
     // Response: Bad Request

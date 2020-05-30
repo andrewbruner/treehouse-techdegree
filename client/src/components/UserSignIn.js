@@ -41,7 +41,7 @@ export default class UserSignIn extends Component {
     context.actions.signIn(emailAddress, password)
 
       .then(errors => {
-
+        console.dir(errors);
         // returned errors
         if (errors) {
           this.setState(() => ({ errors: errors }));

@@ -50,24 +50,21 @@ export class Provider extends Component {
     if (user.password === confirmPassword) {
 
       // Fetch API
-      await this.data.api('/users', 'POST', user)
+      const response = await this.data.api('/users', 'POST', user);
 
-        .then(response => {
+      // Response: Created
+      if (response.status === 201) {
+        return [];
 
-          // Response: Created
-          if (response.status === 201) {
-            return [];
+      // Response: Bad Request
+      } else if (response.status === 400) {
+        const error = await response.json();
+        return [error.message];
 
-          // Response: Bad Request
-          } else if (response.status === 400) {
-            return response.json()
-              .then(error => [error.message]);
-
-          // Other Response
-          } else {
-            throw new Error();
-          }
-        });
+      // Other Response
+      } else {
+        throw new Error();
+      }
 
     // Passwords Do Not Match
     } else {

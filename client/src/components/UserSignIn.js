@@ -43,7 +43,7 @@ export default class UserSignIn extends Component {
       .then(errors => {
 
         // returned errors
-        if (errors.length > 0) {
+        if (errors) {
           this.setState(() => ({ errors: errors }));
         
         // redirect

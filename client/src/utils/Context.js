@@ -130,8 +130,7 @@ export class Provider extends Component {
 
     // Response: Created
     if (response.status === 201) {
-      const header = await response.get('Location');
-      console.dir(header);
+      console.dir(response.headers);
       return response;
 
     // Response: Bad Request

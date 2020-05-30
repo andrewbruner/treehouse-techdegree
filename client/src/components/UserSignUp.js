@@ -58,11 +58,12 @@ export default class UserSignUp extends Component {
 
         // returned error(s)
         if (errors.length > 0) {
-          this.setState(() => ({ errors: [errors] }));
+          this.setState(() => ({ errors: errors }));
 
         // sign in
         } else {
           context.actions.signIn(emailAddress, password)
+            // redirect
             .then(() => {
               this.props.history.push('/');
             });
@@ -70,7 +71,7 @@ export default class UserSignUp extends Component {
       })
 
       .catch(err => {
-        console.log(err);
+        console.error(err);
         this.props.history.push('/error');
       });
   }

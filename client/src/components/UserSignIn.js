@@ -39,11 +39,21 @@ export default class UserSignIn extends Component {
 
     // sign in
     context.actions.signIn(emailAddress, password)
-      .then(() => {
-        this.props.history.push('/');
+
+      .then(errors => {
+
+        // returned errors
+        if (errors.length > 0) {
+          this.setState(() => ({ errors: errors }));
+        
+        // redirect
+        } else {
+          this.props.history.push('/');
+        }
       })
+
       .catch(err => {
-        console.log(err);
+        console.error(err);
         this.props.history.push('/error');
       });
   };

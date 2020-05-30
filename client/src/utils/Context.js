@@ -61,7 +61,7 @@ export class Provider extends Component {
           // Response: Bad Request
           } else if (response.status === 400) {
             return response.json()
-              .then(data => [data.message]);
+              .then(error => [error.message]);
 
           // Other Response
           } else {
@@ -72,7 +72,7 @@ export class Provider extends Component {
     // Passwords Do Not Match
     } else {
       const error = { message: 'Passwords do not match' };
-      return error.message;
+      return [error.message];
     }
   }
 
@@ -91,13 +91,13 @@ export class Provider extends Component {
               const user = { firstName: data.firstName, lastName: data.lastName, emailAddress: data.emailAddress, };
               this.setState(() => ({ authenticatedUser: user }));
               Cookies.set('authenticatedUser', user, { expires: 1/48 });
-              return user;
+              return [];
             });
 
         // Response: Unauthorized
         } else if (response.status === 401) {
           return response.json()
-            .then(error => error.message);
+            .then(error => [error.message]);
 
         // Other Response
         } else {

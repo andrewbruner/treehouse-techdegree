@@ -56,6 +56,7 @@ export default class CreateCourse extends Component {
       password,
     } = authenticatedUser;
 
+    console.log(`creating course with ${course} ${emailAddress} ${password}`);
     context.actions.createCourse(course, emailAddress, password)
 
       .then(data => {

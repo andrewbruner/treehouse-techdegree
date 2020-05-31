@@ -11,6 +11,8 @@ export default class Courses extends Component {
 
   // Get Courses
   getCourses = () => {
+
+    // context
     const { context } = this.props;
 
     context.actions.getCourses()

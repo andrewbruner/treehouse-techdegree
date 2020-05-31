@@ -149,6 +149,23 @@ export class Provider extends Component {
   }
 }
 
+// Get Course Detail
+getCourseDetail = async (id) => {
+
+  // Fetch API
+  const response = await this.data.api(`/courses/${id}`, 'GET')
+  
+  // Response: OK
+  if (response.status === 200) {
+    const courseDetail = await response.json();
+    return courseDetail;
+
+  // Other Response
+  } else {
+    throw new Error();
+  }
+};
+
 // export Consumer component
 export const Consumer = Context.Consumer;
 

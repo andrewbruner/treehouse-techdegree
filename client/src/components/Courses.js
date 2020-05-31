@@ -15,7 +15,7 @@ export default class Courses extends Component {
 
     context.actions.getCourses()
 
-      .then(course => {
+      .then(courses => {
         this.setState(() => ({ courses: courses }));
       })
 

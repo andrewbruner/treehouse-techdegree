@@ -62,7 +62,7 @@ export default class CourseDetail extends Component {
             <div className="course--header">
               <h4 className="course--label">Course</h4>
               <h3 className="course--title">{courseDetail?.title}</h3>
-              <p>{courseDetail?.user.firstName} {courseDetail?.user.lastName}</p>
+              <p>{courseDetail?.user?.firstName} {courseDetail?.user?.lastName}</p>
             </div>
             <div className="course--description">
               <p>{courseDetail?.description}</p>

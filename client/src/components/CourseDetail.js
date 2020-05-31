@@ -44,7 +44,7 @@ export default class CourseDetail extends Component {
     const { 
       emailAddress,
       password
-     } = constext.authenticatedUser;
+     } = context.authenticatedUser;
     
     context.actions.deleteCourse(id, emailAddress, password)
 

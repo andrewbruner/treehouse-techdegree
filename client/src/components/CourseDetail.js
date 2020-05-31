@@ -48,7 +48,7 @@ export default class CourseDetail extends Component {
 
       .then( error => {
 
-        if (error.length > 0) {
+        if (error?.length > 0) {
           this.setState(() => ({ errors: error }));
           this.props.history.push('/forbidden');
         

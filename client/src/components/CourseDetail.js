@@ -53,6 +53,11 @@ export default class CourseDetail extends Component {
       user
     } = courseDetail;
 
+    const {
+      firstName,
+      lastName
+    } = user;
+
     return (
       <div>
         <div className="actions--bar">

@@ -17,7 +17,7 @@ export default class CourseDetail extends Component {
     const { context } = this.props;
     
     // course id
-    const { id } = this.props.match.params.id;
+    const { id } = this.props.match.params;
     console.log(id);
     context.actions.getCourseDetail(id)
 

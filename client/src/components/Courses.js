@@ -4,19 +4,30 @@ import config from '../utils/config';
 
 export default class Courses extends Component {
 
+  // Local State
   state = {
     courses: [],
   };
 
-  readCourses() {
-    fetch(`${config.apiBaseUrl}/courses`)
-      .then(response => response.json())
-      .then(data => this.setState({ courses: data }))
-      .catch(err => console.error('Error: ', err));
+  // Get Courses
+  getCourses = () => {
+    const { context } = this.props;
+
+    context.actions.getCourses()
+
+      .then(course => {
+        this.setState(() => ({ courses: courses }));
+      })
+
+      .catch(err => {
+        console.log(err);
+        this.props.history.push('/error');
+      });
   }
 
+  // Component Did Mount
   componentDidMount() {
-    this.readCourses();
+    this.getCourses();
   }
 
   render() {

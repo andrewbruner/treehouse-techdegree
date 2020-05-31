@@ -107,20 +107,20 @@ export class Provider extends Component {
 
   // Get Courses
   getCourses = () => {
-    this.data.api('/courses', 'GET')
-      .then(response => {
 
-        // Response: OK
-        if (response.status === 200) {
-          return response.json()
-            .then(courses => courses);
+    // Fetch API
+    const response = await this.data.api('/courses', 'GET')
+    
+    // Response: OK
+    if (response.status === 200) {
+      const courses = await response.json();
+      return courses;
 
-        // Other Response
-        } else {
-          throw new Error();
-        }
-      });
-  }
+    // Other Response
+    } else {
+      throw new Error();
+    }
+  };
 
   // Create Course
   createCourse = async (course, emailAddress, password) => {

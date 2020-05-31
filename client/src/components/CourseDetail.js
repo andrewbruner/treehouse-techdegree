@@ -4,14 +4,14 @@ import config from '../utils/config';
 
 export default class CourseDetail extends Component {
 
-    state = {
-      courseDetail: [],
-      courseUser: [],
-      errors: [],
-    }
+  state = {
+    courseDetail: [],
+    courseUser: [],
+    errors: [],
+  }
 
-    async readCourseDetail() {
-      await fetch(`${config.apiBaseUrl}/api/courses/${this.state.courseDetail.id}`)
+    readCourseDetail() {
+      fetch(`${config.apiBaseUrl}/api/courses/${this.state.courseDetail.id}`)
         .then(response => response.json())
         .then(data => this.setState({ courseDetail: data, courseUser: data.user }))
         .catch(err => console.error('Error: ', err))

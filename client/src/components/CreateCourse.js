@@ -70,7 +70,7 @@ export default class CreateCourse extends Component {
         }
       })
 
-      .catch( err => {
+      .catch(err => {
         console.log(err);
         this.props.history.push('/error');
       });

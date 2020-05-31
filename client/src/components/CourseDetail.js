@@ -44,22 +44,13 @@ export default class CourseDetail extends Component {
   render() {
     const { courseDetail } = this.state;
 
-    const {
-      id,
-      title,
-      description,
-      estimatedTime,
-      materialsNeeded,
-      user
-    } = courseDetail;
-
     return (
       <div>
         <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
               <span>
-                <Link className="button" to={`/courses/${id}/update`}>Update Course</Link>
+                <Link className="button" to={`/courses/${courseDetail?.id}/update`}>Update Course</Link>
                 <Link className="button" to="/" onClick={() => this.deleteCourse()}>Delete Course</Link>
               </span>
               <Link className="button button-secondary" to="/">Return to List</Link>
@@ -70,11 +61,11 @@ export default class CourseDetail extends Component {
           <div className="grid-66">
             <div className="course--header">
               <h4 className="course--label">Course</h4>
-              <h3 className="course--title">{title}</h3>
-              <p>{user?.firstName} {user?.lastName}</p>
+              <h3 className="course--title">{courseDetail?.title}</h3>
+              <p>{courseDetail?.user.firstName} {courseDetail?.user.lastName}</p>
             </div>
             <div className="course--description">
-              <p>{description}</p>
+              <p>{courseDetail?.description}</p>
             </div>
           </div>
           <div className="grid-25 grid-right">
@@ -82,12 +73,12 @@ export default class CourseDetail extends Component {
               <ul className="course--stats--list">
                 <li className="course--stats--list--item">
                   <h4>Estimated Time</h4>
-                  <h3>{estimatedTime}</h3>
+                  <h3>{courseDetail?.estimatedTime}</h3>
                 </li>
                 <li className="course--stats--list--item">
                   <h4>Materials Needed</h4>
                   <ul>
-                    <li>{materialsNeeded}</li>
+                    <li>{courseDetail?.materialsNeeded}</li>
                   </ul>
                 </li>
               </ul>

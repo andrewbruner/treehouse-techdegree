@@ -151,6 +151,8 @@ export class Provider extends Component {
   // Get Course Detail
   getCourseDetail = async (id) => {
 
+    console.log(`id: ${id}`)
+
     // Fetch API
     const response = await this.data.api(`/courses/${id}`, 'GET')
     

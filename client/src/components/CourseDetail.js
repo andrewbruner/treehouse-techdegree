@@ -11,7 +11,7 @@ export default class CourseDetail extends Component {
   }
 
   // Get Course Detail
-  getCourseDetail = (id) => {
+  getCourseDetail = () => {
 
     // context
     const { context } = this.props;
@@ -38,7 +38,7 @@ export default class CourseDetail extends Component {
 
   // Component Did Mount
   componentDidMount() {
-    this.readCourseDetail();
+    this.getCourseDetail();
   }
 
   render() {

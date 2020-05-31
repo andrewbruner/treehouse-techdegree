@@ -156,7 +156,9 @@ export class Provider extends Component {
     
     // Response: OK
     if (response.status === 200) {
+      console.dir(response);
       const courseDetail = await response.json();
+      console.dir(courseDetail);
       return courseDetail;
 
     // Other Response

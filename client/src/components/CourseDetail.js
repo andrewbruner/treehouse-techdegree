@@ -70,11 +70,11 @@ export default class CourseDetail extends Component {
           <div className="grid-66">
             <div className="course--header">
               <h4 className="course--label">Course</h4>
-              <h3 className="course--title">{this.state.courseDetail?.title}</h3>
-              <p>{this.state.courseDetail?.user.firstName} {this.state.courseDetail?.user.lastName}</p>
+              <h3 className="course--title">{title}</h3>
+              <p>{user.firstName} {user.lastName}</p>
             </div>
             <div className="course--description">
-              <p>{this.state.courseDetail.description}</p>
+              <p>{description}</p>
             </div>
           </div>
           <div className="grid-25 grid-right">
@@ -82,12 +82,12 @@ export default class CourseDetail extends Component {
               <ul className="course--stats--list">
                 <li className="course--stats--list--item">
                   <h4>Estimated Time</h4>
-                  <h3>{this.state.courseDetail.estimatedTime}</h3>
+                  <h3>{estimatedTime}</h3>
                 </li>
                 <li className="course--stats--list--item">
                   <h4>Materials Needed</h4>
                   <ul>
-                    <li>{this.state.courseDetail.materialsNeeded}</li>
+                    <li>{materialsNeeded}</li>
                   </ul>
                 </li>
               </ul>

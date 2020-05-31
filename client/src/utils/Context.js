@@ -164,6 +164,32 @@ export class Provider extends Component {
       throw new Error();
     }
   };
+
+  // Delete Course
+  deleteCourse = async (id, emailAddress, password) => {
+
+    // Fetch API
+    const response = await this.data.api(`/courses/${id}`, 'DELETE', null, true, { emailAddress, password })
+    
+    // Response: OK
+    if (response.status === 204) {
+      return null;
+
+    // Response: Unauthorized
+    } else if (response.status == 401) {
+      const error = await response.json();
+      return [error.message];
+
+    // Response: Forbidden
+    } else if (response.status === 403) {
+      const error = await response.json();
+      return [error.message];
+
+    // Other Response
+    } else {
+      throw new Error();
+    }
+  };
 }
 
 // export Consumer component

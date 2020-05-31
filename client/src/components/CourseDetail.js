@@ -26,14 +26,43 @@ export default class CourseDetail extends Component {
       })
 
       .catch(err => {
-        console.log(err);
+        console.error(err);
         this.props.history.push('/error');
       });
   }
 
   // Delete Course
   deleteCourse = () => {
+
+    // context
+    const { context } = this.props;
+
+    // course id
+    const { id } = this.props.match.params;
+
+    // credentials
+    const { 
+      emailAddress,
+      password
+     } = constext.authenticatedUser;
     
+    context.actions.deleteCourse(id, emailAddress, password)
+
+      .then( error => {
+
+        if (error.length > 0) {
+          this.setState(() => ({ errors: error }));
+          this.props.history.push('/forbidden');
+        
+        } else {
+          this.props.history.push('/');
+        }
+      })
+
+      .catch(err => {
+        console.error(err);
+        this.props.history.push('/error');
+      });
   }
 
   // Component Did Mount

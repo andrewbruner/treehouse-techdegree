@@ -41,10 +41,8 @@ export default class CourseDetail extends Component {
     const { id } = this.props.match.params;
 
     // credentials
-    const { 
-      emailAddress,
-      password
-     } = context.authenticatedUser;
+    const emailAddress = context.authenticatedUser?.emailAddress;
+    const password = context.authenticatedUser?.password;
     
     context.actions.deleteCourse(id, emailAddress, password)
 

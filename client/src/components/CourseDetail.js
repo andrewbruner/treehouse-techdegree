@@ -53,11 +53,6 @@ export default class CourseDetail extends Component {
       user
     } = courseDetail;
 
-    const {
-      firstName,
-      lastName
-    } = user;
-
     return (
       <div>
         <div className="actions--bar">
@@ -76,7 +71,7 @@ export default class CourseDetail extends Component {
             <div className="course--header">
               <h4 className="course--label">Course</h4>
               <h3 className="course--title">{title}</h3>
-              <p>{user.firstName} {user.lastName}</p>
+              <p>{user?.firstName} {user?.lastName}</p>
             </div>
             <div className="course--description">
               <p>{description}</p>

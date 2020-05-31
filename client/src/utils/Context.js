@@ -106,7 +106,7 @@ export class Provider extends Component {
   }
 
   // Get Courses
-  getCourses = () => {
+  getCourses = async () => {
 
     // Fetch API
     const response = await this.data.api('/courses', 'GET')

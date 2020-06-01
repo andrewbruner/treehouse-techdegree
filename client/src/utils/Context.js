@@ -165,13 +165,44 @@ export class Provider extends Component {
     }
   };
 
+  // Update Course
+  updateCourse = async (id, course, emailAddress, password) => {
+
+    // Fetch API
+    const response = await this.data.api(`/courses/${id}`, 'PUT', course, true, { emailAddress, password });
+
+    // Response: No Content
+    if (response.status === 204) {
+      return [];
+
+    // Response: Bad Request
+    } else if (response.status === 400) {
+      const error = await response.json();
+      return [error.message];
+
+    // Response: Unauthorized
+    } else if (response.status === 401) {
+      const error = await response.json();
+      return [error.message];
+
+    // Response: Forbidden
+    } else if (response.status === 403) {
+      const error = await response.json();
+      return [error.message];
+
+    // Other Response
+    } else {
+      throw new Error();
+    }
+  }
+
   // Delete Course
   deleteCourse = async (id, emailAddress, password) => {
 
     // Fetch API
     const response = await this.data.api(`/courses/${id}`, 'DELETE', null, true, { emailAddress, password })
     
-    // Response: OK
+    // Response: No Content
     if (response.status === 204) {
       return null;
 

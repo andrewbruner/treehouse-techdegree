@@ -207,7 +207,7 @@ export class Provider extends Component {
       return null;
 
     // Response: Unauthorized
-    } else if (response.status == 401) {
+    } else if (response.status === 401) {
       const error = await response.json();
       return [error.message];
 

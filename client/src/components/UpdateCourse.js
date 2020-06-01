@@ -110,7 +110,7 @@ class UpdateCourse extends Component {
   cancel = () => {
 
     // course id
-    const id = this.props.match.params;
+    const { id } = this.props.match.params;
 
     this.props.history.push(`/courses/${id}`);
   };

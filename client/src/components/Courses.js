@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import config from '../utils/config';
 
 export default class Courses extends Component {
 

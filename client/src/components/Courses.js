@@ -1,6 +1,8 @@
+// Dependencies
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+// Courses
 export default class Courses extends Component {
 
   // Local State
@@ -14,12 +16,15 @@ export default class Courses extends Component {
     // context
     const { context } = this.props;
 
+    // api call
     context.actions.getCourses()
 
+      // local state update
       .then(courses => {
         this.setState(() => ({ courses: courses }));
       })
 
+      // unhandled error
       .catch(err => {
         console.error(err);
         this.props.history.push('/error');
@@ -31,14 +36,13 @@ export default class Courses extends Component {
     this.getCourses();
   }
 
-  render() {
-    let key = 0;
+  // Render
+  render() {    
     return (
       <div className="bounds">
         {this.state.courses.map(course => {
-          key++;
           return (
-            <div key={key} className="grid-33">
+            <div key={course.id} className="grid-33">
               <Link className="course--module course--link" to={`/courses/${course.id}`}>
                 <h4 className="course--label">Course</h4>
                 <h3 className="course--title">{course.title}</h3>

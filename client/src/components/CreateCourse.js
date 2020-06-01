@@ -1,6 +1,8 @@
+// Dependencies
 import React, { Component } from 'react';
 import Form from './Form';
 
+// Create Course
 export default class CreateCourse extends Component {
 
   // Local State
@@ -56,31 +58,38 @@ export default class CreateCourse extends Component {
       password,
     } = authenticatedUser;
 
+    // api call
     context.actions.createCourse(course, emailAddress, password)
 
-      .then(data => {
+      // returned value
+      .then(errors => {
 
-        // returned error(s)
-        if (data.length > 0) {
-          this.setState(() => ({ errors: data }));
+        // validation errors
+        if (errors.length) {
+          this.setState(() => ({ errors: errors }));
         
-        // returned course object
+        // redirect
         } else {
           this.props.history.push('/');
         }
       })
 
+      // unhandled errors
       .catch(err => {
         console.log(err);
         this.props.history.push('/error');
       });
   }
 
+  // Cancel
   cancel = () => {
     this.props.history.push('/');
   }
 
+  // Render
   render() {
+
+    // local variable access
     const {
       title,
       description,
@@ -94,6 +103,7 @@ export default class CreateCourse extends Component {
       lastName,
     } = this.props.context.authenticatedUser;
 
+    // render
     return (
       <div className="bounds course--detail">
         <h1>Create Course</h1>
@@ -177,5 +187,3 @@ export default class CreateCourse extends Component {
     )
   }
 };
-
-

@@ -139,12 +139,12 @@ export class Provider extends Component {
     // Response: Bad Request
     } else if (response.status === 400) {
       const error = await response.json();
-      return [error.message];
+      return error.message;
 
     // Response: Unauthorized
     } else if (response.status === 401) {
       const error = await response.json();
-      return [error.message];
+      throw new Error([error.message]);
 
     // Other Response
     } else {

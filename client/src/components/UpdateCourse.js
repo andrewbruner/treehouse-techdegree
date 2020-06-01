@@ -53,11 +53,11 @@ export default class UpdateCourse extends Component {
         // local state update
         } else {
           this.setState(() => ({
-            courseDetail: data,
-            title: data.title,
-            description: data.description,
-            estimatedTime: data.estimatedTime,
-            materialsNeeded: data.materialsNeeded,
+            courseDetail: courseDetail,
+            title: courseDetail.title,
+            description: courseDetail.description,
+            estimatedTime: courseDetail.estimatedTime,
+            materialsNeeded: courseDetail.materialsNeeded,
           }));
         }
       })

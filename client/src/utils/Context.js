@@ -9,18 +9,21 @@ const Context = React.createContext();
 // Provider
 export class Provider extends Component {
 
+  // Constructor
   constructor() {
     super();
     this.data = new Data();
   }
 
+  // Local State
   state = {
     authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
-  };
+  }
 
+  // Render
   render() {
     
-    // Value
+    // Context Value
     const value = {
       authenticatedUser: this.state.authenticatedUser,
       data: this.data,
@@ -36,6 +39,7 @@ export class Provider extends Component {
       },
     };
 
+    // Render
     return (
       <Context.Provider value={value}>
         {this.props.children}
@@ -59,7 +63,7 @@ export class Provider extends Component {
       // Response: Bad Request
       } else if (response.status === 400) {
         const error = await response.json();
-        return [error.message];
+        return error.message;
 
       // Other Response
       } else {

@@ -36,7 +36,7 @@ export default class CourseDetail extends Component {
         }
       })
 
-      // unhandled error
+      // unhandled errors
       .catch(err => {
         console.error(err);
         this.props.history.push('/error');

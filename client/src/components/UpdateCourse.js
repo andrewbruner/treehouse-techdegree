@@ -47,7 +47,7 @@ export default class UpdateCourse extends Component {
           this.props.history.push('/notfound');
 
         // forbidden
-        } else if (courseDetail?.Userid !== context.authenticatedUser?.id) {
+        } else if (courseDetail?.userId !== context.authenticatedUser?.id) {
           this.props.history.push('/forbidden');
 
         // local state update

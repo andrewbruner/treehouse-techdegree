@@ -120,7 +120,7 @@ export class Provider extends Component {
     } else {
       throw new Error();
     }
-  };
+  }
 
   // Create Course
   createCourse = async (course, emailAddress, password) => {
@@ -163,7 +163,7 @@ export class Provider extends Component {
     } else {
       throw new Error();
     }
-  };
+  }
 
   // Update Course
   updateCourse = async (id, course, emailAddress, password) => {
@@ -209,18 +209,18 @@ export class Provider extends Component {
     // Response: Unauthorized
     } else if (response.status === 401) {
       const error = await response.json();
-      return [error.message];
+      throw new Error([error.message]);
 
     // Response: Forbidden
     } else if (response.status === 403) {
       const error = await response.json();
-      return [error.message];
+      throw new Error([error.message]);
 
     // Other Response
     } else {
       throw new Error();
     }
-  };
+  }
 }
 
 // export Consumer component

@@ -1,59 +1,80 @@
+// Dependencies
 const express = require('express');
 const router = express.Router();
-const bcryptjs = require('bcryptjs');
 const auth = require('basic-auth');
+const bcryptjs = require('bcryptjs');
 const db = require('../models');
 const { User } = db.models;
 const { Course } = db.models;
 
 // Authentication Middleware
 const authenticateUser = async (req, res, next) => {
-   let message = null;
 
-  // Parse the user's credentials from the Authorization header.
+  // Error Message
+  let message = null;
+
+  // Credential Retrieval ({ name, pass, })
   const credentials = auth(req);
 
-  // If the user's credentials are available...
+  // Successful Credentail Retrieval
   if (credentials) {
-    // Attempt to retrieve the user from the database by their email address
+
+    // User Retrieval
     const user = await User.findOne({
-        where: {
-            emailAddress: credentials.name
-        }
+      where: {
+        emailAddress: credentials.name,
+      },
     });
 
-    // If a user was successfully retrieved from the database...
+    // Successful User Retrieval
     if (user) {
-      // Compare passwords
+
+      // User Authentication
       const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
 
-      // If the passwords match...
+      // Successful User Authentication
       if (authenticated) {
+
         console.log(`Authentication successful for email address: ${user.emailAddress}`);
 
-        // Then store the retrieved user object on the request object as currentUser 
+        // Current User Storage
         req.currentUser = user;
+
+      // Unsuccessful User Authentication
       } else {
+
         message = `Authentication failure for email address: ${user.emailAddress}`;
+      
       }
+
+    // Unsuccessful User Retrieval
     } else {
+      
       message = `User not found for email address: ${credentials.name}`;
+
     }
+
+  // Unsuccessful Credential Retrieval
   } else {
+  
     message = 'Auth header not found';
+  
   }
 
-  // If user authentication failed...
+  // Unsuccessful Authentication
   if (message) {
+
     console.warn(message);
 
-    // Return a response with a 401 Unauthorized HTTP status code.
-    res.status(401).json({ message: 'Access Denied' });
+    res.status(401).json({ message: 'Access Denied', });
+
+  // Successful Authentication
   } else {
-    // Or if user authentication succeeded...
-    // Call the next() method.
+
     next();
+
   }
+
 };
 
 // Async Helper Function

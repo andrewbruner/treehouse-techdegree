@@ -1,14 +1,19 @@
+// Dependencies
 import React from 'react';
 import Cookies from 'js-cookie';
 import { Redirect } from 'react-router-dom';
 
-const UserSignOut = props => {
-	props.signOut();
-	if (Cookies.get('authenticatedUser') === undefined) {
-    		return (
-        		<Redirect to='/' />
-    		)
-	}
-}
+// UserSignOut
+export default (props) => {
 
-export default UserSignOut;
+  // context
+  const { context } = props;
+
+  // signout
+  context.actions.signOut();
+
+  // redirect
+  return (
+      <Redirect to='/' />
+  );
+};

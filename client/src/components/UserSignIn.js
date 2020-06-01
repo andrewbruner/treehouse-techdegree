@@ -1,36 +1,113 @@
+// Dependencies
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Form from './Form';
 
-class UserSignIn extends Component {
+// UserSignIn
+export default class UserSignIn extends Component {
+
+  // Local State
 	state = {
-		emailAddressValue: '',
-		passwordValue:  ''
+		emailAddress: '',
+		password:  '',
+		errors: [],
 	}
 
-	render() {
-        return (
-        	<div className="bounds">
-        		<div className="grid-33 centered signin">
-          			<h1>Sign In</h1>
-          			<div>
-						<form>
-							<div>
-								<input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" value={this.state.emailAddressValue} onChange={(e) => this.setState({ emailAddressValue: e.target.value })} />
-							</div>
-							<div>
-								<input id="password" name="password" type="password" className="" placeholder="Password" value={this.state.passwordValue} onChange={(e) => this.setState({ passwordValue: e.target.value })} />
-							</div>
-							<div className="grid-100 pad-bottom">
-								<button className="button" type="submit" onClick={(e) => {e.preventDefault(); this.props.signIn(this.state.emailAddressValue, this.state.passwordValue);}}>Sign In</button>
-								<button className="button button-secondary" onClick={(e) => {e.preventDefault(); window.location.href='/'}}>Cancel</button>
-							</div>
-						</form>
-          			</div>
-          			<p>&nbsp;</p>
-          			<p>Don't have a user account? <a href="/signup">Click here</a> to sign up!</p>
-        		</div>
-			</div>
-        )
-    }
-}
+  // Local State Change
+	change = (e) => {
+		const name = e.target.name;
+		const value = e.target.value;
 
-export default UserSignIn;
+		this.setState(() => {
+		  return {
+			  [name]: value,
+		  };
+    });
+  };
+  
+  // Submit
+  submit = async () => {
+
+    // context
+    const { context } = this.props;
+
+    // input fields
+    const {
+      emailAddress,
+      password,
+    } = this.state
+
+    // sign in
+    await context.actions.signIn(emailAddress, password)
+
+      .then(errors => {
+
+        // returned errors
+        if (errors.length > 0) {
+          this.setState(() => ({ errors: errors }));
+        
+        // redirect
+        } else {
+          const prevLocation = this.props.location.state?.from.pathname;
+          const redirect = prevLocation || '/';
+          this.props.history.push(redirect);
+        }
+      })
+
+      .catch(err => {
+        console.error(err);
+        this.props.history.push('/error');
+      });
+  };
+
+  // Cancel
+  cancel = () => {
+    this.props.history.push('/');
+  };
+
+  // Render
+	render() {
+
+    const {
+      emailAddress,
+      password,
+      errors,
+    } = this.state;
+
+    return (
+      <div className="bounds">
+        <div className="grid-33 centered signin">
+          <h1>Sign In</h1>
+          <div>
+            <Form
+              cancel={this.cancel}
+              errors={errors}
+              submit={this.submit}
+              submitButtonText="Sign In"
+              elements={() => (
+                <React.Fragment>
+                  <input 
+                    id="emailAddress" 
+                    name="emailAddress" 
+                    type="text"
+                    value={emailAddress} 
+                    onChange={this.change} 
+                    placeholder="Email Address" />
+                  <input 
+                    id="password" 
+                    name="password"
+                    type="password"
+                    value={password} 
+                    onChange={this.change} 
+                    placeholder="Password" />
+                </React.Fragment>
+              )}
+            />
+          </div>
+          <p>&nbsp;</p>
+          <p>Don't have a user account? <Link to="/signup">Click here</Link> to sign up!</p>
+        </div>
+      </div>
+    )
+  }
+}

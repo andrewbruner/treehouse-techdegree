@@ -8,7 +8,7 @@ export default class Courses extends Component {
   // Local State
   state = {
     courses: [],
-  };
+  }
 
   // Get Courses
   getCourses = () => {

@@ -23,10 +23,10 @@ export default class CourseDetail extends Component {
     // api call
     context.actions.getCourseDetail(id)
 
-      // course detail
+      // returned value
       .then(courseDetail => {
 
-        // not found
+        // course not found
         if (courseDetail === null) {
           this.props.history.push('/notfound');
 

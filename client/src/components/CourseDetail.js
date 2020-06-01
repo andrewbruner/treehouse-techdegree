@@ -60,7 +60,7 @@ export default class CourseDetail extends Component {
     context.actions.deleteCourse(id, emailAddress, password)
 
       // redirect after deletion
-      .then(() => {
+      .then(data => {
         this.props.history.push('/');
       })
 

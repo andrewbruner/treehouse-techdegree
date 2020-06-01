@@ -204,7 +204,7 @@ export class Provider extends Component {
     
     // Response: No Content
     if (response.status === 204) {
-      return null;
+      return [];
 
     // Response: Unauthorized
     } else if (response.status === 401) {

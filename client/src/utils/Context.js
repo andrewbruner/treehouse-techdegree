@@ -182,7 +182,7 @@ export class Provider extends Component {
     // Response: Bad Request
     } else if (response.status === 400) {
       const error = await response.json();
-      return [error.message];
+      return error.message;
 
     // Response: Unauthorized
     } else if (response.status === 401) {
@@ -213,12 +213,12 @@ export class Provider extends Component {
     // Response: Unauthorized
     } else if (response.status === 401) {
       const error = await response.json();
-      throw new Error([error.message]);
+      throw new Error(error.message);
 
     // Response: Forbidden
     } else if (response.status === 403) {
       const error = await response.json();
-      throw new Error([error.message]);
+      throw new Error(error.message);
 
     // Other Response
     } else {

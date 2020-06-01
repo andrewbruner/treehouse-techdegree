@@ -1,7 +1,9 @@
+// Depenedencies
 import React, { Component } from 'react';
 import Form from './Form';
 
-class UpdateCourse extends Component {
+// Update Course
+export default class UpdateCourse extends Component {
 
   // Local State
   state = {
@@ -23,7 +25,7 @@ class UpdateCourse extends Component {
 			  [name]: value,
 		  };
     });
-  };
+  }
 
   // Get Course Detail
   getCourseDetail = () => {
@@ -34,23 +36,38 @@ class UpdateCourse extends Component {
     // course id
     const { id } = this.props.match.params;
 
+    // api call
     context.actions.getCourseDetail(id)
 
+      // returned value
       .then(courseDetail => {
-        this.setState(() => ({
-          courseDetail: courseDetail,
-          title: courseDetail.title,
-          description: courseDetail.description,
-          estimatedTime: courseDetail.estimatedTime,
-          materialsNeeded: courseDetail.materialsNeeded,
-        }));
+
+        // course not found
+        if (courseDetail === null) {
+          this.props.history.push('/notfound');
+
+        // forbidden
+        } else if (courseDetail?.Userid !== context.authenticatedUser?.id) {
+          this.props.history.push('/forbidden');
+
+        // local state update
+        } else {
+          this.setState(() => ({
+            courseDetail: data,
+            title: data.title,
+            description: data.description,
+            estimatedTime: data.estimatedTime,
+            materialsNeeded: data.materialsNeeded,
+          }));
+        }
       })
 
+      // unhandled errors
       .catch(err => {
         console.error(err);
         this.props.history.push('/error');
       });
-  };
+  }
 
   // Submit
   submit = () => {
@@ -86,42 +103,44 @@ class UpdateCourse extends Component {
       password,
     } = authenticatedUser;
 
+    // api call
     context.actions.updateCourse(id, course, emailAddress, password)
 
-      .then(data => {
+      // returned value
+      .then(errors => {
 
-        // returned error(s)
-        if (data.length > 0) {
-          this.setState(() => ({ errors: data }));
+        // validation errors
+        if (errors.length) {
+          this.setState(() => ({ errors: errors }));
         
-        // returned course object
+        // redirect
         } else {
           this.props.history.push(`/courses/${id}`);
         }
       })
 
+      // unhandled errors
       .catch(err => {
         console.log(err);
         this.props.history.push('/error');
       });
-  };
+  }
 
   // Cancel
   cancel = () => {
-
-    // course id
     const { id } = this.props.match.params;
-
     this.props.history.push(`/courses/${id}`);
-  };
+  }
 
   // Component Did Mount
   componentDidMount() {
     this.getCourseDetail();
   }
 
+  // Render
   render() {
 
+    // local varible access
     const {
       title,
       description,
@@ -135,6 +154,7 @@ class UpdateCourse extends Component {
       lastName,
     } = this.props.context.authenticatedUser;
 
+    // render
     return (
       <div className="bounds course--detail">
         <h1>Update Course</h1>
@@ -217,6 +237,4 @@ class UpdateCourse extends Component {
       </div>
     )
   }
-}
-
-export default UpdateCourse;
+};

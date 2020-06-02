@@ -1,13 +1,14 @@
+// Depenedencies
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
+// Course Detail
 export default class CourseDetail extends Component {
 
   // Local State
   state = {
     courseDetail: [],
-    errors: [],
   }
 
   // Get Course Detail
@@ -19,12 +20,23 @@ export default class CourseDetail extends Component {
     // course id
     const { id } = this.props.match.params;
 
+    // api call
     context.actions.getCourseDetail(id)
 
+      // returned value
       .then(courseDetail => {
-        this.setState(() => ({ courseDetail: courseDetail }));
+
+        // course not found
+        if (courseDetail === null) {
+          this.props.history.push('/notfound');
+
+        // local state update
+        } else {
+          this.setState(() => ({ courseDetail: courseDetail }));
+        }
       })
 
+      // unhandled errors
       .catch(err => {
         console.error(err);
         this.props.history.push('/error');
@@ -44,19 +56,15 @@ export default class CourseDetail extends Component {
     const emailAddress = context.authenticatedUser?.emailAddress;
     const password = context.authenticatedUser?.password;
     
+    // api call
     context.actions.deleteCourse(id, emailAddress, password)
 
-      .then( error => {
-
-        if (error?.length > 0) {
-          this.setState(() => ({ errors: error }));
-          this.props.history.push('/forbidden');
-        
-        } else {
-          this.props.history.push('/');
-        }
+      // redirect after deletion
+      .then(data => {
+        this.props.history.push('/');
       })
 
+      // unhandled error
       .catch(err => {
         console.error(err);
         this.props.history.push('/error');
@@ -68,18 +76,34 @@ export default class CourseDetail extends Component {
     this.getCourseDetail();
   }
 
+  // Render
   render() {
-    const { courseDetail } = this.state;
 
+    // local variable access
+    const { courseDetail } = this.state;
+    const { authenticatedUser } = this.props.context;
+
+    // authorized user actions setup
+    let actions = null;
+    const UserActions = () => {
+      return actions;
+    };
+    if (authenticatedUser && authenticatedUser?.id === courseDetail?.user?.id) {
+      actions = (
+        <span>
+          <Link className="button" to={`/courses/${courseDetail?.id}/update`}>Update Course</Link>
+          <Link className="button" to="/" onClick={() => this.deleteCourse()}>Delete Course</Link>
+        </span>
+      ); 
+    }
+
+    // render
     return (
       <div>
         <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
-              <span>
-                <Link className="button" to={`/courses/${courseDetail?.id}/update`}>Update Course</Link>
-                <Link className="button" to="/" onClick={() => this.deleteCourse()}>Delete Course</Link>
-              </span>
+              <UserActions />
               <Link className="button button-secondary" to="/">Return to List</Link>
             </div>
           </div>
@@ -113,5 +137,4 @@ export default class CourseDetail extends Component {
       </div>
     );
   }
-}
-
+};

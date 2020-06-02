@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Form from './Form';
 
-// UserSignIn
+// User Sign In
 export default class UserSignIn extends Component {
 
   // Local State
@@ -23,10 +23,10 @@ export default class UserSignIn extends Component {
 			  [name]: value,
 		  };
     });
-  };
+  }
   
   // Submit
-  submit = async () => {
+  submit = () => {
 
     // context
     const { context } = this.props;
@@ -37,13 +37,14 @@ export default class UserSignIn extends Component {
       password,
     } = this.state
 
-    // sign in
-    await context.actions.signIn(emailAddress, password)
+    // api call
+    context.actions.signIn(emailAddress, password)
 
+      // returned value
       .then(errors => {
 
-        // returned errors
-        if (errors.length > 0) {
+        // validation errors
+        if (errors.length) {
           this.setState(() => ({ errors: errors }));
         
         // redirect
@@ -54,26 +55,29 @@ export default class UserSignIn extends Component {
         }
       })
 
+      // unhandled errors
       .catch(err => {
         console.error(err);
         this.props.history.push('/error');
       });
-  };
+  }
 
   // Cancel
   cancel = () => {
     this.props.history.push('/');
-  };
+  }
 
   // Render
 	render() {
 
+    // local variable access
     const {
       emailAddress,
       password,
       errors,
     } = this.state;
 
+    // render
     return (
       <div className="bounds">
         <div className="grid-33 centered signin">
@@ -110,4 +114,4 @@ export default class UserSignIn extends Component {
       </div>
     )
   }
-}
+};

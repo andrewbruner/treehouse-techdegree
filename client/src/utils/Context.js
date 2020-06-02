@@ -9,18 +9,21 @@ const Context = React.createContext();
 // Provider
 export class Provider extends Component {
 
+  // Constructor
   constructor() {
     super();
     this.data = new Data();
   }
 
+  // Local State
   state = {
     authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
-  };
+  }
 
+  // Render
   render() {
     
-    // Value
+    // Context Value
     const value = {
       authenticatedUser: this.state.authenticatedUser,
       data: this.data,
@@ -36,6 +39,7 @@ export class Provider extends Component {
       },
     };
 
+    // Render
     return (
       <Context.Provider value={value}>
         {this.props.children}
@@ -59,7 +63,7 @@ export class Provider extends Component {
       // Response: Bad Request
       } else if (response.status === 400) {
         const error = await response.json();
-        return [error.message];
+        return error.message;
 
       // Other Response
       } else {
@@ -120,7 +124,7 @@ export class Provider extends Component {
     } else {
       throw new Error();
     }
-  };
+  }
 
   // Create Course
   createCourse = async (course, emailAddress, password) => {
@@ -135,12 +139,12 @@ export class Provider extends Component {
     // Response: Bad Request
     } else if (response.status === 400) {
       const error = await response.json();
-      return [error.message];
+      return error.message;
 
     // Response: Unauthorized
     } else if (response.status === 401) {
       const error = await response.json();
-      return [error.message];
+      throw new Error([error.message]);
 
     // Other Response
     } else {
@@ -163,7 +167,7 @@ export class Provider extends Component {
     } else {
       throw new Error();
     }
-  };
+  }
 
   // Update Course
   updateCourse = async (id, course, emailAddress, password) => {
@@ -178,7 +182,7 @@ export class Provider extends Component {
     // Response: Bad Request
     } else if (response.status === 400) {
       const error = await response.json();
-      return [error.message];
+      return error.message;
 
     // Response: Unauthorized
     } else if (response.status === 401) {
@@ -204,23 +208,23 @@ export class Provider extends Component {
     
     // Response: No Content
     if (response.status === 204) {
-      return null;
+      return [];
 
     // Response: Unauthorized
     } else if (response.status === 401) {
       const error = await response.json();
-      return [error.message];
+      throw new Error(error.message);
 
     // Response: Forbidden
     } else if (response.status === 403) {
       const error = await response.json();
-      return [error.message];
+      throw new Error(error.message);
 
     // Other Response
     } else {
       throw new Error();
     }
-  };
+  }
 }
 
 // export Consumer component

@@ -79,7 +79,7 @@ export default class UpdateCourse extends Component {
     const { authenticatedUser } = context
 
     // course id
-    const id = this.props.match.params;
+    const { id } = this.props.match.params;
 
     // input fields
     const {

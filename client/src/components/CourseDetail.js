@@ -92,7 +92,7 @@ export default class CourseDetail extends Component {
       actions = (
         <span>
           <Link className="button" to={`/courses/${courseDetail?.id}/update`}>Update Course</Link>
-          <Link className="button" to="/" onClick={() => this.deleteCourse()}>Delete Course</Link>
+          <button type="button" className="button" onClick={() => this.deleteCourse()}>Delete Course</button>
         </span>
       ); 
     }

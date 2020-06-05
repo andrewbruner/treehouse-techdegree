@@ -1,15 +1,3 @@
-if protected route, success if next(), failure is 401 Unauthorized { message, }
-protected routes
-    getuser (sign in) success is 200 OK { user }, failure is undefined
-    createcourse success is 201 Created, Location '/courses/:id', failure is 400 Bad Request { message, }
-    updatecourse success is 204 No Content, failure is 400 Bad Request { message, } or 403 Forbidden { message,}
-    deletecourse success is 204 No Content, failure is 403 Forbidden { message, }
-unprotected routes
-    create user (sign up) success is 201 Created, Location '/', failure is 400 Bad Request { message, }
-    getcourses success is 200 OK { courses }, failure is undefined
-    getcourse success is 200 Ok { course }, failure is undefined
-
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

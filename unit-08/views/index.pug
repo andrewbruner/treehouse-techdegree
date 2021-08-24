@@ -1,0 +1,68 @@
+extends layout.pug
+
+block content
+
+  - const booksPerPage = 10;
+
+  body
+    if title === 'Books'
+      h1 Books
+    if title === 'Search Results'
+      if books.length === 0
+        h1 Sorry, no search results for "#{searchTerm}"
+      else
+        h1 Search Results for "#{searchTerm}"
+
+    form(method='post' action='/books')
+      input#search(name='search' type='text' placeholder='search by title, author, genre or year...' style='margin:0')
+      input(type='submit' value=`Search` style='margin-left:7px')
+
+    p
+      if title === 'Books'
+        a.button(href='/books/new') Create New Book
+      if title === 'Search Results'
+        a.button(href='/books') Go Back Home
+
+    if books.length > 0
+      table
+        thead
+          tr
+            th Title
+            th Author
+            th Genre
+            th Year
+        tbody
+          if title === 'Books'
+            -
+              const start = (page * booksPerPage) - booksPerPage;
+              const end = (page * booksPerPage) - 1;
+            
+            each book, index in books
+              if index >= start && index <= end
+                tr
+                  td
+                    a(href=`/books/${book.id}`) #{book.title}
+                  td #{book.author}
+                  td #{book.genre}
+                  td #{book.year}
+
+          if title === 'Search Results'
+            each book in books
+              tr
+                td
+                  a(href=`/books/${book.id}`) #{book.title}
+                td #{book.author}
+                td #{book.genre}
+                td #{book.year}
+
+    if title === 'Books'
+      -
+        const numberOfbooks = books.length;
+        const numberOfPageLinks = Math.ceil(numberOfbooks / booksPerPage);
+
+      p
+      - for (let i = 1; i <= numberOfPageLinks; i++) 
+        if page == i
+          a.button.currentPage #{i}
+        if page != i
+          a.button.otherPage(href=`/books${i}`) #{i}

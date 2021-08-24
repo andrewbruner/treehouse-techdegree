@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Quotes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1 class="display-4 my-3">Coffee Quotes</h1>
+            <button type="button" class="btn btn-light border-secondary mb-5">Show another quote</button>
+        </header>
+
+        <div id="app">
+            <div>
+                <p class="lead"><strong>"</strong> {{ quote.quote }}<strong>"</strong></p>
+                <p class="blockquote-footer">{{ quote.source }}</p>
+            </div>
+        </div>
+
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        possibleQuoteIndexes: [],
+        quote: { quote: null, source: null },
+        quotes: [
+          {
+              quote: `I'd rather take coffee than compliments just now.`,
+              source: 'Louisa May Alcott',
+          },
+          {
+              quote: `Coffee is a beverage that puts one to sleep when not drank.`,
+              source: 'Alphonse Allais',
+          },
+          {
+              quote: `Without my morning coffee, I'm just like a dried-up piece of goat.`,
+              source: 'J.S. Bach',
+          },
+          {
+              quote: `It is inhumane, in my opinion, to force people who have a genuine medical need for coffee to wait in line behind people who apparently view it as some kind of recreational activity.`,
+              source: 'Dave Barry',
+          },
+          {
+              quote: `I would rather suffer with coffee than be senseless.`,
+              source: 'Napoleon Bonaparte',
+          },
+          {
+              quote: `As long as there was coffee in the world, how bad could things be?`,
+              source: 'Cassandra Clare',
+          },
+          {
+              quote: `I have measured out my life with coffee spoons.`,
+              source: 'T.S. Eliot',
+          },
+          {
+              quote: `It's amazing how the world begins to change through the eyes of a cup of coffee.`,
+              source: 'Donna A. Favors',
+          },
+          {
+              quote: `I never laugh until I've had my coffee.`,
+              source: 'Clark Gable',
+          },
+          {
+              quote: `Caffeine and sugar, the two basic food groups.`,
+              source: 'Laurell K. Hamilton',
+          },
+          {
+              quote: `Coffee first. Schemes later.`,
+              source: 'Leanna Renee Hieber',
+          },
+          {
+              quote: `Why, yes, I could start my day without coffee. But I like being able to remember things like how to say words and put on pants.`,
+              source: 'Nanea Hoffman',
+          },
+          {
+              quote: `Way too much coffee. But if it weren't for the coffee, I'd have no identifiable personality whatsoever.`,
+              source: 'David Letterman',
+          },
+          {
+              quote: `But even a bad cup of coffee is better than no coffee at all.`,
+              source: 'David Lynch',
+          },
+          {
+              quote: `The powers of a man's mind are directly proportional to the quantity of coffee he drinks.`,
+              source: 'Sir James MacKintosh',
+          },
+          {
+              quote: `Coffee connects us in so many ways – to each other, to our senses, and to the earth that supports the coffee trees.`,
+              source: 'Rohan Marley',
+          },
+          {
+              quote: `Behind every successful woman is a substantial amount of coffee.`,
+              source: 'Stephanie Piro',
+          },
+          {
+              quote: `I never drink coffee at lunch. I find it keeps me awake for the afternoon.`,
+              source: 'Ronald Reagan',
+          },
+          {
+              quote: `What goes best with a cup of coffee? Another cup.`,
+              source: 'Henry Rollins',
+          },
+          {
+              quote: `I believe humans get a lot done, not because we're smart, but because we have thumbs so we can make coffee.`,
+              source: 'Flash Rosenberg',
+          },
+          {
+              quote: `We want to do a lot of stuff; we're not in great shape. We didn't get a good night's sleep. We're a little depressed. Coffee solves all these problems in one delightful little cup.`,
+              source: 'Jerry Seinfeld',
+          },
+          {
+              quote: `No matter what historians claimed, BC really stood for 'Before Coffee.'`,
+              source: 'Cherise Sinclair',
+          },
+          {
+              quote: `Black as the devil, hot as hell, pure as an angel, sweet as love.`,
+              source: 'Charles Maurice de Talleyrand',
+          },
+          {
+              quote: `I like my coffee like I like myself: strong, sweet, and too hot for you.`,
+              source: 'Jac Vanek',
+          }
+        ],
+      },
+    });
+
+    const initiatePossibleIndexes = () => {
+        for (let i = 0; i < vm.quotes.length; i++) {
+            vm.possibleQuoteIndexes.push(i);
+        }
+    };
+
+    const getRandomQuote = () => {
+        // check if possibleQuoteIndexes array is empty
+        if (!vm.possibleQuoteIndexes.length) {
+            // if so, initiate it
+            initiatePossibleIndexes();
+        }
+        // get random number based on possibleQuotesIndexes array length
+        let randomNumber = Math.floor(Math.random() * vm.possibleQuoteIndexes.length);
+        // select the random index number
+        let randomIndex = vm.possibleQuoteIndexes[randomNumber];
+        // remove the random index number
+        vm.possibleQuoteIndexes.splice(randomNumber, 1);
+        // return the quote at the random index
+        return vm.quotes[randomIndex];
+    };
+
+    const displayQuote = () => {
+      const randomQuote = getRandomQuote();
+      vm.quote = randomQuote;
+    };
+
+    document.querySelector('button').addEventListener('click', displayQuote);
+    document.addEventListener('DOMContentLoaded', displayQuote);
+</script>
+</body>
+</html>

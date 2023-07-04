@@ -1,0 +1,52 @@
+{
+	"projects": [
+		{
+			"id": "0",
+			"project_name": "Random Quotes",
+			"description": "A generator of random quotes",
+			"technologies": ["HTML", "CSS", "JavaScript"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-01",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-01",
+			"image_urls": ["static/images/project0_0.png", "static/images/project0_1.png"]
+		},
+		{
+			"id": "1",
+			"project_name": "Student List",
+			"description": "List pagination and filtering",
+			"technologies": ["HTML", "CSS", "JavaScript", "Pagination", "Filtering"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-02",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-02",
+			"image_urls": ["static/images/project1_0.png", "static/images/project1_1.png"]
+		},
+		{
+			"id": "2",
+			"project_name": "Full Stack Conf Registration",
+			"description": "Interactive form",
+			"technologies": ["HTML", "CSS", "JavaScript", "Form Validation", "Real-time, Conditional Error Messaging"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-03",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-03",
+			"image_urls": ["static/images/project2_0.png", "static/images/project2_1.png", "static/images/project2_2.png"]
+		
+		},
+		{
+			"id": "3",
+			"project_name": "Phrase Hunter",
+			"description": "Object-Oriented Programming (OOP) Gameshow App",
+			"technologies": ["HTML", "CSS", "JavaScript", "JS Classes", "Onscreen/Physical Keyboard Functionality", "Console Messaging"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-04",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-04",
+			"image_urls": ["static/images/project3_0.png", "static/images/project3_1.png", "static/images/project3_2.png", "../static/images/project3_3.png", "../static/images/project3_4.png"]
+		
+		},
+		{
+			"id": "4",
+			"project_name": "Awesome Startup Employee Directory",
+			"description": "Public API requests",
+			"technologies": ["HTML", "CSS", "Vanilla JavaScript", "API Fetching", "Modal Window", "Search Filter", "Keyboard Navigation"],
+			"live_link": "https://andrewbruner.github.io/fsjs-techdegree-unit-05",
+			"github_link": "https://github.com/andrewbruner/fsjs-techdegree-unit-05",
+			"image_urls": ["static/images/project4_0.png", "static/images/project4_1.png", "static/images/project4_2.png"]
+		
+		}
+	]
+}
